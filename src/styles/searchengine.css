@@ -1,0 +1,145 @@
+/* searchengine.css */
+.search-engine-container {
+  display: flex;
+  position:absolute;
+  flex-direction: column;
+  align-items: center;
+  width: 100%; /* Đổi từ 1000px thành 100% để tự động scale */
+  max-width: 1000px; /* Giới hạn chiều rộng tối đa */
+  height: auto; /* Đổi từ 300px thành auto để tự điều chỉnh */
+  min-height: 20vh; /* Đảm bảo chiều cao tối thiểu */
+  margin: 0 auto; /* Căn giữa container */
+  padding: 2rem;
+  position: relative and absolute; /* Để có thể căn giữa chính xác */
+  left : 50%;
+  top: 50%;
+  transform: translate(-50%, -50%); /* Căn giữa cả ngang và dọc */
+  z-index: 10; /* Đảm bảo nằm trên các Searchbar khác */
+  justify-content: center;
+}
+
+.search-tabs {
+  display: flex;
+  position:relative;
+  top:8.8px;
+  left:19px;
+  flex-direction: row; /* Xếp các nút ngang */
+  justify-content: left;
+  padding: 0.55rem 0;
+  width: 100%;
+  gap: 0.5rem; /* Thay margin bằng gap cho flexbox */
+
+}
+
+.search-tab-button {
+  padding: 0.5rem 1rem;
+  border-radius: 10px 10px 0px 0px;
+  cursor: pointer;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-weight: 500;
+  color: black;
+  background-color: #D8E1C0;
+  transition: background-color 0.3s ease;
+  max-width: 150px; /*Giới hạn chiều rộng tối đa của nút*/
+  border:none;
+}
+
+.search-tab-button:hover {
+  background-color: #D1D1D1;
+}
+
+.search-tab-button.active {
+  background-color: #677F2B;
+  color: white;
+}
+
+.search-engine {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 898px; /* Giới hạn chiều rộng tối đa */
+  height: auto; /* Đổi từ 134px thành auto */
+  min-height: 100px;
+  border-radius: 0 10px 10px 10px;
+  background: #3B2C2C;
+  box-sizing: border-box;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 1rem;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1; /* Ô input chiếm phần còn lại của không gian */
+}
+
+.search-input {
+  width: 100%; /* Đổi từ 608px thành 100% */
+  max-width: 100%; 
+  padding: 0.5rem 1rem 0.5rem 2.5rem;
+  font-size: clamp(14px, 2vw, 16px);
+  border: none;
+  border-radius: 5px 0 0 5px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  background-color: #f0f0f0;
+}
+
+.search-logo {
+  position: absolute;
+  left: 0.75rem;
+  font-size: clamp(16px, 2vw, 18px);
+  color: #666;
+}
+
+.search-button {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  font-size: clamp(14px, 2vw, 16px);
+  background-color: #990000;
+  color: white;
+  border: none;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  height: 37px; /* Giữ chiều cao cố định cho nút */
+}
+
+.search-button:hover {
+  background: #7a0000;
+}
+
+@media (max-width: 430px) {
+  .search-engine-container {
+    padding: 0.25rem;
+  }
+
+  .search-tab-button {  
+    padding: 0.25rem 0.5rem;
+    font-size: clamp(10px, 2vw, 12px);
+    max-width: 100px; /* Giới hạn chiều rộng tối đa của nút */
+  }
+
+  .search-input {
+    font-size: clamp(12px, 3vw, 14px);
+    padding: 0.5rem 0.75rem 0.5rem 2rem;
+  }
+
+  .search-logo {
+    left: 0.5rem;
+    font-size: clamp(14px, 2.5vw, 16px);
+  }
+
+  .search-button {
+    font-size: clamp(12px, 3vw, 14px);
+    padding: 0.5rem 0.75rem;
+    height: 30px; /* Giữ chiều cao cố định cho nút */
+  }
+}
+

@@ -1,0 +1,185 @@
+/* styles/App.css */
+.flex-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  height: 4779px;
+}
+
+.content {
+  padding:5px;
+  width:100%;
+  background: white;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height:100%;
+  z-index: 1000;
+}
+
+.App-header {
+  display: flex; /* Dùng Flexbox cho header */
+  justify-content: space-between; /* Logo trái, nút phải */
+  align-items: center; /* Căn giữa theo chiều dọc */
+  width: 100%; /* Chiếm hết chiều rộng */
+  height: 72px;
+  padding: 20px;
+  background-color: #f8f8f8; /* Màu nền nhẹ để dễ thấy */
+
+}
+
+.header-buttons {
+  display: flex; /* Container cho các nút */
+  gap: 10px; /* Khoảng cách giữa các nút */
+}
+
+.register-login-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #FFFFFF;
+  color: #990000;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.register-login-button:hover {
+  background-color: #d49696;
+}
+
+
+/* styles/App.css */
+.modal-content {
+  display: flex; /* Đảm bảo register-container chiếm hết */
+  position: relative; /* Đảm bảo modal-content là tham chiếu cho close-button */
+  width: 785px;
+  height: 705px;
+  max-width: auto;
+  border-radius: 5px;
+  background-color: white;
+  flex-direction: column; /* Để các phần tử con dễ căn chỉnh */
+}
+
+.close-button {
+  position: absolute;
+  top: 10px; /* Đính sát đỉnh, cách 10px */
+  right: 10px; /* Đính sát phải, cách 10px */
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.close-button:hover{
+  color: #990000;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  padding:10px;
+}
+
+.custom-link{
+  color: rgb(0, 0, 0);
+  font-family: "Be Vietnam Pro";
+  font-size: 14px;
+  font-style: normal;
+}
+
+.custom-link:hover{
+  color: rgb(255, 0, 0);
+  font-family: "Be Vietnam Pro";
+  font-size: 14px;
+  font-style: normal;
+}
+
+/* Đảm bảo App-banner không bị ảnh hưởng */
+.content .App-banner {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 432px;
+  flex-shrink: 0;
+  background: #B1CAE2;
+}
+
+.App-banner .Searchbar1{
+  position: absolute;
+  width: 100%;
+  height: 431px;
+  flex-shrink: 0;
+}
+
+.App-banner .Searchbar2{
+  position:absolute;
+  left:1200px;
+  top:8px;
+  width: 429px;
+  height: 431px;
+  flex-shrink: 0;
+}
+
+.App-banner .Searchbar3{
+  position:absolute;
+  left: 1000px;
+  top: 10px;
+  width: 256.064px;
+  height: 145px;
+  aspect-ratio: 256.06/145.00;
+  flex-shrink: 0;
+}
+
+.App-banner .Searchbar4{
+  position:absolute;
+  left:560px;
+  top: 170px;
+  width : 564.534 px;
+  height : 274px;
+  flex-shrink: 0;
+}
+
+/* styles/App.css (thêm vào cuối file) */
+
+@media (max-width: 430px) {
+  .App-banner .Searchbar1{
+    position: absolute;
+    width: 43px;
+    height: 43px;
+    flex-shrink: 0;
+  }
+  .App-banner .Searchbar1{
+    position: absolute;
+    width: 43px;
+    height: 43px;
+    flex-shrink: 0;
+  }
+  .App-banner .Searchbar3{
+    position:absolute;
+    left: 1000px;
+    top: 10px;
+    width: 256.064px;
+    height: 145px;
+    aspect-ratio: 256.06/145.00;
+    flex-shrink: 0;
+  }
+
+  .App-banner .Searchbar4{
+    position:absolute;
+    left:560px;
+    top: 170px;
+    width : 564.534 px;
+    height : 274px;
+    flex-shrink: 0;
+  }
+}
+

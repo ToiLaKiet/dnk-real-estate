@@ -1,0 +1,367 @@
+* {
+  box-sizing: border-box;
+}
+
+.App-logo {
+  width: 200px;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.decor-text {
+  color: #e33629;
+  text-align: center;
+  font-family: "Playfair Display", serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.greeting {
+  font-family: "Be Vietnam Pro", sans-serif;
+  font-size: 18px;
+  color: #555;
+  margin: 0;
+}
+
+/* Register */
+.register-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100vh;
+  overflow-x: auto;
+  max-height: 100%;
+}
+
+.register-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f0f0f0;
+  padding: 20px;
+  max-height: 100%;
+}
+
+.register-right {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  background-color: white;
+  margin-bottom: 20px;
+  align-content: center;
+}
+
+.register-right h2 {
+  font-family: "Be Vietnam Pro", sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+}
+
+.terms {
+  color: rgba(0, 0, 0, 0.8);
+  text-align: center;
+  font-family: "Be Vietnam Pro", sans-serif;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.terms a:hover {
+  color: #e33629;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.form-group label {
+  margin-bottom: 5px;
+  font-family: "Be Vietnam Pro", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: #555;
+  padding: 5px;
+}
+
+.form-group text {
+  color: #e33629;
+  font-family: "Be Vietnam Pro", sans-serif;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  text-align: center;
+}
+
+.input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.phone-icon {
+  position: absolute;
+  left: 10px;
+  color: #555;
+  font-size: 16px;
+}
+
+.avatar-icon,
+.lock-icon {
+  position: absolute;
+  left: 10px;
+  color: #555;
+  font-size: 16px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px 10px 10px 35px;
+  font-size: 14px;
+  font-family: "Be Vietnam Pro", sans-serif;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.form-group input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.submit-button {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  font-family: "Be Vietnam Pro", sans-serif;
+  font-weight: 600;
+  background-color: #c24343;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-button:hover {
+  background-color: #a63636;
+}
+
+.cross-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  max-width: 1000px;
+  margin: 10px auto;
+}
+
+.cross-bar::before,
+.cross-bar::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.cross-bar span {
+  font-family: "Be Vietnam Pro", sans-serif;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.5);
+  padding: 0 10px;
+  background-color: white;
+}
+
+.google-button {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  font-family: "Be Vietnam Pro", sans-serif;
+  font-weight: 600;
+  background-color: #fff;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.google-button:hover {
+  background-color: #f0f0f0;
+}
+
+.facebook-button {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  font-family: "Be Vietnam Pro", sans-serif;
+  font-weight: 600;
+  background-color: #3b5998;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.facebook-button:hover {
+  background-color: #2d4373;
+}
+
+.apple-button {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  font-family: "Be Vietnam Pro", sans-serif;
+  font-weight: 600;
+  background-color: #ffffff;
+  color: black;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.apple-button:hover {
+  background-color: #f0f0f0;
+}
+
+/* OTP Group */
+.otp-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+/* OTP Input */
+.otp-input {
+  width: 45px;
+  height: 55px;
+  text-align: center;
+  font-size: 16px;
+  font-family: "Be Vietnam Pro", sans-serif;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+}
+
+.otp-input:focus {
+  border-color: #007bff;
+}
+/* Modal Button */
+.modal-button {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  font-size: 16px;
+  font-family: "Be Vietnam Pro", sans-serif;
+  font-weight: 600;
+  border-radius: 5px;
+  border:none;
+  color: white;
+  background: #C24343;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.modal-button:hover {
+  background-color: #a63636;
+}
+
+.modal-button.primary {
+  background-color: #c24343;
+  color: white;
+}
+
+.modal-button.primary:hover {
+  background-color: #a63636;
+}
+
+.modal-button.secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.modal-button.secondary:hover {
+  background-color: #5a6268;
+}
+
+/* Xóa .digit-group lỗi cú pháp và không cần thiết */
+.prompt {
+  margin-bottom: 20px;
+  font-size: 20px;
+  color: #333;
+  font-family: "Be Vietnam Pro", sans-serif;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .register-container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .register-left,
+  .register-right {
+    flex: none;
+    width: 100%;
+  }
+
+  .modal-content {
+    width: 95%;
+  }
+
+  .otp-input {
+    width: 35px;
+    height: 35px;
+    font-size: 14px;
+  }
+}
+
+.back-button{
+  width:20px;
+  padding: 0;
+  border: none;
+  background: none;
+}
+.back-button:hover{
+  background: #c3b0af;
+}
+
+.Hieuluc{
+  font-family: "Be Vietnam Pro", sans-serif;
+  font-size: 12px;
+  color: #3b3939;
+  margin: 0;
+  text-align: center;
+}
+
+.resend-otp {
+  font-family: "Be Vietnam Pro", sans-serif;
+  font-size: 14px;
+  color: #000000;
+  cursor: pointer;
+  text-align: center;
+}
+
+.resend-otp:hover {
+  color: #e33629;
+  font-style: italic;
+}

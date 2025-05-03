@@ -1,0 +1,78 @@
+
+/* flex-box dk-content class*/
+
+.flex-box .dk-content{
+    display: flex;
+    width : 100%;
+    min-height: 100vh;
+    padding: 20px;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.flex-box .dk-content-box-left{
+    flex:0.5;
+    margin: 0 auto;
+    flex-direction: column;
+    font-family: "Be Vietnam Pro";
+}
+
+
+
+.clicking{
+    display: flex-start;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 1px;
+    flex-shrink: 0;
+}
+
+.clicking .click-indexes{
+    color: rgb(0, 0, 0);
+    font-family: "Be Vietnam Pro";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+}
+
+.click-indexes:hover{
+    color: rgb(255, 0, 0);
+    font-family: "Be Vietnam Pro";
+    font-size: 14px;
+    font-style: italic;
+}
+
+
+
+
+.flex-box .dk-content-box-right{
+    padding-left: 10px;
+    flex:2;
+    margin: 0 auto;
+    border: #000;
+    flex-direction: column;
+}
+
+
+.dk-content-box-right texts{
+    display: flex;
+    font-family: "Be Vietnam Pro";
+}
+
+.texts h1{
+    color: rgba(181, 93, 0, 0.933);
+    font-family: "Be Vietnam Pro";
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.texts p{
+    color: #000;
+    font-family: "Be Vietnam Pro";
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+}
