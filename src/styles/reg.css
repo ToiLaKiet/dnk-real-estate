@@ -365,3 +365,29 @@
   color: #e33629;
   font-style: italic;
 }
+
+.password-requirements {
+  list-style: none;
+  padding: 0;
+  color: rgba(0, 0, 0, 0.40);
+  font-family: "Be Vietnam Pro";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin: 10px 0;
+}
+.password-requirement {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  font-family: "Be Vietnam Pro", sans-serif;
+}
+.password-requirement.met {
+  color: green;
+  font-family: "Be Vietnam Pro", sans-serif;
+}
+.password-requirement-icon {
+  margin-right: 8px;
+  font-family: "Be Vietnam Pro", sans-serif;
+}
