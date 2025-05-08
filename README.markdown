@@ -1,7 +1,5 @@
 # 🏡 DNK Real Estate
 
-![DNK Real Estate Banner](https://via.placeholder.com/1200x300.png?text=DNK+Real+Estate)
-
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/your-username/dnk-real-estate)
 [![Version](https://img.shields.io/badge/version-1.0.0-blue)](https://github.com/your-username/dnk-real-estate/releases)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
