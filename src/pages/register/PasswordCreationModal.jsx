@@ -29,6 +29,7 @@ function PasswordModal({ data, onSubmit, onClose }) {
     checkPassword(value);
   };
 
+  // Hàm xử lý khi người dùng nhấn nút "Xác nhận"
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!requirements.minLength) {
@@ -48,7 +49,7 @@ function PasswordModal({ data, onSubmit, onClose }) {
       return;
     }
     setError('');
-    console.log('Dữ liệu mật khẩu:', { phone: data.phone, password });
+    // Gọi hàm onSubmit với mật khẩu đã nhập
     onSubmit(password); // Gửi mật khẩu về Register.jsx
   };
 

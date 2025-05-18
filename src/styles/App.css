@@ -1,16 +1,18 @@
-/* styles/App.css */
+/* Cập nhật trong file App.css */
 .flex-box {
   display: flex;
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
-  height: 4779px;
+  height: auto;
+  animation: slide-in 0.5s ease-in;
 }
 
 .content {
-  padding:5px;
-  width:100%;
+  padding: 5px;
+  width: 100%;
   background: white;
+  animation: slide-in 0.5s ease-in;
 }
 
 .modal-overlay {
@@ -23,58 +25,26 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height:100%;
-  z-index: 1000;
+  height: 100%;
+  animation: slide-in 0.25s ease-in;
 }
 
-.App-header {
-  display: flex; /* Dùng Flexbox cho header */
-  justify-content: space-between; /* Logo trái, nút phải */
-  align-items: center; /* Căn giữa theo chiều dọc */
-  width: 100%; /* Chiếm hết chiều rộng */
-  height: 72px;
-  padding: 20px;
-  background-color: #f8f8f8; /* Màu nền nhẹ để dễ thấy */
-
-}
-
-.header-buttons {
-  display: flex; /* Container cho các nút */
-  gap: 10px; /* Khoảng cách giữa các nút */
-}
-
-.register-login-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #FFFFFF;
-  color: #990000;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-family: 'Be Vietnam Pro', sans-serif;
-}
-
-.register-login-button:hover {
-  background-color: #d49696;
-}
-
-
-/* styles/App.css */
 .modal-content {
-  display: flex; /* Đảm bảo register-container chiếm hết */
-  position: relative; /* Đảm bảo modal-content là tham chiếu cho close-button */
+  display: flex;
+  position: relative;
   width: 785px;
   height: 705px;
   max-width: auto;
   border-radius: 5px;
   background-color: white;
-  flex-direction: column; /* Để các phần tử con dễ căn chỉnh */
+  flex-direction: column;
+  animation: slide-in 0.5s ease-in;
 }
 
 .close-button {
   position: absolute;
-  top: 10px; /* Đính sát đỉnh, cách 10px */
-  right: 10px; /* Đính sát phải, cách 10px */
+  top: 10px;
+  right: 10px;
   background: none;
   border: none;
   font-size: 20px;
@@ -82,104 +52,163 @@
   font-family: 'Be Vietnam Pro', sans-serif;
 }
 
-.close-button:hover{
+.close-button:hover {
   color: #990000;
   background-color: #f0f0f0;
   border-radius: 5px;
-  padding:10px;
+  padding: 10px;
 }
 
-.custom-link{
+.custom-link {
   color: rgb(0, 0, 0);
-  font-family: "Be Vietnam Pro";
+  font-family: 'Be Vietnam Pro';
   font-size: 14px;
   font-style: normal;
 }
 
-.custom-link:hover{
+.custom-link:hover {
   color: rgb(255, 0, 0);
-  font-family: "Be Vietnam Pro";
+  font-family: 'Be Vietnam Pro';
   font-size: 14px;
   font-style: normal;
 }
-
-/* Đảm bảo App-banner không bị ảnh hưởng */
-.content .App-banner {
+/* Banner chính */
+.App-banner {
   position: relative;
-  display: flex;
   width: 100%;
-  height: 432px;
-  flex-shrink: 0;
+  height: 432px; /* Giữ nguyên chiều cao theo thiết kế */
   background: #B1CAE2;
+  overflow: x; /* Ngăn các phần tử con tràn ra ngoài */
+  overflow: y;
 }
 
-.App-banner .Searchbar1{
-  position: absolute;
+/* Container chứa tất cả search bars */
+.search-bars-container {
+  position: relative;
   width: 100%;
-  height: 431px;
-  flex-shrink: 0;
+  height: 100%;
+  max-width: 1440px; /* Giới hạn chiều rộng tối đa */
+  margin: 0 auto;
+  overflow: auto; /* Ngăn các phần tử con tràn ra ngoài */
 }
 
-.App-banner .Searchbar2{
-  position:absolute;
-  left:1200px;
-  top:8px;
+/* Các search bar sẽ được định vị trong container này */
+.App-banner .Searchbar1,
+.App-banner .Searchbar2,
+.App-banner .Searchbar3,
+.App-banner .Searchbar4 {
+  position: absolute;
+  transition: all 0.3s ease; /* Hiệu ứng mượt khi thay đổi kích thước */
+}
+
+/* Vị trí cụ thể cho từng search bar */
+.App-banner .Searchbar1 {
+  width: 100%;
+  height: 100%;
+}
+
+.App-banner .Searchbar2 {
+  right: 20px;
+  top: 8px;
   width: 429px;
   height: 431px;
-  flex-shrink: 0;
 }
 
-.App-banner .Searchbar3{
-  position:absolute;
-  left: 1000px;
+.App-banner .Searchbar3 {
+  right: 469px; /* 429 + 40px khoảng cách */
   top: 10px;
-  width: 256.064px;
+  width: 256px;
   height: 145px;
-  aspect-ratio: 256.06/145.00;
-  flex-shrink: 0;
 }
 
-.App-banner .Searchbar4{
-  position:absolute;
-  left:560px;
+.App-banner .Searchbar4 {
+  left: 50%;
   top: 170px;
-  width : 564.534 px;
-  height : 274px;
-  flex-shrink: 0;
+  transform: translateX(-50%);
+  width: 564px;
+  height: 274px;
 }
 
-/* styles/App.css (thêm vào cuối file) */
-
-@media (max-width: 430px) {
-  .App-banner .Searchbar1{
-    position: absolute;
-    width: 43px;
-    height: 43px;
-    flex-shrink: 0;
+/* Responsive Design */
+@media (max-width: 1600px) {
+  .App-banner .Searchbar2 {
+    right: 10px;
+    width: 380px;
   }
-  .App-banner .Searchbar1{
-    position: absolute;
-    width: 43px;
-    height: 43px;
-    flex-shrink: 0;
+  
+  .App-banner .Searchbar3 {
+    right: 400px;
+    width: 220px;
   }
-  .App-banner .Searchbar3{
-    position:absolute;
-    left: 1000px;
-    top: 10px;
-    width: 256.064px;
-    height: 145px;
-    aspect-ratio: 256.06/145.00;
-    flex-shrink: 0;
-  }
-
-  .App-banner .Searchbar4{
-    position:absolute;
-    left:560px;
-    top: 170px;
-    width : 564.534 px;
-    height : 274px;
-    flex-shrink: 0;
+  
+  .App-banner .Searchbar4 {
+    width: 500px;
   }
 }
 
+@media (max-width: 1200px) {
+  .App-banner {
+    height: 600px; /* Tăng chiều cao để chứa các search bar */
+  }
+  
+  .search-bars-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .App-banner .Searchbar1,
+  .App-banner .Searchbar2,
+  .App-banner .Searchbar3,
+  .App-banner .Searchbar4 {
+    position: relative;
+    left: auto ;
+    right: auto;
+    top: auto ;
+    transform: none;
+    width: 90% ;
+    max-width: 500px;
+    height: auto;
+    margin: 10px 0;
+  }
+  
+  .App-banner .Searchbar1 {
+    order: 1;
+  }
+  
+  .App-banner .Searchbar4 {
+    order: 2;
+  }
+  
+  .App-banner .Searchbar3 {
+    order: 3;
+  }
+  
+  .App-banner .Searchbar2 {
+    order: 4;
+  }
+}
+
+@media (max-width: 768px) {
+  .App-banner {
+    height: auto;
+    padding: 20px 0;
+  }
+  
+  .App-banner .Searchbar1,
+  .App-banner .Searchbar2,
+  .App-banner .Searchbar3,
+  .App-banner .Searchbar4 {
+    width: 95% !important;
+  }
+}
+@keyframes slide-in {
+  from {
+    transform: translateY(10px);
+    opacity: 0.25;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

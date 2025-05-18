@@ -1,25 +1,40 @@
-// pages/register/Login.jsx
 import React, { useState } from 'react';
 import '../../styles/reg.css';
 import Logo from '../../components/logo.js';
 import { FcGoogle } from 'react-icons/fc';
-import { FaFacebook } from 'react-icons/fa';
-import { FaUser } from 'react-icons/fa';
-import { FaLock } from 'react-icons/fa';
-import { FaApple } from 'react-icons/fa';
+import { FaFacebook, FaUser, FaLock, FaApple } from 'react-icons/fa';
 import House from '../../components/house2.js';
 import { Link } from 'react-router-dom';
+import Register from '../register/Dangky1.jsx';
+import Modal from '../../components/ui/modal-reg-log.jsx';
+import Quenmatkhau from '../../components/ui/Quenmatkhau.jsx';
+import { AuthContext } from '../../components/ui/context/AuthContext.jsx'; 
+import { useContext } from 'react';
 
-function Login() {
+function Login({onClose}) {
+  const { login } = useContext(AuthContext); // Lấy hàm login từ Context
+
+  // State quản lý dữ liệu form
   const [formData, setFormData] = useState({
-    phone: '',
+    phone: '',  
     email: '',
     password: '',
   });
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  // State quản lý modal
+  const [isModalOpen, setIsModalOpen] = useState({
+    register: false,
+    forgotPassword: false,
+  });
+
+  const openModal = (type) =>
+    setIsModalOpen((prev) => ({ ...prev, [type]: true }));
+  const closeModal = (type) =>
+    setIsModalOpen((prev) => ({ ...prev, [type]: false }));
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    // Nếu input là "phone", kiểm tra xem giá trị là email hay SĐT
     if (name === 'phone') {
       if (value.includes('@')) {
         setFormData({ ...formData, email: value, phone: '' });
@@ -29,37 +44,79 @@ function Login() {
     } else {
       setFormData({ ...formData, [name]: value });
     }
+    setError('');
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    //Nếu muốn gửi dữ liệu lên server, thì thêm code ở đây
-    // try {
-    //   const response = await fetch('http://your-api-endpoint/api/login', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify(formData),
-    //   });
-    //   const result = await response.json();
-    //   console.log('Phản hồi từ server:', result);
-    //   // Xử lý tiếp (ví dụ: lưu token, chuyển trang)
-    // } catch (error) {
-    //   console.error('Lỗi khi gửi dữ liệu:', error);
-    // }
+    setError('');
+    setIsLoading(true);
+
+    const phoneRegex = /^0\d{9,10}$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+
+    if (!formData.phone && !formData.email) {
+      setError('Vui lòng nhập số điện thoại hoặc email.');
+      setIsLoading(false);
+      return;
+    }
+
+    if (formData.phone && !phoneRegex.test(formData.phone)) {
+      setError('Số điện thoại không hợp lệ. Phải bắt đầu bằng 0 và có 10-11 số.');
+      setIsLoading(false);
+      return;
+    }
+
+    if (formData.email && !emailRegex.test(formData.email)) {
+      setError('Email không hợp lệ.');
+      setIsLoading(false);
+      return;
+    }
+
+    if (!formData.password) {
+      setError('Vui lòng nhập mật khẩu.');
+      setIsLoading(false);
+      return;
+    }
+
+    if (!passwordRegex.test(formData.password)) {
+      setError('Mật khẩu phải có ít nhất 8 ký tự, 1 chữ hoa, 1 số.');
+      setIsLoading(false);
+      return;
+    }
+
+    const payload = {
+      phone: formData.phone || '',
+      email: formData.email || '',
+      password: formData.password,
+    };
+
+    console.log('Dữ liệu đăng nhập:', payload);
+
+    try {
+      // Gọi hàm login từ AuthContext (đã được cập nhật ở phiên bản trước)
+        await login({
+        phone: formData.phone || '',
+        email: formData.email || '',
+        password: formData.password
+      }, () => onClose());
+
+    } catch (err) {
+      setError(err.message || 'Đăng nhập thất bại. Vui lòng thử lại.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <div className="register-container">
-      {/* Phần bên trái - Logo/Trang trí */}
       <div className="register-left">
         <Logo className="App-logo" width={200} />
         <House className="house" width={300} />
         <p className="decor-text">Tìm nhà dễ dàng, đầu tư vững vàng cùng DNK!</p>
       </div>
 
-      {/* Phần bên phải - Form */}
       <div className="register-right">
         <p className="greeting">Chúc bạn một ngày tốt lành!</p>
         <h2><b>Đăng nhập để tiếp tục</b></h2>
@@ -71,10 +128,11 @@ function Login() {
               <input
                 type="text"
                 name="phone"
-                value={formData.phone || formData.email} // Hiển thị phone nếu có, không thì email
+                value={formData.phone || formData.email}
                 onChange={handleChange}
                 placeholder="SĐT chính hoặc Email"
                 required
+                disabled={isLoading}
               />
             </div>
 
@@ -88,25 +146,34 @@ function Login() {
                 onChange={handleChange}
                 placeholder="Nhập mật khẩu"
                 required
+                disabled={isLoading}
               />
             </div>
+            {error && <p className="error">{error}</p>}
           </div>
-          <button type="submit" className="submit-button">
-            Tiếp tục
+          <button type="submit" className="submit-button" disabled={isLoading}>
+            {isLoading ? 'Đang xử lý...' : 'Tiếp tục'}
           </button>
         </form>
-
+        <div className="forgot-password-container">
+          <span
+            className="forgot-password"
+            onClick={() => openModal('forgotPassword')}
+          >
+            Quên mật khẩu?
+          </span>
+        </div>
         <div className="cross-bar">
           <span>Hoặc</span>
         </div>
 
-        <button className="google-button">
+        <button className="google-button" disabled={isLoading}>
           <FcGoogle style={{ marginRight: '10px' }} /> Đăng nhập với Google
         </button>
-        <button className="facebook-button">
+        <button className="facebook-button" disabled={isLoading}>
           <FaFacebook style={{ marginRight: '10px' }} /> Đăng nhập với Facebook
         </button>
-        <button className="apple-button">
+        <button className="apple-button" disabled={isLoading}>
           <FaApple style={{ marginRight: '10px' }} /> Đăng nhập với Apple
         </button>
 
@@ -119,8 +186,33 @@ function Login() {
             của chúng tôi
           </p>
         </div>
-        
+
+        <div className="register-link">
+          <p>
+            Bạn chưa là thành viên?{' '}
+            <span
+              className="register-link-text"
+              onClick={() => openModal('register')}
+            >
+              Đăng ký tại đây
+            </span>
+          </p>
+        </div>
       </div>
+
+      <Modal
+        isOpen={isModalOpen.register}
+        onClose={() => closeModal('register')}
+      >
+        <Register />
+      </Modal>
+      
+      <Modal
+        isOpen={isModalOpen.forgotPassword}
+        onClose={() => closeModal('forgotPassword')}
+      >
+        <Quenmatkhau onClose={() => closeModal('forgotPassword')} />
+      </Modal>
     </div>
   );
 }

@@ -1,0 +1,104 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow: visible;
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 0 20px;
+    flex: 1;
+    overflow: visible
+  }
+
+  
+  .title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+  
+  .meta {
+    font-size: 0.9rem;
+    color: #555;
+    margin: 5px 0;
+  }
+  
+  .tags {
+    display: flex;
+    gap: 10px;
+    margin: 10px 0;
+  }
+  
+  .tag {
+    background-color: #f0f0f0;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.85rem;
+  }
+  
+  .summary {
+    font-style: italic;
+    margin: 15px 0;
+    color: #333;
+  }
+  
+  .carousel {
+    margin: 20px 0;
+  }
+  
+  .image {
+    width: 100%;
+    height: auto;
+    max-height: 400px;
+    object-fit: cover;
+  }
+  
+  .video {
+    width: 100%;
+    max-height: 400px;
+    margin: 20px 0;
+  }
+  
+  .content {
+    line-height: 1.6;
+    font-size: 1rem;
+  }
+  
+  .content p {
+    margin: 10px 0;
+  }
+  
+  .content img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .loading,
+  .error {
+    text-align: center;
+    padding: 20px;
+    font-size: 1.2rem;
+    color: #666;
+  }
+
+  .slick-prev, .slick-next, .customPrev, .customNext{
+    z-index:1000;
+    opacity:100;
+  }
+  @media (max-width: 600px) {
+    .container {
+      padding: 0 10px;
+    }
+  
+    .title {
+      font-size: 1.5rem;
+    }
+  
+    .image,
+    .video {
+      max-height: 300px;
+    }
+  }

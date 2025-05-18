@@ -1,34 +1,31 @@
-/* searchengine.css */
 .search-engine-container {
   display: flex;
-  position:absolute;
+  position: absolute;
   flex-direction: column;
   align-items: center;
-  width: 100%; /* Đổi từ 1000px thành 100% để tự động scale */
-  max-width: 1000px; /* Giới hạn chiều rộng tối đa */
-  height: auto; /* Đổi từ 300px thành auto để tự điều chỉnh */
-  min-height: 20vh; /* Đảm bảo chiều cao tối thiểu */
-  margin: 0 auto; /* Căn giữa container */
+  width: 100%;
+  max-width: 1000px;
+  height: auto;
+  min-height: 20vh;
+  margin: 0 auto;
   padding: 2rem;
-  position: relative and absolute; /* Để có thể căn giữa chính xác */
-  left : 50%;
+  left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%); /* Căn giữa cả ngang và dọc */
-  z-index: 10; /* Đảm bảo nằm trên các Searchbar khác */
+  transform: translate(-50%, -50%);
+  z-index: 10;
   justify-content: center;
 }
 
 .search-tabs {
   display: flex;
-  position:relative;
-  top:8.8px;
-  left:19px;
-  flex-direction: row; /* Xếp các nút ngang */
+  position: relative;
+  top: 8.8px;
+  left: 19px;
+  flex-direction: row;
   justify-content: left;
   padding: 0.55rem 0;
   width: 100%;
-  gap: 0.5rem; /* Thay margin bằng gap cho flexbox */
-
+  gap: 0.5rem;
 }
 
 .search-tab-button {
@@ -40,8 +37,8 @@
   color: black;
   background-color: #D8E1C0;
   transition: background-color 0.3s ease;
-  max-width: 150px; /*Giới hạn chiều rộng tối đa của nút*/
-  border:none;
+  max-width: 150px;
+  border: none;
 }
 
 .search-tab-button:hover {
@@ -56,13 +53,15 @@
 .search-engine {
   display: flex;
   justify-content: center;
+  flex-direction: column;
   width: 100%;
-  max-width: 898px; /* Giới hạn chiều rộng tối đa */
-  height: auto; /* Đổi từ 134px thành auto */
-  min-height: 100px;
+  max-width: 898px;
+  height: auto;
+  min-height: 150px;
   border-radius: 0 10px 10px 10px;
   background: #3B2C2C;
   box-sizing: border-box;
+  padding-bottom:10px;
 }
 
 .search-bar {
@@ -76,12 +75,12 @@
   position: relative;
   display: flex;
   align-items: center;
-  flex: 1; /* Ô input chiếm phần còn lại của không gian */
+  flex: 1;
 }
 
 .search-input {
-  width: 100%; /* Đổi từ 608px thành 100% */
-  max-width: 100%; 
+  width: 100%;
+  max-width: 100%;
   padding: 0.5rem 1rem 0.5rem 2.5rem;
   font-size: clamp(14px, 2vw, 16px);
   border: none;
@@ -108,38 +107,276 @@
   border-radius: 0 5px 5px 0;
   cursor: pointer;
   font-family: 'Be Vietnam Pro', sans-serif;
-  height: 37px; /* Giữ chiều cao cố định cho nút */
+  height: 37px;
 }
 
 .search-button:hover {
   background: #7a0000;
 }
 
+.filter-bar {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  width: 100%;
+}
+
+.filter-item {
+  flex: 1;
+  position: relative;
+}
+
+.filter-button {
+  padding: 0.5rem 1rem;
+  background-color: #3B2C2C;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: clamp(12px, 2vw, 14px);
+  color: white;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.filter-button:hover {
+  background-color: #e0e0e0;
+}
+
+.filter-arrow {
+  font-size: clamp(10px, 1.5vw, 12px);
+  color: white;
+}
+
+.filter-dropdown {
+  position: absolute;
+  width:285px;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  overflow: y;
+  overflow: x;
+  border-radius: 5px;
+  padding: 1rem;
+  min-width: 250px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filter-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: clamp(12px, 2vw, 14px);
+  color: #333;
+}
+
+.filter-checkbox input {
+  accent-color: #990000;
+}
+
+.range-slider {
+  margin-top: 1rem;
+}
+
+.range-slider label {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: clamp(12px, 2vw, 14px);
+  color: #333;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.dual-range-slider {
+  margin: 0.5rem 0;
+  padding-left: 1px;
+  padding-right: 10px;
+}
+
+.range-track {
+  position: relative;
+  height: 6px;
+  background: #e0e0e0;
+  border-radius: 3px;
+}
+
+.range-filled {
+  position: absolute;
+  height: 6px;
+  background: rgba(153, 0, 0, 0.3);
+  border-radius: 3px;
+}
+
+.range-thumb {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background: #990000;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.range-inputs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.range-input-number {
+  width: 100px;
+  padding: 0.4rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: clamp(12px, 2vw, 14px);
+  color: #333;
+}
+
+.range-input-number:focus {
+  outline: none;
+  border-color: #990000;
+}
+
+.range-input-separator {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: clamp(12px, 2vw, 14px);
+  color: #666;
+}
+
+.range-unit {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: clamp(12px, 2vw, 14px);
+  color: #666;
+}
+
+.range-values {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: clamp(12px, 2vw, 14px);
+  color: #666;
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+.filter-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+}
+
+.apply-button,
+.reset-button {
+  padding: 0.5rem 1rem;
+  background-color: #990000;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: clamp(12px, 2vw, 14px);
+}
+
+.apply-button:hover,
+.reset-button:hover {
+  background-color: #7a0000;
+}
+
 @media (max-width: 430px) {
-  .search-engine-container {
-    padding: 0.25rem;
-  }
+.search-engine-container {
+  padding: 0.25rem;
+  bottom: 10px;
+}
 
-  .search-tab-button {  
-    padding: 0.25rem 0.5rem;
-    font-size: clamp(10px, 2vw, 12px);
-    max-width: 100px; /* Giới hạn chiều rộng tối đa của nút */
-  }
+.search-engine {
+  height: auto;
+}
 
-  .search-input {
-    font-size: clamp(12px, 3vw, 14px);
-    padding: 0.5rem 0.75rem 0.5rem 2rem;
-  }
+.search-tabs {
+  top: 10px;
+  left: 10px;
+  flex-direction: column;
+  align-items: stretch;
+}
 
-  .search-logo {
-    left: 0.5rem;
-    font-size: clamp(14px, 2.5vw, 16px);
-  }
+.search-tab-button {
+  padding: 0.25rem 0.5rem;
+  font-size: clamp(10px, 2vw, 12px);
+  max-width: 100%;
+}
 
-  .search-button {
-    font-size: clamp(12px, 3vw, 14px);
-    padding: 0.5rem 0.75rem;
-    height: 30px; /* Giữ chiều cao cố định cho nút */
-  }
+.search-input {
+  font-size: clamp(12px, 3vw, 14px);
+  padding: 0.5rem 0.75rem 0.5rem 2rem;
+}
+
+.search-logo {
+  left: 0.5rem;
+  font-size: clamp(14px, 2.5vw, 16px);
+}
+
+.search-button {
+  font-size: clamp(12px, 3vw, 14px);
+  padding: 0.5rem 0.75rem;
+  height: 30px;
+}
+
+.filter-bar {
+  flex-direction: column;
+  padding: 0.25rem 0.5rem;
+}
+
+.filter-item {
+  flex: none;
+  width: 100%;
+}
+
+.filter-button {
+  width: 100%;
+  font-size: clamp(10px, 2vw, 12px);
+}
+
+.filter-arrow {
+  font-size: clamp(8px, 1.2vw, 10px);
+}
+
+.filter-dropdown {
+  position: static;
+  width: 100%;
+  min-width: auto;
+  z-index: 100;
+}
+
+.filter-checkbox {
+  font-size: clamp(10px, 2vw, 12px);
+}
+
+.range-values {
+  font-size: clamp(10px, 2vw, 12px);
+}
+
+.range-input-number {
+  width: 80px;
+  font-size: clamp(10px, 2vw, 12px);
+  padding: 0.3rem;
+}
+
+.range-unit,
+.range-input-separator {
+  font-size: clamp(10px, 2vw, 12px);
+}
+
+.apply-button,
+.reset-button {
+  font-size: clamp(10px, 2vw, 12px);
+  padding: 0.25rem 0.5rem;
+}
 }
 

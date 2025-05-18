@@ -1,8 +1,9 @@
 import '../../styles/App.css';
-import Logo from '../../components/logo.js';
 import React, { useState } from 'react'; // Thêm useState
 import '../../styles/Gioithieu.css';
 import { FaAngleRight } from "react-icons/fa";
+import Header from '../../components/ui/parts/header.jsx';
+import Footer from '../../components/ui/parts/footer.jsx';
 
 function Gioithieu() {
   // State để lưu chỉ số của mục được chọn
@@ -458,10 +459,7 @@ function Gioithieu() {
 
   return (
     <div className="flex-box">
-      <header className="App-header">
-        <Logo />
-        <div className="header-buttons"></div>
-      </header>
+      <Header />
       <div className="dk-content">
         <div className="dk-content-box-left">
           <div className="clicking">
@@ -490,6 +488,7 @@ function Gioithieu() {
           <div className="texts">{contents[selectedIndex].text}</div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

@@ -1,0 +1,199 @@
+.featured-news-container {
+    width: 1175px;
+    margin: 2rem auto;
+    padding: 1rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .featured-news-title {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: clamp(20px, 3vw, 24px);
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  
+  .news-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .news-tab-button {
+    flex: 1;
+    padding: 0.5rem 1rem;
+    background-color: #f0f0f0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: clamp(14px, 2vw, 16px);
+    color: #333;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .news-tab-button:hover {
+    background-color: #e0e0e0;
+    cursor: pointer;
+  }
+  
+  .news-tab-button.active {
+    background-color: #990000;
+    color: white;
+  }
+  
+  .news-content {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .featured-article {
+    flex: 4;
+    padding: 1rem;
+    border-right: 1px solid #e0e0e0;
+  }
+
+  .feature-article:hover{
+    cursor: pointer;
+  }
+  
+  .article-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+  }
+  
+  .article-title {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: clamp(16px, 2vw, 18px);
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 0.5rem;
+  }
+  
+  .article-summary {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: clamp(12px, 2vw, 14px);
+    color: #666;
+    margin-bottom: 0.5rem;
+  }
+  
+  .article-date {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: clamp(12px, 2vw, 14px);
+    color: #999;
+  }
+  
+  .related-articles {
+    flex: 6;
+    padding: 1rem;
+  }
+  
+  .related-article-item {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .related-article-item:last-child {
+    border-bottom: none;
+  }
+
+  .related-article-item:hover {
+    color: #990000;
+  }
+  
+  .related-article-title {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: clamp(14px, 2vw, 16px);
+    color: #333;
+    margin-bottom: 0.25rem;
+    transition: color 0.3s ease;
+  }
+  
+  .related-article-date {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: clamp(12px, 2vw, 14px);
+    color: #999;
+  }
+  
+  .no-articles {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: clamp(14px, 2vw, 16px);
+    color: #666;
+    text-align: center;
+    padding: 1rem;
+  }
+  
+  @media (max-width: 430px) {
+    .featured-news-container {
+      margin: 1rem;
+      padding: 0.5rem;
+    }
+  
+    .featured-news-title {
+      font-size: clamp(16px, 3vw, 20px);
+    }
+  
+    .news-tabs {
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+  
+    .news-tab-button {
+      font-size: clamp(12px, 2vw, 14px);
+      padding: 0.4rem 0.8rem;
+    }
+  
+    .news-content {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  
+    .featured-article {
+      border-right: none;
+      border-bottom: 1px solid #e0e0e0;
+      padding: 0.5rem;
+    }
+    
+    .featured-article:hover{
+      color:#990000;
+    }
+    
+    .article-image {
+      height: 120px;
+    }
+  
+    .article-title {
+      font-size: clamp(14px, 2vw, 16px);
+    }
+  
+    .article-summary {
+      font-size: clamp(10px, 2vw, 12px);
+    }
+  
+    .article-date {
+      font-size: clamp(10px, 2vw, 12px);
+    }
+  
+    .related-articles {
+      padding: 0.5rem;
+    }
+  
+    .related-article-title {
+      font-size: clamp(12px, 2vw, 14px);
+    }
+  
+    .related-article-date {
+      font-size: clamp(10px, 2vw, 12px);
+    }
+  
+    .no-articles {
+      font-size: clamp(12px, 2vw, 14px);
+    }
+  }

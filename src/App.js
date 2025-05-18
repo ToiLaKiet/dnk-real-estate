@@ -1,53 +1,35 @@
-// src/app.js
 import './styles/App.css';
-import Logo from './components/logo.js';
-import Register from './pages/register/Dangky1.jsx';
-import Login from './pages/login/Dangnhap1.jsx';
+import Header from './components/ui/parts/header.jsx';
 import Gioithieu from './pages/terms/Gioithieu.jsx';
-import React, { useState } from 'react';
+import Footer from './components/ui/parts/footer.jsx';
+import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Modal from './components/ui/modal-reg-log.jsx';
 import Searchbar1 from './components/Searchbar1.js';
 import Searchbar2 from './components/Searchbar2.js';
 import Searchbar3 from './components/Searchbar3.js';
 import Searchbar4 from './components/Searchbar4.js';
-import SearchEngine from './components/ui/search-engine.jsx'; // Import SearchEngine
+import SearchEngine from './components/ui/search-engine.jsx';
+import FeaturedNews from './pages/featurednews/featurednews.jsx';
+import ArticlePage from './pages/featurednews/ArticlePage.jsx';
+import { AuthProvider } from '../src/components/ui/context/AuthContext.jsx';
+import PostsPage  from './pages/PostsPage.jsx'; // Import PostsPage component
+import NhaDatBan from './pages/nhadatban/nhadatban.jsx';
 
 function App() {
-  const [modalState, setModalState] = useState({
-    register: false,
-    login: false,
-  });
-
-  const openModal = (type) =>
-    setModalState((prev) => ({ ...prev, [type]: true }));
-  const closeModal = (type) =>
-    setModalState((prev) => ({ ...prev, [type]: false }));
-
+  const seUseCase = {
+    all:1,
+    nhadatban:0,
+    nhadatchothue:0,
+    duan:0,
+  }
   return (
+    <AuthProvider>
     <Routes>
       <Route
         path="/"
         element={
           <div className="flex-box">
-            <header className="App-header">
-              <Logo width={180} height={72} />
-              <div className="header-buttons">
-                <button
-                  className="register-login-button"
-                  onClick={() => openModal('login')}
-                >
-                  Đăng nhập
-                </button>
-                <button
-                  className="register-login-button"
-                  onClick={() => openModal('register')}
-                >
-                  Đăng ký
-                </button>
-              </div>
-            </header>
-
+            <Header/>
             <div className="content">
               <div className="App-banner">
                 <div className="Searchbar1">
@@ -62,24 +44,22 @@ function App() {
                 <div className="Searchbar3">
                   <Searchbar3 />
                 </div>
-                {/* Thêm SearchEngine vào đây */} 
-                  <SearchEngine />
+                <SearchEngine useCase={seUseCase}/>
               </div>
             </div>
-
-            <Modal isOpen={modalState.register} onClose={() => closeModal('register')}>
-              <Register />
-            </Modal>
-
-            <Modal isOpen={modalState.login} onClose={() => closeModal('login')}>
-              <Login />
-            </Modal>
+            <FeaturedNews /> 
+            <Footer />
           </div>
         }
       />
-      <Route path="/gioithieu" element={<Gioithieu />} />
-      <Route path="/home" element={<App />} />
+      {/*Route cho trang */}
+      <Route path="/article/:id" element={<ArticlePage />} /> {/*Route cho trang bài báo */}
+      <Route path="/gioithieu" element={<Gioithieu />} /> {/* Trang giới thiệu */}
+      <Route path="/home" element={<App/>} /> {/* Trang chính */}
+      <Route path="/postspage/:id" element={<PostsPage/>} /> {/* Trang chính */}
+      <Route path="/nha-dat-ban" element={<NhaDatBan />} /> {/* Trang nhà đất bán */}
     </Routes>
+    </AuthProvider>
   );
 }
 

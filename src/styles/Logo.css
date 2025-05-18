@@ -1,0 +1,31 @@
+.logo-link {
+    display: inline-block;
+    line-height: 0; /* Fix khoảng trống dưới ảnh */
+  }
+  
+  .logo-img {
+    width: var(--logo-width, 180px);
+    height: var(--logo-height, 72px);
+    object-fit: contain; /* Giữ tỷ lệ ảnh */
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  
+  .logo-img:hover {
+    opacity: 0.9;
+    transform: scale(1.05);
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .logo-img {
+      width: calc(var(--logo-width, 180px) * 0.8);
+      height: calc(var(--logo-height, 72px) * 0.8);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .logo-img {
+      width: calc(var(--logo-width, 180px) * 0.6);
+      height: calc(var(--logo-height, 72px) * 0.6);
+    }
+  }
