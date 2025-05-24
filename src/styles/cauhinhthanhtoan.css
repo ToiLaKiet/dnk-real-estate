@@ -1,0 +1,325 @@
+/* Common styles */
+.subscription-container {
+    padding: 24px;
+    background-color: white;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 800px;
+    font-family: Arial, sans-serif;
+  }
+  
+  
+  .section {
+    margin-bottom: 32px;
+  }
+  
+  .section h3 {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 16px;
+    color: #333;
+  }
+  
+  /* Plan cards */
+  .plan-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  
+  .plan-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .plan-card.selected {
+    border: 2px solid #2684FF;
+  }
+  
+  .plan-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+  }
+  
+  .plan-info {
+    text-align: center;
+    margin-bottom: 8px;
+  }
+  
+  .plan-name {
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+  
+  .plan-description {
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .plan-badge {
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 8px;
+  }
+  
+  .badge-multiplier {
+    font-weight: bold;
+  }
+  
+  .badge-text {
+    white-space: pre-line;
+  }
+  
+  .plan-price {
+    text-align: center;
+    font-weight: 500;
+    margin-top: 16px;
+  }
+  
+  /* Duration section */
+  .duration-section {
+    background-color: #f5f5f5;
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+  }
+  
+  .duration-header {
+    text-align: center;
+    margin-bottom: 12px;
+  }
+  
+  .duration-header p {
+    margin: 0;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .duration-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  
+  .duration-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .duration-days {
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+  
+  .duration-price {
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .duration-radio {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1px solid #ccc;
+  }
+  
+  .duration-radio.selected {
+    border: 4px solid #2684FF;
+  }
+  
+  /* Date section */
+  .date-section {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  
+  .date-field {
+    position: relative;
+  }
+  
+  .date-field label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #333;
+  }
+  
+
+  .time-selector {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+  }
+  
+  .input-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+  }
+  
+  .end-date {
+    font-size: 12px;
+    color: #666;
+    margin-top: 4px;
+  }
+  
+  /* Calendar */
+  .calendar {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    z-index: 10;
+    padding: 12px;
+    margin-top: 4px;
+  }
+  
+  .calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  
+  .calendar-header button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #666;
+  }
+  
+  .calendar-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    margin-bottom: 8px;
+  }
+  
+  .weekday {
+    text-align: center;
+    font-size: 12px;
+    font-weight: 500;
+    color: #666;
+  }
+  
+  .calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+  }
+  
+  .calendar-day {
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .calendar-day:hover:not(.empty) {
+    background-color: #f0f0f0;
+  }
+  
+  .calendar-day.selected {
+    background-color: #2684FF;
+    color: white;
+  }
+  
+  .calendar-day.empty {
+    cursor: default;
+  }
+  
+  /* Time dropdown */
+  .time-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    z-index: 10;
+    margin-top: 4px;
+  }
+  
+  .time-option {
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .time-option:hover {
+    background-color: #f5f5f5;
+  }
+  
+  /* Actions */
+  .actions {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .btn-back, .btn-next {
+    padding: 8px 24px;
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  
+  .btn-back {
+    border: 1px solid #ccc;
+    background-color: white;
+    color: #333;
+  }
+  
+  .btn-next {
+    background-color: #e0e0e0;
+    color: #666;
+    border: none;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .plan-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .date-section {
+      grid-template-columns: 1fr;
+    }
+  }

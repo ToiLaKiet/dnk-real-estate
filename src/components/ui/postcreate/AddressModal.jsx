@@ -19,18 +19,21 @@ const provinces = [
     "Hậu Giang", "Sóc Trăng", "Bạc Liêu", "Cà Mau"
   ];
   
-  const AddressModal = ({ isOpen, onClose, formData, setFormData }) => {
-    const [tempAddress, setTempAddress] = useState({
+  const AddressModal = ({ isOpen, onClose, onSubmit }) => {
+    const [tempAddress, setTempAddress] = useState(
+      {
       province: '',
       district: '',
       ward: '',
       street: '',
       project: '',
-      displayAddress: ''
+      displayAddress: '',
+      coordinates: { lat: 0, lng: 0 }
     });
     const [coordinates, setCoordinates] = useState(null);
     const [mapVisible, setMapVisible] = useState(false);
   
+    // Lấy toạ độ địa chỉ từ Google Maps API
     const fetchCoordinates = useCallback(async () => {
       const address = `${tempAddress.street}, ${tempAddress.ward}, ${tempAddress.district}, ${tempAddress.province}`;
       try {
@@ -45,8 +48,10 @@ const provinces = [
       } catch (error) {
         console.error('Error fetching coordinates:', error);
       }
-    }, [tempAddress.street, tempAddress.ward, tempAddress.district, tempAddress.province]);
+    }, [tempAddress.street, tempAddress.ward, tempAddress.district, tempAddress.province]); 
+
   
+    // Khi địa chỉ hiển thị được nhập, tự động lấy toạ độ
     useEffect(() => {
       if (tempAddress.displayAddress && !mapVisible) {
         fetchCoordinates();
@@ -59,10 +64,7 @@ const provinces = [
     };
   
     const handleConfirm = () => {
-      setFormData((prev) => ({
-        ...prev,
-        address: { ...tempAddress, coordinates: coordinates || { lat: 0, lng: 0 } }
-      }));
+      onSubmit({address : tempAddress});
       onClose();
     };
   

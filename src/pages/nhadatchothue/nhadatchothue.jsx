@@ -6,11 +6,11 @@ import Footer from "../../components/ui/parts/footer";
 import { postData } from "../postData.jsx";
 import "../../styles/NhaDatBan.css";
 
-const NhaDatBan = () => {
+const NhaDatChoThue = () => {
   const SeUseCase = {
     all: 0,
-    nhadatban: 1,
-    nhadatchothue: 0,
+    nhadatban: 0,
+    nhadatchothue: 1,
     duan: 0,
   };
 
@@ -33,7 +33,6 @@ const NhaDatBan = () => {
     "Thừa Thiên Huế", "Tiền Giang", "TP.HCM", "Trà Vinh", "Tuyên Quang", "Vĩnh Long",
     "Vĩnh Phúc", "Yên Bái"
   ];
-
   const priceRanges = [
     { label: "Dưới 500 triệu", min: 0, max: 500000000 },
     { label: "500 triệu - 1 tỷ", min: 500000000, max: 1000000000 },
@@ -41,7 +40,6 @@ const NhaDatBan = () => {
     { label: "3 tỷ - 10 tỷ", min: 3000000000, max: 10000000000 },
     { label: "Trên 10 tỷ", min: 10000000000, max: Infinity },
   ];
-
   const areaRanges = [
     { label: "Dưới 30 m²", min: 0, max: 30 },
     { label: "30-100 m²", min: 30, max: 100 },
@@ -49,12 +47,11 @@ const NhaDatBan = () => {
     { label: "200-500 m²", min: 200, max: 500 },
     { label: "Trên 500 m²", min: 500, max: Infinity },
   ];
-
   const fetchPosts = useCallback(() => {
     setLoading(true);
     //Backend
     // const fetchPostsFromBackend = async () => {
-    //   const response = await fetch("https://api.example.com/posts/sale");
+    //   const response = await fetch("https://api.example.com/posts/rent");
     //   const data = await response.json();
     //   setPosts(data);
     // };
@@ -111,7 +108,6 @@ const NhaDatBan = () => {
     const firstImage = media.find(item => item.type === "image");
     return firstImage?.url || "https://i.pravatar.cc/150?u=1";
   };
-
   return (
     <div className="page-container">
       <Header />
@@ -206,4 +202,4 @@ const NhaDatBan = () => {
   );
 };
 
-export default NhaDatBan;
+export default NhaDatChoThue;

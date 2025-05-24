@@ -1,37 +1,109 @@
 .addressModal {
-    padding: 20px;
-  }
-  .formGroup label {
-    display: block;
-    margin-bottom: 10px;
-  }
-  .formGroup input,
-  .formGroup select {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  .buttons {
-    margin-top: 20px;
-    display: flex;
-    gap: 10px;
-  }
-  .confirmButton {
-    background-color: #4caf50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  .backButton {
-    background-color: #ccc;
-    color: black;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
+  padding: 10px;
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: auto;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.addressModal h2 {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  color: #1f2937;
+  margin-bottom: 24px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.formGroup label {
+  display: block;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: #374151;
+  padding: 5px;
+}
+
+.formGroup input,
+.formGroup select {
+  width: 100%;
+  padding: 10px 12px;
+  margin-top: 4px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  color: #1f2937;
+  background-color: #ffffff;
+  transition: all 0.2s ease-in-out;
+}
+
+.formGroup select {
+  padding: 10px 32px 10px 12px;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none' stroke='%23005f73' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='1 4 6 9 11 4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+
+.formGroup input:hover,
+.formGroup select:hover {
+  border-color: #9ca3af;
+  background-color: #f9fafb;
+}
+
+.formGroup input:focus,
+.formGroup select:focus {
+  outline: none;
+  border-color: #005f73;
+  box-shadow: 0 0 0 3px rgba(0, 95, 115, 0.2);
+}
+
+.buttons {
+  margin-top: 20px;
+  display: flex;
+  gap: 12px;
+}
+
+.confirmButton {
+  background-color: #005f73;
+  color: #ffffff;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.confirmButton:hover {
+  background-color: #014f5f;
+}
+
+.backButton {
+  background-color: #e5e7eb;
+  color: #374151;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  transition: all 0.2s ease-in-out;
+}
+
+.backButton:hover {
+  background-color: #d1d5db;
+}

@@ -144,11 +144,6 @@ function Footer({
           </a>
         </div>
         
-        <div className="certifications">
-          <img src="/images/logo-dang-ky.png" alt="Đăng ký Bộ Công Thương" />
-          <img src="/images/logo-bao-mat.png" alt="Bảo mật thông tin" />
-        </div>
-        
         <div className="nav-links">
           <Link to="/gioithieu">Giới thiệu</Link>
           <Link to="/gioithieu">Điều khoản</Link>

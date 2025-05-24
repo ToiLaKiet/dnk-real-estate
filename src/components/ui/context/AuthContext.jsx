@@ -48,7 +48,6 @@ export const AuthProvider = ({ children }) => {
       // localStorage.setItem('token', res.data.token);
       // localStorage.setItem('user', JSON.stringify(res.data.user));
       // setUser(res.data.user);
-      
       // Mock data
       const mockUser = {
         id: '123',

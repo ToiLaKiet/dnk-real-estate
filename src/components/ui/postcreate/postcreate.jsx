@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import AddressModal from './AddressModal';
+import ImageUploadModal from './ImageUploadModal';
+import SubscriptionModalContent from './cauhinhthanhtoan';
+import SuccessModal from './SuccessModal';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import styles from '../../../styles/postcreate.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -23,8 +26,9 @@ import {
   faFileAlt
 } from '@fortawesome/free-solid-svg-icons';
 
-
+// Component chính để tạo bài đăng bất động sản
 const PostCreate = ({ onClose }) => {
+  // Khởi tạo state formData với cấu trúc đầy đủ
   const [formData, setFormData] = useState({
     type: '',
     address: {
@@ -49,11 +53,33 @@ const PostCreate = ({ onClose }) => {
     title: '',
     description: '',
     user: { email: '', phone: '' },
-    createdAt: ''
+    createdAt: '',
+    media: {
+      images: [],
+      videoUrl: ''
+    },
+    ad_payment: {
+      type: '',
+      startDate: '',
+      endDate: '',
+      price: '',
+      publishTime: ''
+    }
   });
-  const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
 
-  // Reset formData when Modal closes
+  // State để quản lý trạng thái mở/đóng của các modal và bước hiện tại
+  // Modal để chọn địa chỉ
+  const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
+  // Modal để upload hình ảnh
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+  // Modal để chọn gói đăng tin
+  const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] = useState(false);
+  // Modal để hiển thị thông báo thành công
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  // Bước hiện tại trong quá trình tạo bài đăng
+  const [currentStep, setCurrentStep] = useState(1);
+
+  // Đặt lại formData khi component unmount hoặc modal đóng
   useEffect(() => {
     return () => {
       setFormData({
@@ -80,14 +106,27 @@ const PostCreate = ({ onClose }) => {
         title: '',
         description: '',
         user: { email: '', phone: '' },
-        createdAt: ''
+        createdAt: '',
+        media: {
+          images: [],
+          videoUrl: ''
+        },
+        ad_payment: {
+          type: '',
+          startDate: '',
+          endDate: '',
+          price: '',
+          publishTime: ''
+        }
       });
     };
   }, [onClose]);
 
+  // Xử lý thay đổi dữ liệu từ các input
   const handleChange = (e) => {
+    // Lấy tên và giá trị của trường input
     const { name, value } = e.target;
-    if (name.includes('contact.')) {
+    if (name.includes('contact.')) { // Kiểm tra nếu trường là contact
       const field = name.split('.')[1];
       setFormData((prev) => ({
         ...prev,
@@ -98,19 +137,105 @@ const PostCreate = ({ onClose }) => {
     }
   };
 
+  // Xử lý thay đổi loại bài đăng (bán/cho thuê)
   const handleTypeChange = (type) => {
-    setFormData((prev) => ({ ...prev, type }));
+    // Kiểm tra nếu loại bài đăng đã được chọn
+    setFormData((prev) => ({ ...prev, type: type }));
   };
 
+  // Hàm xử lý submit form để mở modal upload hình ảnh
   const handleSubmit = (e) => {
+    // Ngăn chặn hành vi mặc định của form
     e.preventDefault();
-    console.log('Form Data:', formData);
-    // TODO: Proceed to step 2
+    setCurrentStep(2);
+    // Nếu đã nhập địa chỉ thì mở modal upload hình ảnh
+    setIsImageModalOpen(true);
+  };
+
+  // Hàm xử lý dữ liệu từ các modal
+  const handleDataSubmit = (newData, options = {}) => {
+    // Kiểm tra dữ liệu nhận được từ modal
+    if (!newData || typeof newData !== 'object') {
+      console.error("Dữ liệu không hợp lệ:", newData);
+      return;
+    }
+
+
+    // Cập nhật formData với dữ liệu mới
+    setFormData((prev) => {
+      const updatedData = { ...prev };
+      // Xử lý từng key trong newData
+      // Ghi đè hoặc hợp nhất dữ liệu vào formData
+      console.log("newData",newData);
+
+      Object.keys(newData).forEach((key) => {
+        // Nếu key là 'media', ghi đè dữ liệu media
+        if (key === 'media') {
+          // Ghi đè media
+          updatedData.media = {
+            images: newData.media?.images || prev.media.images,
+            videoUrl: newData.media?.videoUrl || prev.media.videoUrl
+          };
+        } else if (key === 'ad_payment') {
+          // Hợp nhất ad_payment
+          updatedData.ad_payment = {
+            ...prev.ad_payment,
+            ...newData.ad_payment
+          };
+          setIsSuccessModalOpen(true);
+        // Ghi log formData khi hoàn tất SubscriptionModalContent
+        console.log("✅ Form data sau khi hoàn tất SubscriptionModalContent:", formData);
+        // TODO: Gửi formData về backend
+        // fetch('/api/properties', {
+        //   method: 'POST',
+        //   headers: { 'Content-Type': 'application/json' },
+        //   body: JSON.stringify(formData)
+        // })
+        // .then(response => response.json())
+        // .then(data => console.log('Thành công:', data))
+        // .catch(error => console.error('Lỗi:', error));
+        } else if (key === 'address' || key === 'contact' || key === 'user') {
+          // Hợp nhất các object lồng nhau
+          updatedData[key] = { ...prev[key], ...newData[key] };
+        } else {
+          // Ghi đè các trường đơn giản
+          updatedData[key] = newData[key];
+        }
+      });
+
+      // Log formData sau khi cập nhật để kiểm tra
+      console.log("formData sau khi cập nhật:", updatedData);
+
+      return updatedData;
+    });
+
+    // Xử lý logic đóng/mở modal và chuyển bước
+    if (options.closeImageModal) {
+      setIsImageModalOpen(false);
+    }
+    if (options.openSubscriptionModal) {
+      setIsSubscriptionModalOpen(true);
+    }
+    if (options.nextStep) {
+      setCurrentStep(options.nextStep);
+    }
+  };
+
+  // Xử lý đóng SuccessModal
+  const handleCloseSuccessModal = () => {
+    setIsSuccessModalOpen(false);
+    onClose(); // Đóng toàn bộ PostCreate khi nhấn "Quản lý tin đăng"
+  };
+
+  // Xử lý đăng tiếp
+  const handleContinuePosting = () => {
+    setIsSuccessModalOpen(false);
+    setCurrentStep(1); // Quay lại bước 1
   };
 
   return (
     <div className={styles.postCreate}>
-      <h2>Đăng tin bất động sản - Bước 1</h2>
+      <h2>Đăng tin bất động sản - Bước {currentStep}</h2>
       <form onSubmit={handleSubmit}>
         {/* Box 1: Loại bài đăng */}
         <div className={styles.box}>
@@ -351,7 +476,7 @@ const PostCreate = ({ onClose }) => {
           </label>
         </div>
 
-        {/* Box 6: Tiêu đề */}
+        {/* Box 6: Tiêu đề và mô tả */}
         <div className={styles.box}>
           <h3>Tiêu đề và mô tả</h3>
           <label className={styles.formLabel}>
@@ -384,11 +509,28 @@ const PostCreate = ({ onClose }) => {
         </button>
       </form>
 
+      {/* Các modal */}
       <AddressModal
         isOpen={isAddressModalOpen}
         onClose={() => setIsAddressModalOpen(false)}
+        onSubmit={(data) => handleDataSubmit(data, { nextStep: 2 })}
         formData={formData}
-        setFormData={setFormData}
+      />
+      <ImageUploadModal
+        isOpen={isImageModalOpen}
+        onClose={() => setIsImageModalOpen(false)}
+        onSubmit={(data) => handleDataSubmit(data, { closeImageModal: true, openSubscriptionModal: true, nextStep: 3 })}
+      />
+      <SubscriptionModalContent
+        isOpen={isSubscriptionModalOpen}
+        onClose={() => setIsSubscriptionModalOpen(false)}
+        onSubmit={(data) => handleDataSubmit(data, { nextStep: 4, closeSubcriptionModal: false })}
+      />
+      <SuccessModal
+        isOpen={isSuccessModalOpen}
+        onClose={handleCloseSuccessModal}
+        onContinue={handleContinuePosting}
+        formData={formData}
       />
     </div>
   );

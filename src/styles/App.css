@@ -15,6 +15,32 @@
   animation: slide-in 0.5s ease-in;
 }
 
+.modal-overlay-create{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  animation: slide-in 0.25s ease-in;
+}
+
+.modal-content-create{
+  display: flex;
+  position: relative;
+  width: 1000px;
+  height: auto-;
+  max-width: auto;
+  border-radius: 5px;
+  background-color: white;
+  flex-direction: column;
+  animation: slide-in 0.5s ease-in;
+}
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -146,7 +172,7 @@
   }
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 768px) {
   .App-banner {
     height: 600px; /* Tăng chiều cao để chứa các search bar */
   }

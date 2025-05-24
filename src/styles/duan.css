@@ -1,0 +1,212 @@
+.duan-page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  align-items: center;
+  animation: slide-in 0.5s ease-in;
+}
+
+.duan-content {
+  width: 90%;
+  display: flex;
+  justify-content: center;
+  padding: 30px 0;
+  flex-grow: 1;
+  flex-direction: column; /* Thay từ row sang column */
+  align-items: center; /* Thêm để căn giữa theo chiều ngang */
+  animation: slide-in 0.5s ease-in;
+}
+
+.duan-search-engine-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0.5rem 0; /* Thay thế cho padding và position phức tạp */
+}
+
+.duan-search-engine {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+  min-height: 150px;
+  border-radius: 10px; /* Làm tròn cả 4 góc */
+  background: white;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* Thêm shadow cho đẹp */
+  padding: 10px;
+  box-sizing: border-box;
+  gap:1px;
+}
+
+/* Project List */
+.project-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+  gap: 2rem;
+  width: auto;
+  margin: 3rem 0;
+}
+
+.project-card {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  display: flex;
+  width: auto;
+  flex-direction: row;
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.project-media {
+  height: 200px;
+  overflow: hidden;
+}
+
+.project-media img,
+.project-media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.project-card:hover .project-media img,
+.project-card:hover .project-media video {
+  transform: scale(1.05);
+}
+
+.project-info {
+  padding: 1.2rem;
+  flex-grow: 1;
+}
+
+.project-info h3 {
+  margin: 0 0 0.5rem;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+.project-info p {
+  margin: 0;
+  color: #666;
+  font-size: 0.9rem;
+  display: -webkit-box;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.pagination button {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ddd;
+  background: white;
+  cursor: pointer;
+  border-radius: 4px;
+  min-width: 40px;
+  transition: all 0.2s ease;
+}
+
+.pagination button:hover:not(.active) {
+  background: #f5f5f5;
+}
+
+.pagination button.active {
+  background: var(--primary-color, #2a52be);
+  color: white;
+  border-color: var(--primary-color, #2a52be);
+}
+
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+
+/* Thêm vào file CSS */
+.filter-dropdowns {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 0;
+  grid-auto-flow: row;
+  margin-top: 1rem;
+  width: 100%;
+  gap:5px;
+  position: relative;
+}
+
+.duan-filter-dropdown {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  background: white;
+  cursor: pointer;
+  padding-left:10px;
+  padding-right:10px;
+  transition: border-color 0.2s ease;
+}
+
+.duan-filter-dropdown:focus {
+  outline: none;
+  border-color: var(--primary-color, #2a52be);
+}
+
+.project-address {
+  color: #888;
+  font-size: 0.85rem;
+  margin: 0.3rem 0;
+}
+
+.project-details {
+  color: #555;
+  font-weight: 500;
+  font-size: 0.9rem;
+  margin: 0.5rem 0;
+}
+
+.project-description {
+  color: #666;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.loading {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+  .filter-dropdowns {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .filter-dropdowns {
+    grid-template-columns: 1fr;
+  }
+}

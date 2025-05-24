@@ -1,6 +1,7 @@
 import React, { useState, useRef, useContext, useEffect } from 'react';
 import Logo from '../../logo.js';
 import { Link, useNavigate } from 'react-router-dom';
+import Modal1 from '../modalpostcreate.jsx';
 import Modal from '../modal-reg-log.jsx';
 import Register from '../../../pages/register/Dangky1.jsx';
 import Login from '../../../pages/login/Dangnhap1.jsx';
@@ -161,9 +162,9 @@ function Header({ logoWidth = 180, logoHeight = 72 }) {
       )}
       
       {modalState.post && (
-        <Modal isOpen={modalState.post} onClose={() => closeModal('post')}>
+        <Modal1 isOpen={modalState.post} onClose={() => closeModal('post')}>
           <PostCreate onClose={() => closeModal('post')} />
-        </Modal>
+        </Modal1>
       )}
     </header>
   );

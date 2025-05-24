@@ -1,0 +1,113 @@
+.successModal {
+  text-align: center;
+  padding: 20px;
+
+  width:100%;
+  margin: 0 auto;
+  height:100%;
+}
+
+.successModal h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.checkIcon {
+  margin: 20px 0;
+}
+
+.mainMessage {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.subMessage {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.details {
+  background: #e0f7fa;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.detailItem {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.detailItem span:first-child {
+  color: #333;
+}
+
+.detailItem span:last-child {
+  font-weight: bold;
+}
+
+.upgradeSection {
+  margin-bottom: 20px;
+}
+
+.upgradeSection p {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.upgradeOptions {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.upgradeOption {
+  background: #f0f0f0;
+  padding: 10px;
+  border-radius: 8px;
+  width: 100px;
+  text-align: center;
+}
+
+.upgradeIcon {
+  margin-bottom: 5px;
+}
+
+.upgradePrice {
+  font-weight: bold;
+  color: #d32f2f;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.continueButton {
+  background: #ccc;
+  color: #333;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.manageButton {
+  background: #d32f2f;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.manageButton:hover {
+  background: #b71c1c;
+}
+

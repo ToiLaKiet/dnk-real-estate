@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -9,6 +9,9 @@ import GoogleMapComponent from '../components/ui/googlemap.jsx';
 import styles from '../styles/PostsPage.module.css';
 import { FaHeart } from 'react-icons/fa';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { AuthContext } from '../components/ui/context/AuthContext.jsx';
+import Login from './login/Dangnhap1.jsx';
+
 import {
   faHome,
   faTag,
@@ -31,6 +34,7 @@ import {
   faCalendarAlt,
 } from '@fortawesome/free-solid-svg-icons';
 
+
 // Tạm thời dùng mock data, sẽ thay bằng API call sau
 let postData = require('./postData.jsx').postData;
 
@@ -40,7 +44,9 @@ function PostPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isFavorite, setIsFavorite] = useState(false);
-
+  const { isAuthenticated, user } = useContext(AuthContext);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  
   useEffect(() => {
     const loadPost = () => {
       try {
@@ -58,6 +64,7 @@ function PostPage() {
           throw new Error(`ID tin đăng phải là số nguyên dương, nhận được: "${id}"`);
         }
 
+        // Tạm thời dùng mock data, sẽ thay bằng API call sau
         // TODO: Thay bằng API call, ví dụ:
         // import axios from 'axios';
         // const response = await axios.get(`/api/posts/${postId}`);
@@ -92,11 +99,24 @@ function PostPage() {
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: true,
-    autoplay: false,
+    autoplay: true,
   };
 
   const handleFavorite = () => {
     setIsFavorite(!isFavorite);
+    //backend Send this post to favorite list of the current user
+    if(isAuthenticated && user) {
+      // Call API to add/remove favorite
+      console.log(`User ${user.id} ${isFavorite ? 'removed' : 'added'} post ${post.id} to favorites`);
+      //API call to add/remove favorite
+    }
+    else{
+      console.log('User not authenticated, show login modal');
+      // Show login modal
+      // openModal('login');
+    }
+
+
   };
 
   const renderMedia = () => {
@@ -125,9 +145,6 @@ function PostPage() {
 
     return (
       <div>
-        <p className={styles.mediaCount}>
-          {imageCount} hình ảnh, {videoCount} video
-        </p>
         <Slider {...sliderSettings}>
           {validMedia.map((item, index) => (
             <div key={item.url || `media-${index}`} className={styles.mediaItem}>
@@ -156,6 +173,10 @@ function PostPage() {
             </div>
           ))}
         </Slider>
+        <br></br>
+        <p className={styles.mediaCount}>
+          {imageCount} hình ảnh, {videoCount} video
+        </p>
       </div>
     );
   };

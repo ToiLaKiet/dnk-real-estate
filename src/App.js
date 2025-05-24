@@ -14,6 +14,8 @@ import ArticlePage from './pages/featurednews/ArticlePage.jsx';
 import { AuthProvider } from '../src/components/ui/context/AuthContext.jsx';
 import PostsPage  from './pages/PostsPage.jsx'; // Import PostsPage component
 import NhaDatBan from './pages/nhadatban/nhadatban.jsx';
+import NhaDatChoThue from './pages/nhadatchothue/nhadatchothue.jsx';
+import DuAn from './pages/duan/duan.jsx';
 
 function App() {
   const seUseCase = {
@@ -58,9 +60,12 @@ function App() {
       <Route path="/home" element={<App/>} /> {/* Trang chính */}
       <Route path="/postspage/:id" element={<PostsPage/>} /> {/* Trang chính */}
       <Route path="/nha-dat-ban" element={<NhaDatBan />} /> {/* Trang nhà đất bán */}
+      <Route path="/du-an" element={<DuAn />} /> {/* Trang dự án */}
+      <Route path="/nha-dat-cho-thue" element={<NhaDatChoThue />} /> {/* Trang dự án */}
     </Routes>
     </AuthProvider>
   );
 }
 
 export default App;
+
