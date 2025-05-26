@@ -309,7 +309,7 @@
 .search-tab-button {
   padding: 0.25rem 0.5rem;
   font-size: clamp(10px, 2vw, 12px);
-  max-width: 100%;
+  max-width: 95%;
 }
 
 .search-input {

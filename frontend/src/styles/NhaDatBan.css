@@ -4,6 +4,7 @@
   min-height: 100vh;
   background-color: #f5f5f5;
   align-items: center;
+  gap:20px;
   animation : slide-in 0.5s ease-in;
 }
 
@@ -16,7 +17,6 @@
   padding: 30px 20px;
   display: flex;
   justify-content: center;
-
 }
 
 .search-engine-inner-wrapper {
@@ -25,67 +25,62 @@
   position: relative;
 }
 
+.nhadatban-search-engine-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0.5rem 0; /* Thay thế cho padding và position phức tạp */
+}
+.nhadatban-search-engine {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+  min-height: 150px;
+  border-radius: 10px; /* Làm tròn cả 4 góc */
+  background: white;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* Thêm shadow cho đẹp */
+  padding: 10px;
+  box-sizing: border-box;
+  gap:1px;
+}
+.ndb-filter-dropdowns{
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 0;
+  grid-auto-flow: row;
+  margin-top: 1rem;
+  width: 100%;
+  gap:5px;
+  position: relative;
+}
+.ndb-filter-dropdown{
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  background: white;
+  cursor: pointer;
+  padding-left:10px;
+  padding-right:10px;
+  transition: border-color 0.2s ease;
+}
+
 /* Posts Section */
 .posts-wrapper {
   width: 100%;
   display: flex;
   justify-content: center;
   padding: 30px 0;
+  padding-bottom: 30px;
   flex-grow: 1;
   flex-direction: row;
 }
 
-.posts-filter{
-  position: sticky;
-  top: 20px;
-  right:250px;
-  width: 200px;
-  display:flex;
-  flex-direction: column;
-}
 
-.filter-section {
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
-  border:rgba(194, 67, 67, 0.60) 2px solid;
-  border-radius: 8px;
-  padding: 0rem 1rem 1rem 1rem;
-  width: 100%;
-  max-width: 1200px;
-  margin-bottom: 20px;
-}
-
-.province-select{
-  font-family: 'Be Vietnam Pro';
-  border-radius: 4.5px;
-}
-.province-select:hover{
-  background-color: #f0f0f0;
-  cursor: pointer;
-}
-.filter-option{
-  font-family: 'Be Vietnam Pro';
-  font-size: 14px;
-}
-.filter-option:hover{
-  background-color: #f0f0f0;
-  cursor: pointer;
-}
-
-.checkbox:hover{
-  cursor: pointer;
-}
-.filter-name{
-  flex:9;
-  font-size: 15px;
-  flex:20;
-  align-items: center;
-  font-family: 'Be Vietnam Pro';
-  color: #000;
-}
 
 .posts-list {
   width: 100%;
@@ -95,6 +90,8 @@
   align-items: center;
   gap: 20px;
   padding: 0 20px;
+  padding-bottom: 30px;
+  padding-top: 10px;
 }
 
 .post-item {
@@ -219,5 +216,16 @@
     width: auto;
     display:flex;
     flex-direction: column;
+  }
+}
+@media (max-width: 768px) {
+  .ndb-filter-dropdowns {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .ndb-filter-dropdowns {
+    grid-template-columns: 1fr;
   }
 }

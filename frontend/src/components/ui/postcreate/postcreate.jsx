@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AddressModal from './AddressModal';
 import ImageUploadModal from './ImageUploadModal';
-import SubscriptionModalContent from './cauhinhthanhtoan';
 import SuccessModal from './SuccessModal';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import styles from '../../../styles/postcreate.module.css';
@@ -28,6 +27,7 @@ import {
 
 // Component chính để tạo bài đăng bất động sản
 const PostCreate = ({ onClose }) => {
+  // State để quản lý trạng thái của các modal và dữ liệu form
   // Khởi tạo state formData với cấu trúc đầy đủ
   const [formData, setFormData] = useState({
     type: '',
@@ -52,7 +52,6 @@ const PostCreate = ({ onClose }) => {
     contact: { name: '', email: '', phone: '' },
     title: '',
     description: '',
-    user: { email: '', phone: '' },
     createdAt: '',
     media: {
       images: [],
@@ -73,7 +72,7 @@ const PostCreate = ({ onClose }) => {
   // Modal để upload hình ảnh
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   // Modal để chọn gói đăng tin
-  const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] = useState(false);
+
   // Modal để hiển thị thông báo thành công
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   // Bước hiện tại trong quá trình tạo bài đăng
@@ -105,19 +104,11 @@ const PostCreate = ({ onClose }) => {
         contact: { name: '', email: '', phone: '' },
         title: '',
         description: '',
-        user: { email: '', phone: '' },
         createdAt: '',
         media: {
           images: [],
           videoUrl: ''
         },
-        ad_payment: {
-          type: '',
-          startDate: '',
-          endDate: '',
-          price: '',
-          publishTime: ''
-        }
       });
     };
   }, [onClose]);
@@ -152,72 +143,80 @@ const PostCreate = ({ onClose }) => {
     setIsImageModalOpen(true);
   };
 
-  // Hàm xử lý dữ liệu từ các modal
   const handleDataSubmit = (newData, options = {}) => {
-    // Kiểm tra dữ liệu nhận được từ modal
-    if (!newData || typeof newData !== 'object') {
-      console.error("Dữ liệu không hợp lệ:", newData);
-      return;
-    }
-
-
-    // Cập nhật formData với dữ liệu mới
-    setFormData((prev) => {
-      const updatedData = { ...prev };
-      // Xử lý từng key trong newData
-      // Ghi đè hoặc hợp nhất dữ liệu vào formData
-      console.log("newData",newData);
-
-      Object.keys(newData).forEach((key) => {
-        // Nếu key là 'media', ghi đè dữ liệu media
-        if (key === 'media') {
-          // Ghi đè media
-          updatedData.media = {
-            images: newData.media?.images || prev.media.images,
-            videoUrl: newData.media?.videoUrl || prev.media.videoUrl
-          };
-        } else if (key === 'ad_payment') {
-          // Hợp nhất ad_payment
-          updatedData.ad_payment = {
-            ...prev.ad_payment,
-            ...newData.ad_payment
-          };
+    try {
+      // Kiểm tra dữ liệu đầu vào
+      if (!newData || typeof newData !== 'object' || newData === null || Object.keys(newData).length === 0) {
+        console.error("Dữ liệu không hợp lệ hoặc rỗng:", newData);
+        return;
+      }
+  
+      // Cập nhật formData
+      setFormData((prev) => {
+        const updatedData = { ...prev };
+        console.log("Dữ liệu đầu vào:", newData);
+  
+        // Danh sách các key hợp lệ
+        const validKeys = options.validKeys || ['media', 'address', 'contact', 'user'];
+        Object.keys(newData).forEach((key) => {
+          if (!validKeys.includes(key)) {
+            console.warn(`Key không hợp lệ: ${key}`);
+            return;
+          }
+  
+          if (key === 'media') {
+            if (newData.media && typeof newData.media === 'object' && !Array.isArray(newData.media)) {
+              updatedData['media'] = {
+                images: newData.media.images || (prev.media?.images || []),
+                videoUrl: newData.media.videoUrl || (prev.media?.videoUrl || '')
+              };
+            } else {
+              console.warn("Dữ liệu media không hợp lệ:", newData.media);
+            }
+          } else if (['address', 'contact', 'user'].includes(key)) {
+            if (newData[key] && typeof newData[key] === 'object' && !Array.isArray(newData[key])) {
+              updatedData[key] = {
+                ...(updatedData[key] || {}),
+                ...newData[key]
+              };
+            } else {
+              updatedData[key] = newData[key];
+            }
+          } else {
+            updatedData[key] = newData[key];
+          }
+        });
+  
+        console.log("formData sau khi cập nhật:", updatedData);
+  
+        // Xử lý logic đóng/mở modal và chuyển bước
+        if (options.closeImageModal === true && isImageModalOpen) {
+          setIsImageModalOpen(false);
+          const now = new Date();
+          updatedData.createdAt = now.toISOString();
+          console.log("✅ Form data sau khi hoàn tất ImageUploadModal:", updatedData);
+          // Gửi formData về backend (nếu cần)
+          // fetch('/api/properties', {
+          //   method: 'POST',
+          //   headers: { 'Content-Type': 'application/json' },
+          //   body: JSON.stringify(updatedData)
+          // })
+          //   .then(response => response.json())
+          //   .then(data => console.log('Thành công:', data))
+          //   .catch(error => console.error('Lỗi:', error));
           setIsSuccessModalOpen(true);
-        // Ghi log formData khi hoàn tất SubscriptionModalContent
-        console.log("✅ Form data sau khi hoàn tất SubscriptionModalContent:", formData);
-        // TODO: Gửi formData về backend
-        // fetch('/api/properties', {
-        //   method: 'POST',
-        //   headers: { 'Content-Type': 'application/json' },
-        //   body: JSON.stringify(formData)
-        // })
-        // .then(response => response.json())
-        // .then(data => console.log('Thành công:', data))
-        // .catch(error => console.error('Lỗi:', error));
-        } else if (key === 'address' || key === 'contact' || key === 'user') {
-          // Hợp nhất các object lồng nhau
-          updatedData[key] = { ...prev[key], ...newData[key] };
-        } else {
-          // Ghi đè các trường đơn giản
-          updatedData[key] = newData[key];
         }
+  
+        if (typeof options.nextStep === 'number' && options.nextStep >= 0) {
+          setCurrentStep(options.nextStep);
+        } else if (options.nextStep !== undefined) {
+          console.warn("Giá trị nextStep không hợp lệ:", options.nextStep);
+        }
+  
+        return updatedData;
       });
-
-      // Log formData sau khi cập nhật để kiểm tra
-      console.log("formData sau khi cập nhật:", updatedData);
-
-      return updatedData;
-    });
-
-    // Xử lý logic đóng/mở modal và chuyển bước
-    if (options.closeImageModal) {
-      setIsImageModalOpen(false);
-    }
-    if (options.openSubscriptionModal) {
-      setIsSubscriptionModalOpen(true);
-    }
-    if (options.nextStep) {
-      setCurrentStep(options.nextStep);
+    } catch (error) {
+      console.error("Lỗi trong handleDataSubmit:", error);
     }
   };
 
@@ -519,12 +518,8 @@ const PostCreate = ({ onClose }) => {
       <ImageUploadModal
         isOpen={isImageModalOpen}
         onClose={() => setIsImageModalOpen(false)}
-        onSubmit={(data) => handleDataSubmit(data, { closeImageModal: true, openSubscriptionModal: true, nextStep: 3 })}
-      />
-      <SubscriptionModalContent
-        isOpen={isSubscriptionModalOpen}
-        onClose={() => setIsSubscriptionModalOpen(false)}
-        onSubmit={(data) => handleDataSubmit(data, { nextStep: 4, closeSubcriptionModal: false })}
+        onSubmit={(data) => handleDataSubmit(data, { closeImageModal: true, nextStep: 3 })}
+        formData={formData}
       />
       <SuccessModal
         isOpen={isSuccessModalOpen}

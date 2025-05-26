@@ -62,7 +62,6 @@ const ImageUploadModal = ({ isOpen, onClose, onSubmit }) => {
     // Gọi onSubmit với dữ liệu
     onSubmit({media : mediaData});
   };
-
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className={styles.imageUploadModal}>

@@ -6,8 +6,6 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Searchbar1 from './components/Searchbar1.js';
 import Searchbar2 from './components/Searchbar2.js';
-import Searchbar3 from './components/Searchbar3.js';
-import Searchbar4 from './components/Searchbar4.js';
 import SearchEngine from './components/ui/search-engine.jsx';
 import FeaturedNews from './pages/featurednews/featurednews.jsx';
 import ArticlePage from './pages/featurednews/ArticlePage.jsx';
@@ -16,7 +14,8 @@ import PostsPage  from './pages/PostsPage.jsx'; // Import PostsPage component
 import NhaDatBan from './pages/nhadatban/nhadatban.jsx';
 import NhaDatChoThue from './pages/nhadatchothue/nhadatchothue.jsx';
 import DuAn from './pages/duan/duan.jsx';
-
+import SearchBar3 from './assets/SearchBar-3.png'; // Import SearchBar3 image
+import SearchBar4 from './assets/SearchBar-4.png'; // Import SearchBar3 image
 function App() {
   const seUseCase = {
     all:1,
@@ -41,10 +40,18 @@ function App() {
                   <Searchbar2 />
                 </div>
                 <div className="Searchbar4">
-                  <Searchbar4 />
+                <img
+                  src={SearchBar4}
+                  alt={'Searchbar4'}
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
                 </div>
                 <div className="Searchbar3">
-                  <Searchbar3 />
+                  <img
+                    src={SearchBar3}
+                    alt={'SearchBar3'}
+                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  />
                 </div>
                 <SearchEngine useCase={seUseCase}/>
               </div>

@@ -44,10 +44,11 @@
 
 /* Project List */
 .project-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+  display: flex;
+  /* grid-template-columns: repeat(auto-fill, minmax(500px, 1fr)); */
+  flex-direction: column ;
   gap: 2rem;
-  width: auto;
+  width: 100%;
   margin: 3rem 0;
 }
 
@@ -58,7 +59,7 @@
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   display: flex;
-  width: auto;
+  width: 100%;
   flex-direction: row;
 }
 
@@ -147,7 +148,7 @@
 /* Thêm vào file CSS */
 .filter-dropdowns {
   display: grid;
-  grid-template-columns: repeat(4,1fr);
+  grid-template-columns: repeat(3,1fr);
   gap: 0;
   grid-auto-flow: row;
   margin-top: 1rem;

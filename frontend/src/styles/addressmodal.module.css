@@ -6,6 +6,8 @@
   width: 100%;
   max-width: auto;
   font-family: 'Be Vietnam Pro', sans-serif;
+  overflow-x:auto;
+  overflow-y:auto
 }
 
 .addressModal h2 {
