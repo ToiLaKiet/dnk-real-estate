@@ -99,7 +99,7 @@ function Header({ logoWidth = 180, logoHeight = 72 }) {
             </Link>
             <button
               className={styles.postButton}
-              onClick={() => openModal('post')}
+              onClick={() => navigate('/post-create')}
             >
               <FontAwesomeIcon icon={faPlus} className={styles.postButtonIcon} />
               <span className={styles.postButtonText}>Đăng tin</span>

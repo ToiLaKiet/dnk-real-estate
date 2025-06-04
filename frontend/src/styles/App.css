@@ -39,9 +39,10 @@
   background-color: white;
   flex-direction: column;
   animation: slide-in 0.5s ease-in;
+
 }
 
-.modal-overlay {
+.main-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -53,21 +54,22 @@
   align-items: center;
   height: 100%;
   animation: slide-in 0.25s ease-in;
+
 }
 
-.modal-content {
+.main-modal-content {
   display: flex;
   position: relative;
-  width: 785px;
+  max-width: 785px;
+  width: 100%;
   height: 705px;
-  max-width: auto;
   border-radius: 5px;
   background-color: white;
   flex-direction: column;
   animation: slide-in 0.5s ease-in;
 }
 
-.close-button {
+.main-close-button {
   position: absolute;
   top: 10px;
   right: 10px;
@@ -78,7 +80,7 @@
   font-family: 'Be Vietnam Pro', sans-serif;
 }
 
-.close-button:hover {
+.main-close-button:hover {
   color: #990000;
   background-color: #f0f0f0;
   border-radius: 5px;
@@ -129,15 +131,16 @@
 
 /* Vị trí cụ thể cho từng search bar */
 .App-banner .Searchbar1 {
-  width: 100%;
-  height: 100%;
+  left: 80px;
+  width: 300px;
+  height: 99%;
 }
 
 .App-banner .Searchbar2 {
   right: 20px;
   top: 8px;
   width: 429px;
-  height: 431px;
+  height: 97.5%;
 }
 
 .App-banner .Searchbar3 {

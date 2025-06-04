@@ -1,91 +1,106 @@
 .featured-news-container {
   width: 1175px;
   margin: 2rem auto;
-  padding: 1rem;
+  padding: 1.5rem;
   background: white;
-  border-radius: 10px;
-  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: 'Be Vietnam Pro', sans-serif;
+  transition: box-shadow 0.3s ease;
+}
+
+.featured-news-container:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
 .featured-news-title {
-  font-family: 'Be Vietnam Pro', sans-serif;
-  font-size: clamp(20px, 3vw, 24px);
+  font-size: clamp(22px, 3vw, 26px);
   font-weight: 700;
   color: #333;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   text-align: center;
 }
 
 .news-tabs {
   display: flex;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
 }
 
 .news-tab-button {
   flex: 1;
-  padding: 0.5rem 1rem;
-  background-color: #f0f0f0;
+  padding: 0.75rem 1.25rem;
+  background-color: #f8f9fa;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
-  font-family: 'Be Vietnam Pro', sans-serif;
-  font-size: clamp(14px, 2vw, 16px);
+  font-size: clamp(15px, 2vw, 17px);
   color: #333;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  font-weight: 500;
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .news-tab-button:hover {
-  background-color: #e0e0e0;
-  cursor: pointer;
+  background-color: #e9ecef;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .news-tab-button.active {
   background-color: #990000;
   color: white;
+  box-shadow: 0 2px 4px rgba(153, 0, 0, 0.2);
 }
 
 .news-content {
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .featured-article {
   flex: 4;
   padding: 1rem;
-  border-right: 1px solid #e0e0e0;
+  border-right: 1px solid #e9ecef;
+  cursor: pointer;
+  transition: color 0.3s ease;
 }
 
-.feature-article:hover{
-  cursor: pointer;
+.featured-article:hover {
+  color: #990000;
+}
+
+.featured-article:hover .article-image {
+  transform: scale(1.05);
 }
 
 .article-image {
   width: 100%;
-  height: 150px;
+  height: 200px;
   object-fit: cover;
-  border-radius: 5px;
+  border-radius: 8px;
   margin-bottom: 1rem;
+  transition: transform 0.3s ease;
 }
 
 .article-title {
-  font-family: 'Be Vietnam Pro', sans-serif;
-  font-size: clamp(16px, 2vw, 18px);
+  font-size: clamp(18px, 2vw, 20px);
   font-weight: 700;
   color: #333;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+  transition: text-decoration 0.3s ease;
+}
+
+.article-title:hover {
+  text-decoration: underline;
 }
 
 .article-summary {
-  font-family: 'Be Vietnam Pro', sans-serif;
-  font-size: clamp(12px, 2vw, 14px);
+  font-size: clamp(13px, 2vw, 15px);
   color: #666;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.5;
 }
 
 .article-date {
-  font-family: 'Be Vietnam Pro', sans-serif;
   font-size: clamp(12px, 2vw, 14px);
   color: #999;
 }
@@ -96,8 +111,10 @@
 }
 
 .related-article-item {
-  padding: 0.5rem 0;
-  border-bottom: 1px solid #e0e0e0;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #e9ecef;
+  cursor: pointer;
+  transition: color 0.3s ease;
 }
 
 .related-article-item:last-child {
@@ -109,92 +126,90 @@
 }
 
 .related-article-title {
-  font-family: 'Be Vietnam Pro', sans-serif;
-  font-size: clamp(14px, 2vw, 16px);
+  font-size: clamp(15px, 2vw, 17px);
+  font-weight: 600;
   color: #333;
-  margin-bottom: 0.25rem;
-  transition: color 0.3s ease;
+  margin-bottom: 0.5rem;
+  transition: text-decoration 0.3s ease;
+}
+
+.related-article-title:hover {
+  text-decoration: underline;
 }
 
 .related-article-date {
-  font-family: 'Be Vietnam Pro', sans-serif;
   font-size: clamp(12px, 2vw, 14px);
   color: #999;
 }
 
 .no-articles {
-  font-family: 'Be Vietnam Pro', sans-serif;
-  font-size: clamp(14px, 2vw, 16px);
+  font-size: clamp(15px, 2vw, 17px);
   color: #666;
   text-align: center;
-  padding: 1rem;
+  padding: 1.5rem;
 }
 
 @media (max-width: 768px) {
   .featured-news-container {
-    margin: 1rem;
-    padding: 0.5rem;
-    width:auto;
+    width: 90%;
+    margin: 1rem auto;
+    padding: 1rem;
   }
 
   .featured-news-title {
-    font-size: clamp(16px, 3vw, 20px);
+    font-size: clamp(18px, 3vw, 22px);
   }
 
   .news-tabs {
     flex-direction: column;
-    gap: 0.3rem;
+    gap: 0.5rem;
   }
 
   .news-tab-button {
-    font-size: clamp(12px, 2vw, 14px);
-    padding: 0.4rem 0.8rem;
+    font-size: clamp(13px, 2vw, 15px);
+    padding: 0.6rem 1rem;
   }
 
   .news-content {
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 1rem;
   }
 
   .featured-article {
     border-right: none;
-    border-bottom: 1px solid #e0e0e0;
-    padding: 0.5rem;
+    border-bottom: 1px solid #e9ecef;
+    padding: 0.75rem 0;
   }
-  
-  .featured-article:hover{
-    color:#990000;
-  }
-  
+
   .article-image {
-    height: 120px;
+    height: 150px;
   }
 
   .article-title {
-    font-size: clamp(14px, 2vw, 16px);
+    font-size: clamp(16px, 2vw, 18px);
   }
 
   .article-summary {
-    font-size: clamp(10px, 2vw, 12px);
+    font-size: clamp(12px, 2vw, 14px);
   }
 
   .article-date {
-    font-size: clamp(10px, 2vw, 12px);
+    font-size: clamp(11px, 2vw, 13px);
   }
 
   .related-articles {
-    padding: 0.5rem;
+    padding: 0.75rem 0;
   }
 
   .related-article-title {
-    font-size: clamp(12px, 2vw, 14px);
+    font-size: clamp(14px, 2vw, 16px);
   }
 
   .related-article-date {
-    font-size: clamp(10px, 2vw, 12px);
+    font-size: clamp(11px, 2vw, 13px);
   }
 
   .no-articles {
-    font-size: clamp(12px, 2vw, 14px);
+    font-size: clamp(14px, 2vw, 16px);
   }
 }

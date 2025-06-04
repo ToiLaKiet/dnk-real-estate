@@ -1,214 +1,13 @@
-// import React, { useEffect, useState, useCallback } from "react";
-// import { useNavigate } from "react-router-dom";
-// import SearchEngine from "../../components/ui/search-engine";
-// import Header from "../../components/ui/parts/header";
-// import Footer from "../../components/ui/parts/footer";
-// import { postData } from "../postData.jsx";
-// import "../../styles/NhaDatBan.css";
-
-// const NhaDatChoThue = () => {
-//   const SeUseCase = {
-//     all: 0,
-//     nhadatban: 0,
-//     nhadatchothue: 1,
-//     duan: 0,
-//   };
-
-//   const [posts, setPosts] = useState([]);
-//   const [loading, setLoading] = useState(false);
-//   const [priceFilters, setPriceFilters] = useState([]);
-//   const [areaFilters, setAreaFilters] = useState([]);
-//   const [provinceFilter, setProvinceFilter] = useState("");
-//   const navigate = useNavigate();
-
-//   const provinces = [
-//     "An Giang", "Bà Rịa - Vũng Tàu", "Bắc Giang", "Bắc Kạn", "Bạc Liêu", "Bắc Ninh", "Bến Tre",
-//     "Bình Định", "Bình Dương", "Bình Phước", "Bình Thuận", "Cà Mau", "Cần Thơ", "Cao Bằng",
-//     "Đà Nẵng", "Đắk Lắk", "Đắk Nông", "Điện Biên", "Đồng Nai", "Đồng Tháp", "Gia Lai",
-//     "Hà Giang", "Hà Nam", "Hà Nội", "Hà Tĩnh", "Hải Dương", "Hải Phòng", "Hậu Giang",
-//     "Hòa Bình", "Hưng Yên", "Khánh Hòa", "Kiên Giang", "Kon Tum", "Lai Châu", "Lâm Đồng",
-//     "Lạng Sơn", "Lào Cai", "Long An", "Nam Định", "Nghệ An", "Ninh Bình", "Ninh Thuận",
-//     "Phú Thọ", "Phú Yên", "Quảng Bình", "Quảng Nam", "Quảng Ngãi", "Quảng Ninh", "Quảng Trị",
-//     "Sóc Trăng", "Sơn La", "Tây Ninh", "Thái Bình", "Thái Nguyên", "Thanh Hóa",
-//     "Thừa Thiên Huế", "Tiền Giang", "TP.HCM", "Trà Vinh", "Tuyên Quang", "Vĩnh Long",
-//     "Vĩnh Phúc", "Yên Bái"
-//   ];
-//   const priceRanges = [
-//     { label: "Dưới 500 triệu", min: 0, max: 500000000 },
-//     { label: "500 triệu - 1 tỷ", min: 500000000, max: 1000000000 },
-//     { label: "1 tỷ - 3 tỷ", min: 1000000000, max: 3000000000 },
-//     { label: "3 tỷ - 10 tỷ", min: 3000000000, max: 10000000000 },
-//     { label: "Trên 10 tỷ", min: 10000000000, max: Infinity },
-//   ];
-//   const areaRanges = [
-//     { label: "Dưới 30 m²", min: 0, max: 30 },
-//     { label: "30-100 m²", min: 30, max: 100 },
-//     { label: "100-200 m²", min: 100, max: 200 },
-//     { label: "200-500 m²", min: 200, max: 500 },
-//     { label: "Trên 500 m²", min: 500, max: Infinity },
-//   ];
-//   const fetchPosts = useCallback(() => {
-//     setLoading(true);
-//     //Backend
-//     // const fetchPostsFromBackend = async () => {
-//     //   const response = await fetch("https://api.example.com/posts/rent");
-//     //   const data = await response.json();
-//     //   setPosts(data);
-//     // };
-//     try {
-//       const filteredPosts = postData.filter((post) => {
-//         const priceMatch = priceFilters.length === 0 || priceFilters.some(
-//           ({ min, max }) => post.price >= min && post.price <= max
-//         );
-//         const areaMatch = areaFilters.length === 0 || areaFilters.some(
-//           ({ min, max }) => post.area >= min && post.area <= max
-//         );
-//         const provinceMatch = !provinceFilter || post.location.province === provinceFilter;
-//         return priceMatch && areaMatch && provinceMatch && post.status === "For sale";
-//       });
-//       setPosts(filteredPosts);
-//     } catch (error) {
-//       console.error("Lỗi khi lọc tin đăng:", error);
-//       setPosts(postData.filter((post) => post.status === "For sale"));
-//     } finally {
-//       setLoading(false);
-//     }
-//   }, [priceFilters, areaFilters, provinceFilter]);
-
-//   useEffect(() => {
-//     fetchPosts();
-//   }, [priceFilters, areaFilters, provinceFilter, fetchPosts]);
-
-//   const handlePriceFilter = (range) => {
-//     setPriceFilters((prev) =>
-//       prev.some((f) => f.label === range.label)
-//         ? prev.filter((f) => f.label !== range.label)
-//         : [...prev, range]
-//     );
-//   };
-
-//   const handleAreaFilter = (range) => {
-//     setAreaFilters((prev) =>
-//       prev.some((f) => f.label === range.label)
-//         ? prev.filter((f) => f.label !== range.label)
-//         : [...prev, range]
-//     );
-//   };
-
-//   const handleProvinceFilter = (e) => {
-//     setProvinceFilter(e.target.value || "");
-//   };
-
-//   const handlePostClick = (postId) => {
-//     navigate(`/postspage/${postId}`);
-//   };
-
-//   const getFirstImage = (media) => {
-//     if (!media || !Array.isArray(media)) return "https://i.pravatar.cc/150?u=1";
-//     const firstImage = media.find(item => item.type === "image");
-//     return firstImage?.url || "https://i.pravatar.cc/150?u=1";
-//   };
-//   return (
-//     <div className="page-container">
-//       <Header />
-//       <div className="search-engine-outer-wrapper">
-//         <div className="search-engine-inner-wrapper">
-//           <SearchEngine useCase={SeUseCase} />
-//         </div>
-//       </div>
-//       <div className="posts-wrapper">
-//         <div className="posts-list">
-//           {loading ? (
-//             <div className="loading">Đang tải...</div>
-//           ) : posts.length > 0 ? (
-//             posts.map((post) => (
-//               <div key={post.id} className="post-item" onClick={() => handlePostClick(post.id)}>
-//                 <div className="post-image-container">
-//                   <img
-//                     src={getFirstImage(post.media)}
-//                     alt={post.title}
-//                     className="post-image"
-//                     loading="lazy"
-//                     onError={(e) => {
-//                       e.target.src = "https://i.pravatar.cc/150?u=1";
-//                     }}
-//                   />
-//                 </div>
-//                 <div className="post-content">
-//                   <h3 className="post-title">{post.title}</h3>
-//                   <div className="post-info">
-//                     <span className="post-price">{(post.price / 1000000000).toFixed(1)} tỷ VND</span>
-//                     <span className="post-province">{post.location.province}</span>
-//                   </div>
-//                   <p className="post-description">
-//                     {post.description.slice(0, 100)}
-//                     {post.description.length > 100 ? "..." : ""}
-//                   </p>
-//                 </div>
-//               </div>
-//             ))
-//           ) : (
-//             <div className="no-posts">Không tìm thấy tin đăng phù hợp</div>
-//           )}
-//         </div>
-//         <div className="posts-filter">
-//           <div className="filter-section">
-//             <h4 className="filter-name">Lọc theo giá</h4>
-//             {priceRanges.map((range) => (
-//               <label key={range.label} className="filter-option">
-//                 <input
-//                   type="checkbox"
-//                   checked={priceFilters.some((f) => f.label === range.label)}
-//                   onChange={() => handlePriceFilter(range)}
-//                   className="checkbox"
-//                 />
-//                 {range.label}
-//               </label>
-//             ))}
-//           </div>
-//           <div className="filter-section">
-//             <h4 className="filter-name">Lọc theo diện tích</h4>
-//             {areaRanges.map((range) => (
-//               <label key={range.label} className="filter-option">
-//                 <input
-//                   type="checkbox"
-//                   checked={areaFilters.some((f) => f.label === range.label)}
-//                   onChange={() => handleAreaFilter(range)}
-//                   className="checkbox"
-//                 />
-//                 {range.label}
-//               </label>
-//             ))}
-//           </div>
-//           <div className="filter-section">
-//             <h4 className="filter-name">Lọc theo tỉnh/thành</h4>
-//             <select
-//               value={provinceFilter}
-//               onChange={handleProvinceFilter}
-//               className="province-select"
-//             >
-//               <option value="">Chọn tỉnh/thành</option>
-//               {provinces.map((province) => (
-//                 <option key={province} value={province}>
-//                   {province}
-//                 </option>
-//               ))}
-//             </select>
-//           </div>
-//         </div>
-//       </div>
-//       <Footer />
-//     </div>
-//   );
-// };
-
-// export default NhaDatChoThue;
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import axios from 'axios';
 import Header from '../../components/ui/parts/header';
 import Footer from '../../components/ui/parts/footer';
-import { FaSearch } from 'react-icons/fa';
+import { FaSearch, FaBed, FaBath, FaPhone, FaHeart } from 'react-icons/fa';
 import '../../styles/NhaDatBan.css';
+import { AuthContext } from '../../components/ui/context/AuthContext';
+import Login from '../../pages/login/Dangnhap1';
+import Modal from '../../components/ui/modal-reg-log.jsx';
 
 // Mock data
 const mockPosts = [
@@ -486,7 +285,7 @@ const mockPosts = [
     },
     property_type: 'house',
     title: 'Nhà riêng cho thuê Hải Châu',
-    description: 'Nhà 2 tầng, gần trung tâm.',
+    description: 'Nhà 2 tầng, gần trung tâm.',
     price: 12,
     area: 70,
     status: 'available',
@@ -623,8 +422,8 @@ const dropdownOptions = {
 const NhaDatChoThue = () => {
   const navigate = useNavigate();
   const location = useLocation();
-
-  // Search filters state
+  const { user } = useContext(AuthContext);
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const [searchFilters, setSearchFilters] = useState({
     text: '',
     propertyType: '',
@@ -635,7 +434,26 @@ const NhaDatChoThue = () => {
 
   const [posts, setPosts] = useState(mockPosts);
   const [currentPage, setCurrentPage] = useState(1);
+  const [favorites, setFavorites] = useState({});
+  const [lengthOfdata, setLengthOfdata] = useState(0);
   const postsPerPage = 8;
+
+  // Fetch initial favorites
+  useEffect(() => {
+    if (user?.user_id) {
+      axios.get(`/favorites?user_id=${user.user_id}`)
+        .then((response) => {
+          const favoriteMap = {};
+          response.data.forEach((fav) => {
+            favoriteMap[fav.property_id] = true;
+          });
+          setFavorites(favoriteMap);
+        })
+        .catch((error) => {
+          console.error('Error fetching favorites:', error);
+        });
+    }
+  }, [user]);
 
   // Lấy query parameters từ URL
   useEffect(() => {
@@ -660,7 +478,6 @@ const NhaDatChoThue = () => {
   const { displayPosts, totalPages } = useMemo(() => {
     let filtered = posts.filter(post => post.type === 'nhadatchothue');
 
-    // Lọc theo text
     if (searchFilters.text.trim()) {
       filtered = filtered.filter(post =>
         post.title.toLowerCase().includes(searchFilters.text.toLowerCase()) ||
@@ -668,17 +485,14 @@ const NhaDatChoThue = () => {
       );
     }
 
-    // Lọc theo propertyType
     if (searchFilters.propertyType) {
       filtered = filtered.filter(post => post.property_type === searchFilters.propertyType);
     }
 
-    // Lọc theo province
     if (searchFilters.province) {
       filtered = filtered.filter(post => post.address.province === searchFilters.province);
     }
 
-    // Lọc theo area
     if (searchFilters.area) {
       filtered = filtered.filter(post => {
         const postArea = parseFloat(post.area);
@@ -693,7 +507,6 @@ const NhaDatChoThue = () => {
       });
     }
 
-    // Lọc theo price
     if (searchFilters.price) {
       filtered = filtered.filter(post => {
         const postPrice = parseFloat(post.price);
@@ -708,7 +521,6 @@ const NhaDatChoThue = () => {
       });
     }
 
-    // Phân trang
     const startIndex = (currentPage - 1) * postsPerPage;
     const endIndex = startIndex + postsPerPage;
     const paginated = filtered.slice(startIndex, endIndex);
@@ -739,141 +551,240 @@ const NhaDatChoThue = () => {
     navigate(`/postspage/${propertyId}`);
   };
 
+  // Handle favorite toggle
+  const handleFavoriteClick = async (propertyId) => {
+    if (!user?.user_id) {
+      alert('Vui lòng đăng nhập để thêm vào yêu thích!');
+      setShowLoginModal(true);
+      return;
+    }
+
+    const isCurrentlyFavorited = favorites[propertyId];
+    setFavorites((prev) => ({
+      ...prev,
+      [propertyId]: !isCurrentlyFavorited
+    }));
+
+    // Update favorite status in the backend
+    try {
+      if (isCurrentlyFavorited) {
+        await axios.delete('/favorites', {
+          // Assuming your API supports DELETE for removing favorites
+          data: { user_id: user.user_id, property_id: propertyId }
+        });
+      } else {
+        // Assuming your API supports POST for adding favorites
+        await axios.post('/favorites', {
+          property_id: propertyId,
+          user_id: user.user_id,
+          created: new Date().toISOString()
+        });
+      }
+    } catch (error) {
+      console.error('Error updating favorite:', error);
+      setFavorites((prev) => ({
+        ...prev,
+        [propertyId]: isCurrentlyFavorited
+      }));
+    }
+  };
+
+  // Truncate description
+  const truncateDescription = (text, maxWords) => {
+    if (!text) return '';
+    const words = text.split(/\s+/);
+    if (words.length <= maxWords) return text;
+    return words.slice(0, maxWords).join(' ') + '...';
+  };
+
+  // Get collage images
+  const getCollageImages = (images) => {
+    if (!images || images.length === 0) {
+      return [{ url: 'https://via.placeholder.com/600x400', isPlaceholder: true }];
+    }
+    const primary = images.find(img => img.is_primary);
+    const others = images.filter(img => !img.is_primary);
+    const selected = primary ? [primary, ...others.slice(0, 4)] : images.slice(0, 5);
+    return selected;
+  };
+
+  // Set length of data
+  useEffect(() => {
+    setLengthOfdata(displayPosts.length);
+  }, [displayPosts]);
+
   return (
     <div className="page-container">
       <Header />
-      <div className="nhadatban-search-engine-container">
-        <div className="nhadatban-search-engine">
-          <div className="search-bar">
-            <div className="input-wrapper">
-              <FaSearch className="search-logo" />
-              <input
-                type="text"
-                placeholder="Tìm kiếm bài đăng cho thuê..."
-                className="search-input"
-                value={searchFilters.text}
-                onChange={(e) => handleFilterChange('text', e.target.value)}
-              />
-            </div>
-          </div>
-          <div className="ndb-filter-dropdowns">
-            <select
-              value={searchFilters.province}
-              onChange={(e) => handleFilterChange('province', e.target.value)}
-              className="ndb-filter-dropdown"
-            >
-              {dropdownOptions.provinces.map(option => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-            <select
-              value={searchFilters.propertyType}
-              onChange={(e) => handleFilterChange('propertyType', e.target.value)}
-              className="ndb-filter-dropdown"
-            >
-              {dropdownOptions.propertyTypes.map(option => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-            <select
-              value={searchFilters.price}
-              onChange={(e) => handleFilterChange('price', e.target.value)}
-              className="ndb-filter-dropdown"
-            >
-              {dropdownOptions.prices.map(option => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-            <select
-              value={searchFilters.area}
-              onChange={(e) => handleFilterChange('area', e.target.value)}
-              className="ndb-filter-dropdown"
-            >
-              {dropdownOptions.areas.map(option => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </div>
+      <div className="ndb-content">
+        <div className="ndb-title-box">
+          <h1 className="ndb-title">TRANG TỔNG HỢP CÁC BẤT ĐỘNG SẢN CHO THUÊ</h1>
+          <h2 className="ndb-des">Trên hệ thống đang có {lengthOfdata} bất động sản cho thuê.</h2>
         </div>
-      </div>
-
-      {/* Danh sách bài đăng */}
-      <div className="posts-list">
-        {displayPosts.length > 0 ? (
-          displayPosts.map(post => (
-            <div
-              key={post.property_id}
-              className="post-item"
-              onClick={() => handlePostClick(post.property_id)}
-            >
-              <div className="post-image-container">
-                <img
-                  src={post.media.images.find(img => img.is_primary)?.url || post.media.images[0]?.url || "https://via.placeholder.com/600x400"}
-                  alt={post.title}
-                  className="post-image"
-                  loading="lazy"
+        <div className="nhadatban-search-engine-container">
+          <div className="nhadatban-search-engine">
+            <div className="search-bar">
+              <div className="input-wrapper">
+                <FaSearch className="search-logo" />
+                <input
+                  type="text"
+                  placeholder="Tìm kiếm bài đăng cho thuê..."
+                  className="search-input"
+                  value={searchFilters.text}
+                  onChange={(e) => handleFilterChange('text', e.target.value)}
                 />
               </div>
-              <div className="post-content">
-                <h3 className="post-title">{post.title}</h3>
-                <p className="post-address">{post.address.displayAddress}</p>
-                <p className="post-details">
-                  Diện tích: {post.area}m² | Giá: {post.price} triệu/tháng
-                </p>
-                <p className="post-description">{post.description}</p>
-              </div>
             </div>
-          ))
-        ) : (
-          <div className="no-posts">Không tìm thấy bài đăng phù hợp</div>
-        )}
-      </div>
-
-      {/* Phân trang */}
-      {totalPages > 1 && (
-        <div className="pagination">
-          {currentPage > 1 && (
-            <button onClick={() => goToPage(currentPage - 1)}>
-              &lt; Trước
-            </button>
-          )}
-          {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-            let pageNum;
-            if (totalPages <= 5) {
-              pageNum = i + 1;
-            } else if (currentPage <= 3) {
-              pageNum = i + 1;
-            } else if (currentPage >= totalPages - 2) {
-              pageNum = totalPages - 4 + i;
-            } else {
-              pageNum = currentPage - 2 + i;
-            }
-            return (
-              <button
-                key={pageNum}
-                onClick={() => goToPage(pageNum)}
-                className={currentPage === pageNum ? 'active' : ''}
+            <div className="ndb-filter-dropdowns">
+              <select
+                value={searchFilters.province}
+                onChange={(e) => handleFilterChange('province', e.target.value)}
+                className="ndb-filter-dropdown"
               >
-                {pageNum}
-              </button>
-            );
-          })}
-          {currentPage < totalPages && (
-            <button onClick={() => goToPage(currentPage + 1)}>
-              Sau &gt;
-            </button>
+                {dropdownOptions.provinces.map(option => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              <select
+                value={searchFilters.propertyType}
+                onChange={(e) => handleFilterChange('propertyType', e.target.value)}
+                className="ndb-filter-dropdown"
+              >
+                {dropdownOptions.propertyTypes.map(option => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              <select
+                value={searchFilters.price}
+                onChange={(e) => handleFilterChange('price', e.target.value)}
+                className="ndb-filter-dropdown"
+              >
+                {dropdownOptions.prices.map(option => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              <select
+                value={searchFilters.area}
+                onChange={(e) => handleFilterChange('area', e.target.value)}
+                className="ndb-filter-dropdown"
+              >
+                {dropdownOptions.areas.map(option => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* Danh sách bài đăng */}
+        <div className="posts-list">
+          {displayPosts.length > 0 ? (
+            displayPosts.map((post) => (
+              <div
+                key={post.property_id}
+                className="post-item"
+                onClick={() => handlePostClick(post.property_id)}
+              >
+                <div className="post-media">
+                  <div className={`media-collage media-collage-${getCollageImages(post.media.images).length}`}>
+                    {getCollageImages(post.media.images).map((img, index) => (
+                      <img
+                        key={index}
+                        src={img.url}
+                        alt={post.title}
+                        className={`collage-image collage-image-${index}`}
+                        loading="lazy"
+                      />
+                    ))}
+                  </div>
+                </div>
+                <div className="post-info">
+                  <h3>{post.title}</h3>
+                  <div className="post-details-row">
+                    <div className="post-details">
+                      <span>Giá: {post.price} triệu/tháng</span>
+                      <span>Diện tích: {post.area}m²</span>
+                    </div>
+                    <div className="post-features">
+                      <span>
+                        <FaBed className="icon" /> Phòng ngủ: {post.features.bedrooms || 0}
+                      </span>
+                      <span>
+                        <FaBath className="icon" /> Phòng tắm: {post.features.bathrooms || 0}
+                      </span>
+                    </div>
+                  </div>
+                  <p className="post-description">{truncateDescription(post.description, 100)}</p>
+                </div>
+                <div className="card-bottom">
+                  {post.user_id && <span className="user-info">Đăng bởi: {post.user_id}</span>}
+                  <a href={`tel:${post.contact.phone}`} className="phone-button">
+                    <FaPhone className="phone-calling-icon" /> Gọi {post.contact.phone}
+                  </a>
+                  <FaHeart
+                    className={`favorite-icon ${favorites[post.property_id] ? 'favorited' : ''}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleFavoriteClick(post.property_id);
+                    }}
+                  />
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="no-posts">Không tìm thấy bài đăng phù hợp</div>
           )}
         </div>
-      )}
+
+        {/* Phân trang */}
+        {totalPages > 1 && (
+          <div className="pagination">
+            {currentPage > 1 && (
+              <button onClick={() => goToPage(currentPage - 1)}>
+                &lt; Trước
+              </button>
+            )}
+            {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+              let pageNum;
+              if (totalPages <= 5) {
+                pageNum = i + 1;
+              } else if (currentPage <= 3) {
+                pageNum = i + 1;
+              } else if (currentPage >= totalPages - 2) {
+                pageNum = totalPages - 4 + i;
+              } else {
+                pageNum = currentPage - 2 + i;
+              }
+              return (
+                <button
+                  key={pageNum}
+                  onClick={() => goToPage(pageNum)}
+                  className={currentPage === pageNum ? 'active' : ''}
+                >
+                  {pageNum}
+                </button>
+              );
+            })}
+            {currentPage < totalPages && (
+              <button onClick={() => goToPage(currentPage + 1)}>
+                Sau &gt;
+              </button>
+            )}
+          </div>
+        )}
+      </div>
       <Footer />
+      <Modal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)}>
+        <Login />
+      </Modal>
     </div>
   );
 };

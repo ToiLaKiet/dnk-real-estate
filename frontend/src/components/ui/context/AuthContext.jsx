@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect,useContext } from 'react';
 // import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,12 +11,11 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
-
   // Kiểm tra đăng nhập khi khởi động app
   useEffect(() => {
     const checkAuth = async () => {
-      const token = localStorage.getItem('token');
-      const userData = localStorage.getItem('user');
+      const token = localStorage.getItem('token'); // Mock token
+      const userData = localStorage.getItem('user');// Mock user data
       
       if (token && userData) {
         try {
@@ -38,7 +37,7 @@ export const AuthProvider = ({ children }) => {
       setIsLoading(false);
     };
     checkAuth();
-  }, []);
+  } , [useAuth]);
 
   // Hàm đăng nhập
   const login = async ({ email, phone, password },onSuccess) => {
@@ -50,13 +49,12 @@ export const AuthProvider = ({ children }) => {
       // setUser(res.data.user);
       // Mock data
       const mockUser = {
-        id: '123',
+        user_id: '123',
         name: email.split('@')[0] || 'Người dùng',
         email: email,
         phone: phone,
         avatar: `https://i.pravatar.cc/150?u=${email}`,
       };
-
       localStorage.setItem('user', JSON.stringify(mockUser));
       localStorage.setItem('token', 'mock-token-123'); // Mock token
       setUser(mockUser);
@@ -98,3 +96,7 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
+export function useAuth() {
+  return useContext(AuthContext);
+}

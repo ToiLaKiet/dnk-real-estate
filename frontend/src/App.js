@@ -4,8 +4,8 @@ import Gioithieu from './pages/terms/Gioithieu.jsx';
 import Footer from './components/ui/parts/footer.jsx';
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Searchbar1 from './components/Searchbar1.js';
-import Searchbar2 from './components/Searchbar2.js';
+import SearchBar1 from './assets/SearchBar-1.png'; // Import Searchbar1 component
+import SearchBar2 from './assets/SearchBar-2.png'; // Import Searchbar2 component
 import SearchEngine from './components/ui/search-engine.jsx';
 import FeaturedNews from './pages/featurednews/featurednews.jsx';
 import ArticlePage from './pages/featurednews/ArticlePage.jsx';
@@ -16,6 +16,8 @@ import NhaDatChoThue from './pages/nhadatchothue/nhadatchothue.jsx';
 import DuAn from './pages/duan/duan.jsx';
 import SearchBar3 from './assets/SearchBar-3.png'; // Import SearchBar3 image
 import SearchBar4 from './assets/SearchBar-4.png'; // Import SearchBar3 image
+import PostCreate from './components/ui/postcreate/postcreate.jsx';
+import TinTuc  from './pages/news/tintuc.jsx';
 function App() {
   const seUseCase = {
     all:1,
@@ -34,10 +36,18 @@ function App() {
             <div className="content">
               <div className="App-banner">
                 <div className="Searchbar1">
-                  <Searchbar1 />
+                <img
+                    src={SearchBar1}
+                    alt={'SearchBar1'}
+                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  />
                 </div>
                 <div className="Searchbar2">
-                  <Searchbar2 />
+                  <img
+                      src={SearchBar2}
+                      alt={'SearchBar2'}
+                      style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                    />
                 </div>
                 <div className="Searchbar4">
                 <img
@@ -62,13 +72,15 @@ function App() {
         }
       />
       {/*Route cho trang */}
-      <Route path="/article/:id" element={<ArticlePage />} /> {/*Route cho trang bài báo */}
+      <Route path="/news/:id" element={<ArticlePage />} /> {/*Route cho trang bài báo */}
       <Route path="/gioithieu" element={<Gioithieu />} /> {/* Trang giới thiệu */}
       <Route path="/home" element={<App/>} /> {/* Trang chính */}
       <Route path="/postspage/:id" element={<PostsPage/>} /> {/* Trang chính */}
       <Route path="/nha-dat-ban" element={<NhaDatBan />} /> {/* Trang nhà đất bán */}
       <Route path="/du-an" element={<DuAn />} /> {/* Trang dự án */}
+      <Route path="/post-create" element={<PostCreate />} /> {/* Trang đăng bài */}
       <Route path="/nha-dat-cho-thue" element={<NhaDatChoThue />} /> {/* Trang dự án */}
+      <Route path="/tin-tuc" element={<TinTuc />} /> {/* Trang dự án */}
     </Routes>
     </AuthProvider>
   );

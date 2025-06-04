@@ -1,0 +1,398 @@
+   .tintuc-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    animation: slide-in 0.5s ease-in;
+  }
+  
+  .tintuc-container {
+    width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px 0;
+    flex-grow: 1;
+    animation: slide-in 0.5s ease-in;
+  }
+  
+  .tintuc-introduction {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 16px;
+    color: #333;
+    animation: slide-in 0.5s ease-in;
+  }
+  
+  .tintuc-main-content {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+  }
+  
+  .tintuc-main-news {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .tintuc-sidebar {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .tintuc-featured {
+    display: flex;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s;
+    text-decoration: none;
+    color: inherit;
+    flex-direction: column;
+  }
+  
+  .tintuc-featured:hover {
+    transform: scale(1.02);
+  }
+  .tintuc-featured-image-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 800px; /* or whatever width you want */
+    flex-shrink: 0;   /* Keep image from shrinking */
+  }
+  .tintuc-featured-image {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+  }
+  
+  .tintuc-featured-content {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 16px;
+    width: 100%;
+    color: white;
+    box-sizing: border-box;
+
+  }
+  
+  .tintuc-featured-title {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 24px;
+    color: white;
+    margin: 0;
+  }
+  
+  .tintuc-featured-summary {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 14px;
+    color: white;
+    margin: 0;
+  }
+  
+  .tintuc-featured-date {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 12px;
+    color: white;
+    font-style: italic;
+    margin: 0;
+  }
+  
+  .tintuc-news-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .tintuc-news-card {
+    display: flex;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow 0.3s;
+  }
+  
+  .tintuc-news-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .tintuc-news-image {
+    width: 300px;
+    height: 250px;
+    object-fit: cover;
+  }
+  
+  .tintuc-news-content {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .tintuc-news-title {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 18px;
+    color: #333;
+    margin: 0;
+  }
+  
+  .tintuc-news-summary {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 13px;
+    color: #666;
+    margin: 0;
+  }
+  
+  .tintuc-news-date {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 11px;
+    color: #999;
+    margin: 0;
+  }
+  
+  .tintuc-pagination {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 15px;
+  }
+  
+  .tintuc-pagination-button {
+    background: #f8f9fa;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .tintuc-pagination-button:hover {
+    background: #990000;
+    color: white;
+    border-color: #990000;
+  }
+  
+  .tintuc-pagination-button:disabled {
+    background: #eee;
+    color: #999;
+    cursor: not-allowed;
+  }
+  
+  .tintuc-active {
+    background: #990000;
+    color: white;
+    border-color: #990000;
+  }
+  
+  .tintuc-random-news, .tintuc-most-viewed-news, .tintuc-realestate-news, .tintuc-hot-markets {
+    background: white;
+    border-radius: 8px;
+    border: #00000033 solid 1px;
+    padding: 15px;
+  }
+  .tintuc-random-item-tii{
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .tintuc-section-title {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 20px;
+    color: #333;
+    margin: 0 0 10px;
+  }
+  
+  .tintuc-random-list, .tintuc-most-viewed-list, .tintuc-realestate-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .tintuc-random-item, .tintuc-most-viewed-item {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 14px;
+    color: #333;
+    text-decoration: none;
+  }
+  
+  .tintuc-random-item:hover, .tintuc-most-viewed-item:hover {
+    color: #990000;
+  }
+  
+  .tintuc-realestate-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 14px;
+    color: #333;
+    background: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    padding: 5px;
+    cursor: pointer;
+    text-align: left;
+    height: 100%;
+    width: 100%;
+  }
+  
+  .tintuc-realestate-item:hover, .tintuc-realestate-item.tintuc-active {
+    border-color: #990000;
+  }
+  
+  .tintuc-realestate-image {
+    width: 100px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+  
+  .tintuc-realestate-content {
+    flex-grow: 1;
+  }
+  
+  .tintuc-realestate-content h4 {
+    font-size: 16px;
+    margin: 0 0 5px;
+  }
+  
+  .tintuc-realestate-content p {
+    font-size: 13px;
+    color: #666;
+    margin: 0;
+  }
+  
+  .tintuc-realestate-date {
+    font-size: 11px;
+    color: #999;
+  }
+  
+  .tintuc-hot-markets-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .tintuc-hot-market-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    padding: 5px;
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+  }
+  
+  .tintuc-hot-market-item:hover, .tintuc-hot-market-item.tintuc-active {
+    border-color: #990000;
+  }
+  
+  .tintuc-hot-market-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+  
+  .tintuc-hot-market-item p {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 14px;
+    color: #333;
+    margin: 0;
+  }
+  
+  .tintuc-filter-button {
+    background: #f8f9fa;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    margin-bottom: 10px;
+  }
+  
+  .tintuc-filter-button:hover, .tintuc-filter-button.tintuc-active {
+    background: #990000;
+    color: white;
+    border-color: #990000;
+  }
+  
+  .tintuc-loading, .tintuc-error {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 16px;
+    color: #333;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  @media (max-width: 768px) {
+    .tintuc-container {
+      width: 90%;
+      padding: 10px 0;
+    }
+  
+    .tintuc-main-content {
+      flex-direction: column;
+    }
+  
+    .tintuc-main-news, .tintuc-sidebar {
+      width: 100%;
+    }
+  
+    .tintuc-featured {
+      flex-direction: column;
+    }
+  
+    .tintuc-featured-image {
+      width: 100%;
+      height: 200px;
+    }
+  
+    .tintuc-news-card {
+      flex-direction: column;
+    }
+  
+    .tintuc-news-image {
+      width: 100%;
+      height: 150px;
+    }
+  
+    .tintuc-introduction {
+      font-size: 14px;
+      padding: 15px;
+    }
+  
+    .tintuc-hot-market-image {
+      width: 80px;
+      height: 80px;
+    }
+  }

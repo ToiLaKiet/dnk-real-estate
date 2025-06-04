@@ -27,22 +27,22 @@ margin: 0;
 
 /* Register */
 .register-container {
-display: flex;
-flex-direction: row;
-width: 100%;
-height: 100vh;
-overflow-x: auto;
-max-height: 100%;
+  display: flex;
+  flex-direction: row;
+  width: 785px;
+  height: 705px;
+  overflow-x: auto;
+  max-height: 100%;
 }
 
 .register-left {
-flex: 1;
-display: flex;
-flex-direction: column;
-align-items: center;
-background-color: #f0f0f0;
-padding: 20px;
-max-height: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f0f0f0;
+  max-height: 100%;
+  width:100%;
 }
 
 .register-right {
@@ -324,9 +324,6 @@ flex: none;
 width: 100%;
 }
 
-.modal-content {
-width: 95%;
-}
 
 .otp-input {
 width: 35px;

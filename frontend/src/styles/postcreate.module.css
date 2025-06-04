@@ -1,14 +1,16 @@
 .postCreate {
-  padding: 20px;
+  padding: 0px;
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 760px;
+  justify-content: start-center;
   height: 100vh;
   overflow-y: auto;
   overflow-x: auto;
   max-height: 100%;
   font-family: 'Be Vietnam Pro';
   transition: background-color 0.2s ease-in-out;
+  padding: 10px;
 }
 
 .postCreate h2 {
@@ -203,4 +205,33 @@
   width: 100%;
   border-radius: 8px;
   overflow: hidden;
+}
+@media (max-width: 768px) {
+  .postCreate {
+    width: 100%;
+    padding: 16px;
+  }
+  
+  .box {
+    padding: 10px;
+  }
+  
+  .ncaubox {
+    flex-direction: row;
+  }
+  .typeButton {
+    padding: 8px 36px;
+    gap:25px;
+    font-size: 12px;
+  }
+  
+  .fakeInput {
+    padding: 10px 30px;
+    font-size: 12px;
+  }
+  
+  .submitButton {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
 }

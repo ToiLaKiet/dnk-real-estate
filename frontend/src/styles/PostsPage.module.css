@@ -1,6 +1,8 @@
 .wrapper {
   display: flex;
   max-width: auto;
+  width:100%;
+  gap:30px;
   flex-direction: column;
   min-height: 100vh;
   background: linear-gradient(180deg, #f8f9fa, #ffffff);
@@ -11,16 +13,21 @@
   display: flex;
   flex-direction: row;
   margin: 0 auto;
-  padding: 20px;
+  max-width: 1054px;
+  padding-left: 40px;
+  padding-right: 40px;
+  justify-content: center;
   gap: 20px;
+  width:100%; 
   animation: slide-in 0.5s ease-in;
+  font-family: 'Be Vietnam Pro', sans-serif;
 }
 
 .container {
   display:flex;
   flex-direction: column;
-  max-width: 1200px;
-  flex: 2;
+  max-width: 705px;
+  width:100%;
   background: white;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -30,7 +37,8 @@
 .contactBox {
   flex: 1;
   background: white;
-  max-width: 1200px;
+  max-width: auto;
+  width:100%;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
@@ -42,7 +50,7 @@
 .content {
   display: flex;
   flex-direction: column;
-  width: 705px;
+  width: auto;
   gap: 20px;
 }
 
@@ -97,9 +105,13 @@
   color: #333;
   margin: 0;
 }
-
+.triangleexclamation{
+  color: #990000;
+  font-size: 30px;
+  margin-right: 10px;
+}
 .heartIcon {
-  font-size: 40px;
+  font-size: 30px;
   color: #ef9c9c;
   cursor: pointer;
   transition: color 0.3s;
@@ -108,9 +120,21 @@
 .heartIcon:hover {
   color: #cc0000;
 }
-
-.heartIcon.favorite {
+.triangleexclamation {
+  font-size: 30px;
+  color: #990000;
+  margin-right: 10px;
+}
+.triangleexclamation:hover {
+  cursor: pointer;
   color: #cc0000;
+}
+.iconth{
+  display: flex;
+  flex-direction: row;
+}
+.heartIcon.favorite {
+  color: blue;
 }
 
 .summaryPriceArea {
@@ -145,6 +169,7 @@
 .description {
   background: #f8f9fa;
   padding: 15px;
+  width: 100%;
   border-radius: 4px;
 }
 
@@ -344,17 +369,18 @@
     padding: 10px;
   }
 
-  .container,
   .contactBox {
+    position: static;
     width: 100%;
   }
 
-  .contactBox {
-    position: static;
+  .carousel {
+    width:auto;
+    height: 250px;
   }
-
   .mediaImage,
   .mediaVideo {
+    width: auto;
     height: 250px;
   }
 
@@ -382,8 +408,8 @@
   .utilitiesGrid {
     grid-template-columns: 1fr;
   }
-}
 
+}
 @keyframes slide-in {
   from {
     transform: translateY(10px);

@@ -1,4 +1,4 @@
-.search-engine-container {
+.se-search-engine-container {
   display: flex;
   position: absolute;
   flex-direction: column;
@@ -16,7 +16,7 @@
   justify-content: center;
 }
 
-.search-tabs {
+.se-search-tabs {
   display: flex;
   position: relative;
   top: 8.8px;
@@ -28,7 +28,7 @@
   gap: 0.5rem;
 }
 
-.search-tab-button {
+.se-search-tab-button {
   padding: 0.5rem 1rem;
   border-radius: 10px 10px 0px 0px;
   cursor: pointer;
@@ -37,15 +37,16 @@
   color: black;
   background-color: #D8E1C0;
   transition: background-color 0.3s ease;
-  max-width: 150px;
+  max-width: 200px;
   border: none;
+  padding:auto;
 }
 
-.search-tab-button:hover {
+.se-search-tab-button:hover {
   background-color: #D1D1D1;
 }
 
-.search-tab-button.active {
+.se-search-tab-button.active {
   background-color: #677F2B;
   color: white;
 }
@@ -295,14 +296,14 @@
   bottom: 10px;
 }
 
-.search-engine {
+.se-search-engine {
   height: auto;
 }
 
-.search-tabs {
+.se-search-tabs {
   top: 10px;
-  left: 10px;
-  flex-direction: column;
+  left:0px;
+  flex-direction: row;
   align-items: stretch;
 }
 
@@ -380,3 +381,32 @@
 }
 }
 
+.select-type-message {
+  text-align: center;
+  color: white;
+  font-style: italic;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  margin: 10px 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.filter-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.filter-button:disabled:hover::after {
+  content: 'Chọn loại tìm kiếm trước';
+  position: absolute;
+  background: #333;
+  color: #fff;
+  padding: 5px 8px;
+  border-radius: 3px;
+  font-size: 12px;
+  z-index: 10;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}

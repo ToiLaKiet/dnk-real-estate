@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { useAuth } from '../components/ui/context/AuthContext.jsx';
+import React, { useState, useEffect, useContext, use } from 'react';
 import { useParams } from 'react-router-dom';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -8,11 +7,11 @@ import Header from '../components/ui/parts/header.jsx';
 import Footer from '../components/ui/parts/footer.jsx';
 import GoogleMapComponent from '../components/ui/googlemap.jsx';
 import styles from '../styles/PostsPage.module.css';
+import { FaHeart } from 'react-icons/fa';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Login from './login/Dangnhap1.jsx';
-import ReportPosts from '../components/ui/reportPost.jsx';
-import Modal from '../components/ui/modal-reg-log.jsx';
-import '../styles/App.css';
+import { AuthContext } from '../components/ui/context/AuthContext.jsx';
+import { useLocation } from 'react-router-dom';
+
 import {
   faHome,
   faTag,
@@ -25,21 +24,19 @@ import {
   faUser,
   faPhone,
   faEnvelope,
-  faExclamationTriangle,
-  faHeart
 } from '@fortawesome/free-solid-svg-icons';
 
-function PostPage() {
+
+function Preview() {
   const { id } = useParams();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isFavorite, setIsFavorite] = useState(false);
-  const { user, isLoading } = useAuth();
-  const [showLoginModal, setShowLoginModal] = useState(false);
-  const [reportsPostsModal, setReportsPostsModal] = useState(false);
+  const { isAuthenticated, user } = useContext(AuthContext);
+  const location = useLocation();
+  const postData = location.state?.package;
 
-  let postData = require('./postData.jsx').mockPosts;
 
   useEffect(() => {
     const loadPost = () => {
@@ -54,6 +51,7 @@ function PostPage() {
         }
 
         if (!postData || !Array.isArray(postData) || postData.length === 0) {
+          console.log('DDDD',typeof postData);
           throw new Error('Dữ liệu tin đăng không khả dụng');
         }
 
@@ -64,6 +62,7 @@ function PostPage() {
         }
 
         setPost(foundPost);
+
       } catch (err) {
         console.error('Lỗi khi tải tin đăng:', err);
         setError(err.message);
@@ -86,27 +85,13 @@ function PostPage() {
   };
 
   const handleFavorite = () => {
-    if (user) {
-      console.log(`User ${user.user_id} ${isFavorite ? 'removed' : 'added'} post ${post.property_id} to favorites`);
-      setIsFavorite(!isFavorite);
+    // TODO: Implement backend request to add/remove favorite for post ${post.property_id}
+    setIsFavorite(!isFavorite);
+    if (isAuthenticated && user) {
+      console.log(`User ${user.id} ${isFavorite ? 'removed' : 'added'} post ${post.property_id} to favorites`);
     } else {
       console.log('User not authenticated, show login modal');
-      setShowLoginModal(true);
     }
-  };
-
-  const handleReport = () => {
-    console.log('handleReport: user=', user, 'isLoading=', isLoading);
-    if (isLoading) {
-      console.log('Auth still loading');
-      return;
-    }
-    if (!user) {
-      console.log('No user authenticated, showing login modal');
-      setShowLoginModal(true);
-      return;
-    }
-    setReportsPostsModal(true);
   };
 
   const renderMedia = () => {
@@ -204,20 +189,11 @@ function PostPage() {
               <div className={styles.info}>
                 <div className={styles.titleWrapper}>
                   <h1 className={styles.title}>{post.title || 'Tin đăng không có tiêu đề'}</h1>
-                  <div className={styles.iconth}>
-                    <FontAwesomeIcon
-                      icon={faExclamationTriangle}
-                      className={styles.triangleexclamation}
-                      onClick={isLoading ? null : handleReport}
-                      aria-label="Báo cáo tin đăng"
-                    />
-                    <FontAwesomeIcon
-                      icon={faHeart}
-                      className={`${styles.heartIcon} ${isFavorite ? styles.favorite : ''}`}
-                      onClick={handleFavorite}
-                      aria-label={isFavorite ? 'Xóa khỏi yêu thích' : 'Thêm vào yêu thích'}
-                    />
-                  </div>
+                  <FaHeart
+                    className={`${styles.heartIcon} ${isFavorite ? styles.favorite : ''}`}
+                    onClick={handleFavorite}
+                    aria-label={isFavorite ? 'Xóa khỏi yêu thích' : 'Thêm vào yêu thích'}
+                  />
                 </div>
                 <div className={styles.summaryPriceArea}>
                   <p className={styles.summary}>{renderLocation()}</p>
@@ -271,6 +247,15 @@ function PostPage() {
                     </div>
                   </div>
                 </div>
+                {post.address.coordinates && (
+                  <div className={styles.mapSection}>
+                    <h3 className={styles.mapTitle}>Vị trí</h3>
+                    <GoogleMapComponent
+                      coordinates={post.address.coordinates}
+                      address={post.address.displayAddress}
+                    />
+                  </div>
+                )}
               </div>
             </div>
           )}
@@ -307,15 +292,9 @@ function PostPage() {
           </aside>
         )}
       </div>
-      <Modal isOpen={reportsPostsModal} onClose={() => setReportsPostsModal(false)}>
-        <ReportPosts propertyId={id} user_id={user?.user_id} isOpen={reportsPostsModal} onClose={() => setReportsPostsModal(false)} />
-      </Modal>
-      <Modal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)}>
-        <Login />
-      </Modal>
       <Footer />
     </div>
   );
 }
 
-export default PostPage;
+export default Preview;

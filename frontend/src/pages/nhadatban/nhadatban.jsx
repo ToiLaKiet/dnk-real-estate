@@ -1,9 +1,13 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import axios from 'axios';
 import Header from '../../components/ui/parts/header';
 import Footer from '../../components/ui/parts/footer';
-import { FaSearch } from 'react-icons/fa';
+import { FaSearch, FaBed, FaBath, FaPhone, FaHeart } from 'react-icons/fa';
 import '../../styles/NhaDatBan.css';
+import { AuthContext } from '../../components/ui/context/AuthContext'; // Assumed context
+import Login from '../../pages/login/Dangnhap1';
+import Modal from '../../components/ui/modal-reg-log.jsx';
 
 // Mock data
 const mockPosts = [
@@ -384,7 +388,7 @@ const mockPosts = [
 const dropdownOptions = {
   propertyTypes: [
     { value: '', label: 'Tất cả loại nhà đất' },
-    { value: 'shophouse', label: 'Shophouse'},
+    { value: 'shophouse', label: 'Shophouse' },
     { value: 'apartment', label: 'Căn hộ' },
     { value: 'land', label: 'Đất nền' },
     { value: 'villa', label: 'Villa' },
@@ -419,8 +423,8 @@ const dropdownOptions = {
 const NhaDatBan = () => {
   const navigate = useNavigate();
   const location = useLocation();
-
-  // Search filters state
+  const { user } = useContext(AuthContext);
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const [searchFilters, setSearchFilters] = useState({
     text: '',
     propertyType: '',
@@ -431,7 +435,26 @@ const NhaDatBan = () => {
 
   const [posts, setPosts] = useState(mockPosts);
   const [currentPage, setCurrentPage] = useState(1);
+  const [favorites, setFavorites] = useState({});
+  const [lengthOfdata, setLengthOfdata] = useState(0);
   const postsPerPage = 8;
+
+  // Fetch initial favorites
+  useEffect(() => {
+    if (user?.user_id) {
+      axios.get(`/favorites?user_id=${user.user_id}`)
+        .then((response) => {
+          const favoriteMap = {};
+          response.data.forEach((fav) => {
+            favoriteMap[fav.property_id] = true;
+          });
+          setFavorites(favoriteMap);
+        })
+        .catch((error) => {
+          console.error('Error fetching favorites:', error);
+        });
+    }
+  }, [user]);
 
   // Lấy query parameters từ URL
   useEffect(() => {
@@ -456,7 +479,6 @@ const NhaDatBan = () => {
   const { displayPosts, totalPages } = useMemo(() => {
     let filtered = posts.filter(post => post.type === 'nhadatban');
 
-    // Lọc theo text
     if (searchFilters.text.trim()) {
       filtered = filtered.filter(post =>
         post.title.toLowerCase().includes(searchFilters.text.toLowerCase()) ||
@@ -464,17 +486,14 @@ const NhaDatBan = () => {
       );
     }
 
-    // Lọc theo propertyType
     if (searchFilters.propertyType) {
       filtered = filtered.filter(post => post.property_type === searchFilters.propertyType);
     }
 
-    // Lọc theo province
     if (searchFilters.province) {
       filtered = filtered.filter(post => post.address.province === searchFilters.province);
     }
 
-    // Lọc theo area
     if (searchFilters.area) {
       filtered = filtered.filter(post => {
         const postArea = parseFloat(post.area);
@@ -489,7 +508,6 @@ const NhaDatBan = () => {
       });
     }
 
-    // Lọc theo price
     if (searchFilters.price) {
       filtered = filtered.filter(post => {
         const postPrice = parseFloat(post.price);
@@ -504,7 +522,6 @@ const NhaDatBan = () => {
       });
     }
 
-    // Phân trang
     const startIndex = (currentPage - 1) * postsPerPage;
     const endIndex = startIndex + postsPerPage;
     const paginated = filtered.slice(startIndex, endIndex);
@@ -535,141 +552,237 @@ const NhaDatBan = () => {
     navigate(`/postspage/${propertyId}`);
   };
 
+  // Handle favorite toggle
+  const handleFavoriteClick = async (propertyId) => {
+    if (!user?.user_id) {
+      alert('Vui lòng đăng nhập để thêm vào yêu thích!');
+      setShowLoginModal(true);
+      return;
+    }
+
+    const isCurrentlyFavorited = favorites[propertyId];
+    setFavorites((prev) => ({
+      ...prev,
+      [propertyId]: !isCurrentlyFavorited
+    }));
+
+    try {
+      if (isCurrentlyFavorited) {
+        await axios.delete('/favorites', {
+          data: { user_id: user.user_id, property_id: propertyId }
+        });
+      } else {
+        await axios.post('/favorites', {
+          property_id: propertyId,
+          user_id: user.user_id,
+          created: new Date().toISOString()
+        });
+      }
+    } catch (error) {
+      console.error('Error updating favorite:', error);
+      setFavorites((prev) => ({
+        ...prev,
+        [propertyId]: isCurrentlyFavorited
+      }));
+    }
+  };
+
+  // Truncate description
+  const truncateDescription = (text, maxWords) => {
+    if (!text) return '';
+    const words = text.split(/\s+/);
+    if (words.length <= maxWords) return text;
+    return words.slice(0, maxWords).join(' ') + '...';
+  };
+
+  // Get collage images
+  const getCollageImages = (images) => {
+    if (!images || images.length === 0) {
+      return [{ url: 'https://via.placeholder.com/600x400', isPlaceholder: true }];
+    }
+    const primary = images.find(img => img.is_primary);
+    const others = images.filter(img => !img.is_primary);
+    const selected = primary ? [primary, ...others.slice(0, 4)] : images.slice(0, 5);
+    return selected;
+  };
+
+  // Set length of data
+  useEffect(() => {
+    setLengthOfdata(displayPosts.length);
+  }, [displayPosts]);
+
   return (
     <div className="page-container">
       <Header />
-      <div className="nhadatban-search-engine-container">
-        <div className="nhadatban-search-engine">
-          <div className="search-bar">
-            <div className="input-wrapper">
-              <FaSearch className="search-logo" />
-              <input
-                type="text"
-                placeholder="Tìm kiếm bài đăng..."
-                className="search-input"
-                value={searchFilters.text}
-                onChange={(e) => handleFilterChange('text', e.target.value)}
-              />
-            </div>
-          </div>
-          <div className="ndb-filter-dropdowns">
-            <select
-              value={searchFilters.province}
-              onChange={(e) => handleFilterChange('province', e.target.value)}
-              className="ndb-filter-dropdown"
-            >
-              {dropdownOptions.provinces.map(option => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-            <select
-              value={searchFilters.propertyType}
-              onChange={(e) => handleFilterChange('propertyType', e.target.value)}
-              className="ndb-filter-dropdown"
-            >
-              {dropdownOptions.propertyTypes.map(option => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-            <select
-              value={searchFilters.price}
-              onChange={(e) => handleFilterChange('price', e.target.value)}
-              className="ndb-filter-dropdown"
-            >
-              {dropdownOptions.prices.map(option => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-            <select
-              value={searchFilters.area}
-              onChange={(e) => handleFilterChange('area', e.target.value)}
-              className="ndb-filter-dropdown"
-            >
-              {dropdownOptions.areas.map(option => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </div>
+      <div className="ndb-content">
+        <div className="ndb-title-box">
+          <h1 className="ndb-title">TRANG TỔNG HỢP CÁC BẤT ĐỘNG SẢN ĐƯỢC BÁN</h1>
+          <h2 className="ndb-des">Trên hệ thống đang có {lengthOfdata} bất động sản được bán.</h2>
         </div>
-      </div>
-
-      {/* Danh sách bài đăng */}
-      <div className="posts-list">
-        {displayPosts.length > 0 ? (
-          displayPosts.map(post => (
-            <div
-              key={post.property_id}
-              className="post-item"
-              onClick={() => handlePostClick(post.property_id)}
-            >
-              <div className="post-image-container">
-                <img
-                  src={post.media.images.find(img => img.is_primary)?.url || post.media.images[0]?.url || 'https://via.placeholder.com/600x400'}
-                  alt={post.title}
-                  className="post-image"
-                  loading="lazy"
+        <div className="nhadatban-search-engine-container">
+          <div className="nhadatban-search-engine">
+            <div className="search-bar">
+              <div className="input-wrapper">
+                <FaSearch className="search-logo" />
+                <input
+                  type="text"
+                  placeholder="Tìm kiếm bài đăng..."
+                  className="search-input"
+                  value={searchFilters.text}
+                  onChange={(e) => handleFilterChange('text', e.target.value)}
                 />
               </div>
-              <div className="post-content">
-                <h3 className="post-title">{post.title}</h3>
-                <p className="post-address">{post.address.displayAddress}</p>
-                <p className="post-details">
-                  Diện tích: {post.area}m² | Giá: {post.price} tỷ
-                </p>
-                <p className="post-description">{post.description}</p>
-              </div>
             </div>
-          ))
-        ) : (
-          <div className="no-posts">Không tìm thấy bài đăng phù hợp</div>
-        )}
-      </div>
-
-      {/* Phân trang */}
-      {totalPages > 1 && (
-        <div className="pagination">
-          {currentPage > 1 && (
-            <button onClick={() => goToPage(currentPage - 1)}>
-              &lt; Trước
-            </button>
-          )}
-          {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-            let pageNum;
-            if (totalPages <= 5) {
-              pageNum = i + 1;
-            } else if (currentPage <= 3) {
-              pageNum = i + 1;
-            } else if (currentPage >= totalPages - 2) {
-              pageNum = totalPages - 4 + i;
-            } else {
-              pageNum = currentPage - 2 + i;
-            }
-            return (
-              <button
-                key={pageNum}
-                onClick={() => goToPage(pageNum)}
-                className={currentPage === pageNum ? 'active' : ''}
+            <div className="ndb-filter-dropdowns">
+              <select
+                value={searchFilters.province}
+                onChange={(e) => handleFilterChange('province', e.target.value)}
+                className="ndb-filter-dropdown"
               >
-                {pageNum}
-              </button>
-            );
-          })}
-          {currentPage < totalPages && (
-            <button onClick={() => goToPage(currentPage + 1)}>
-              Sau &gt;
-            </button>
+                {dropdownOptions.provinces.map(option => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              <select
+                value={searchFilters.propertyType}
+                onChange={(e) => handleFilterChange('propertyType', e.target.value)}
+                className="ndb-filter-dropdown"
+              >
+                {dropdownOptions.propertyTypes.map(option => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              <select
+                value={searchFilters.price}
+                onChange={(e) => handleFilterChange('price', e.target.value)}
+                className="ndb-filter-dropdown"
+              >
+                {dropdownOptions.prices.map(option => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              <select
+                value={searchFilters.area}
+                onChange={(e) => handleFilterChange('area', e.target.value)}
+                className="ndb-filter-dropdown"
+              >
+                {dropdownOptions.areas.map(option => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* Danh sách bài đăng */}
+        <div className="posts-list">
+          {displayPosts.length > 0 ? (
+            displayPosts.map((post) => (
+              <div
+                key={post.property_id}
+                className="post-item"
+                onClick={() => handlePostClick(post.property_id)}
+              >
+                <div className="post-media">
+                  <div className={`media-collage media-collage-${getCollageImages(post.media.images).length}`}>
+                    {getCollageImages(post.media.images).map((img, index) => (
+                      <img
+                        key={index}
+                        src={img.url}
+                        alt={post.title}
+                        className={`collage-image collage-image-${index}`}
+                        loading="lazy"
+                      />
+                    ))}
+                  </div>
+                </div>
+                <div className="post-info">
+                  <h3>{post.title}</h3>
+                  <div className="post-details-row">
+                    <div className="post-details">
+                      <span>Giá: {post.price} tỷ</span>
+                      <span>Diện tích: {post.area}m²</span>
+                    </div>
+                    <div className="post-features">
+                      <span>
+                        <FaBed className="icon" /> Phòng ngủ: {post.features.bedrooms || 0}
+                      </span>
+                      <span>
+                        <FaBath className="icon" /> Phòng tắm: {post.features.bathrooms || 0}
+                      </span>
+                    </div>
+                  </div>
+                  <p className="post-description">{truncateDescription(post.description, 100)}</p>
+                </div>
+                <div className="card-bottom">
+                  {post.user_id && <span className="user-info">Đăng bởi: {post.user_id}</span>}
+                  <a href={`tel:${post.contact.phone}`} className="phone-button">
+                    <FaPhone className="phone-calling-icon" /> Gọi {post.contact.phone}
+                  </a>
+                  <FaHeart
+                    className={`favorite-icon ${favorites[post.property_id] ? 'favorited' : ''}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleFavoriteClick(post.property_id);
+                    }}
+                  />
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="no-posts">Không tìm thấy bài đăng phù hợp</div>
           )}
         </div>
-      )}
+
+        {/* Phân trang */}
+        {totalPages > 1 && (
+          <div className="pagination">
+            {currentPage > 1 && (
+              <button onClick={() => goToPage(currentPage - 1)}>
+                &lt; Trước
+              </button>
+            )}
+            {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+              let pageNum;
+              if (totalPages <= 5) {
+                pageNum = i + 1;
+              } else if (currentPage <= 3) {
+                pageNum = i + 1;
+              } else if (currentPage >= totalPages - 2) {
+                pageNum = totalPages - 4 + i;
+              } else {
+                pageNum = currentPage - 2 + i;
+              }
+              return (
+                <button
+                  key={pageNum}
+                  onClick={() => goToPage(pageNum)}
+                  className={currentPage === pageNum ? 'active' : ''}
+                >
+                  {pageNum}
+                </button>
+              );
+            })}
+            {currentPage < totalPages && (
+              <button onClick={() => goToPage(currentPage + 1)}>
+                Sau &gt;
+              </button>
+            )}
+          </div>
+        )}
+      </div>
       <Footer />
+      <Modal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)}>
+        <Login />
+      </Modal>
     </div>
   );
 };

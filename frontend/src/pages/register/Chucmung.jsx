@@ -13,8 +13,8 @@ function CongratsModal({ onClose }) {
         return () => clearTimeout(timer);
         }, [onClose]);
   return (
-    <div className="modal-overlay">
-      <div className="modal-content congrats-modal">
+    <div className="main-modal-overlay">
+      <div className="main-modal-content">
         <div className="register-container">
         <div className="register-left">
             <Logo className="App-logo" width={200} />

@@ -64,6 +64,7 @@ const ImageUploadModal = ({ isOpen, onClose, onSubmit }) => {
   };
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
+      <h2>Đăng tin bất động sản - Bước 2</h2>
       <div className={styles.imageUploadModal}>
         <h2>Hình ảnh</h2>
 
