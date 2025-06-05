@@ -87,8 +87,7 @@ function Login({onClose}) {
     }
 
     const payload = {
-      phone: formData.phone || '',
-      email: formData.email || '',
+      login : formData.phone || formData.email,
       password: formData.password,
     };
 
@@ -96,11 +95,7 @@ function Login({onClose}) {
 
     try {
       // Gọi hàm login từ AuthContext (đã được cập nhật ở phiên bản trước)
-        await login({
-        phone: formData.phone || '',
-        email: formData.email || '',
-        password: formData.password
-      }, () => onClose());
+        await login(payload, () => onClose());
 
     } catch (err) {
       setError(err.message || 'Đăng nhập thất bại. Vui lòng thử lại.');

@@ -4,9 +4,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faUpload,
   faPlus,
-  faImage,
-  faArrowsRotate,
-  faChevronDown
+  // faImage,
+  // faArrowsRotate,
+  // faChevronDown
 } from '@fortawesome/free-solid-svg-icons';
 import styles from '../../../styles/imageuploadmodal.module.css';
 
@@ -14,7 +14,7 @@ import styles from '../../../styles/imageuploadmodal.module.css';
 const ImageUploadModal = ({ isOpen, onClose, onSubmit }) => {
   const [images, setImages] = useState([]);
   const [videoUrl, setVideoUrl] = useState('');
-  const [expandedSection, setExpandedSection] = useState(null);
+  // const [expandedSection, setExpandedSection] = useState(null);
 
   // Xử lý upload hình ảnh
   const handleImageUpload = (e) => {
@@ -47,9 +47,9 @@ const ImageUploadModal = ({ isOpen, onClose, onSubmit }) => {
   };
 
   // Mở/đóng hướng dẫn
-  const toggleSection = (section) => {
-    setExpandedSection(expandedSection === section ? null : section);
-  };
+  // const toggleSection = (section) => {
+  //   setExpandedSection(expandedSection === section ? null : section);
+  // };
 
   // Xử lý submit dữ liệu
   const handleSubmit = (e) => {
@@ -57,7 +57,7 @@ const ImageUploadModal = ({ isOpen, onClose, onSubmit }) => {
     // Chuẩn bị dữ liệu media để gửi
     const mediaData = {
       images: images.map(img => img.preview),
-      videoUrl
+      videoUrl: videoUrl || null
     };
     // Gọi onSubmit với dữ liệu
     onSubmit({media : mediaData});
@@ -123,7 +123,7 @@ const ImageUploadModal = ({ isOpen, onClose, onSubmit }) => {
           </div>
         </div>
 
-        {/* Hướng dẫn đăng ảnh thường */}
+        {/* Hướng dẫn đăng ảnh thường
         <div className={styles.guideline}>
           <div
             className={styles.guidelineHeader}
@@ -139,7 +139,7 @@ const ImageUploadModal = ({ isOpen, onClose, onSubmit }) => {
         </div>
 
         {/* Hướng dẫn đăng ảnh 360° */}
-        <div className={styles.guideline}>
+        {/* <div className={styles.guideline}>
           <div
             className={styles.guidelineHeader}
             onClick={() => toggleSection('360')}
@@ -151,7 +151,7 @@ const ImageUploadModal = ({ isOpen, onClose, onSubmit }) => {
               className={`${styles.chevronIcon} ${expandedSection === '360' ? styles.expanded : ''}`}
             />
           </div>
-        </div>
+        </div>  */}
 
         {/* Nhập URL video */}
         <div className={styles.videoSection}>

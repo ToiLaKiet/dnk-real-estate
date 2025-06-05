@@ -36,15 +36,15 @@ function AccountTypeModal({ data, onSubmit, onClose }) {
               <div className="account-type-buttons">
                 <button
                     type="button"
-                    className={`account-type-button ${accountType === 'tenant' ? 'selected' : ''}`}
-                    onClick={() => setAccountType('tenant')}
+                    className={`account-type-button ${accountType === 'buyer' ? 'selected' : ''}`}
+                    onClick={() => setAccountType('buyer')}
                 >
                     Mua/Thuê Bất Động Sản
                 </button>
                 <button
                     type="button"
-                    className={`account-type-button ${accountType === 'landlord' ? 'selected' : ''}`}
-                    onClick={() => setAccountType('landlord')}
+                    className={`account-type-button ${accountType === 'seller' ? 'selected' : ''}`}
+                    onClick={() => setAccountType('seller')}
                 >
                     Bán/Cho Thuê Bất Động Sản
                 </button>

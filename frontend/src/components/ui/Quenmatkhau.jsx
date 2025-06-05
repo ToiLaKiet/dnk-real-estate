@@ -1,188 +1,108 @@
-import React, { useState } from 'react'; // Thư viện React và hook useState
-import '../../styles/reg.css'; // File CSS cho giao diện
-import Logo from '../../components/logo.js'; // Component Logo hiển thị logo ứng dụng
-import House from '../../components/house2.js'; // Component House hiển thị hình ngôi nhà
-import { FaUser } from 'react-icons/fa'; // Icon FaUser cho input số điện thoại/email
-import Otp from '../../components/ui/modal-otp.jsx'; // Component modal OTP
-import CongratsModal from '../../pages/login/Chucmungchoquenmk.jsx'; // Component modal chúc mừng
-import PasswordModal from '../../pages/register/PasswordCreationModal.jsx'; // Component modal nhập mật khẩu
+import React, { useState } from 'react';
+import '../../styles/reg.css';
+import Logo from '../../components/logo.js';
+import House from '../../components/house2.js';
+import { FaUser } from 'react-icons/fa';
+import Otp from '../../components/ui/modal-otp.jsx';
+import CongratsModal from '../../pages/login/Chucmungchoquenmk.jsx';
+import PasswordModal from '../../pages/register/PasswordCreationModal.jsx';
+import axios from 'axios';
 
 function Quenmatkhau({ onClose }) {
-  const [formData, setFormData] = useState({
-    phone: '',
-    email: '',
-  });
-  const [inputValue, setInputValue] = useState(''); // State để kiểm soát giá trị input
+  const [formData, setFormData] = useState({ phone: '' });
   const [isOtpModalOpen, setIsOtpModalOpen] = useState(false);
   const [isCongratsModalOpen, setIsCongratsModalOpen] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  // Xử lý thay đổi input số điện thoại hoặc email
+  // Chỉ xử lý số điện thoại
   const handleChange = (e) => {
     const { value } = e.target;
-    setInputValue(value);
-    if (value.includes('@')) {
-      setFormData({ phone: '', email: value });
-    } else {
-      setFormData({ phone: value, email: '' });
-    }
+    setFormData({ phone: value });
     setError('');
   };
 
-  // Xử lý gửi form để yêu cầu OTP
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
 
     const phoneRegex = /^0\d{9,10}$/;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!formData.phone && !formData.email) {
-      setError('Vui lòng nhập số điện thoại hoặc email.');
-      setIsLoading(false);
-      return;
-    }
-
-    if (formData.phone && !phoneRegex.test(formData.phone)) {
+    if (!formData.phone || !phoneRegex.test(formData.phone)) {
       setError('Số điện thoại không hợp lệ. Phải bắt đầu bằng 0 và có 10-11 số.');
       setIsLoading(false);
       return;
     }
 
-    if (formData.email && !emailRegex.test(formData.email)) {
-      setError('Email không hợp lệ.');
-      setIsLoading(false);
-      return;
-    }
-
-    const payload = {
-      phone: formData.phone || '',
-      email: formData.email || '',
-    };
-
-    console.log('Dữ liệu quên mật khẩu:', payload);
-
     try {
-      /*
-      const response = await fetch('http://your-api-endpoint/api/forgot-password', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-      const result = await response.json();
-      if (result.success) {
-        setIsOtpModalOpen(true);
-      } else {
-        setError(result.message || 'Không thể gửi OTP. Vui lòng thử lại.');
-        setIsLoading(false);
-        return;
-      }
-      */
-      // Giả lập thành công
+      const payload = {
+        target_type: "phone",
+        target: formData.phone,
+      };
+      const result = await axios.post('http://10.0.4.100:8080/otp/send-without-existence', payload);
+      console.log('Kết quả gửi yêu cầu:', result.data);
       setIsOtpModalOpen(true);
     } catch (error) {
       console.error('Lỗi khi gửi yêu cầu:', error);
+      alert(error.response?.data?.detail || 'Đã có lỗi xảy ra. Vui lòng thử lại.');
       setError('Đã có lỗi xảy ra. Vui lòng thử lại.');
-      setIsLoading(false);
-      return;
     }
     setIsLoading(false);
   };
 
-  // Xử lý xác nhận mã OTP
   const handleVerifyOtp = async (otpCode) => {
     setError('');
     setIsLoading(true);
 
     const payload = {
-      phone: formData.phone || '',
-      email: formData.email || '',
-      otp: otpCode,
+      target_type: 'phone',
+      target: formData.phone,
+      otp_code: otpCode,
     };
 
-    console.log('Dữ liệu OTP:', payload);
-
     try {
-      /*
-      const response = await fetch('http://your-api-endpoint/api/verify-otp', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-      const result = await response.json();
-      if (result.success) {
-        setIsOtpModalOpen(false);
-        setIsPasswordModalOpen(true);
-      } else {
-        setError(result.message || 'Mã OTP không hợp lệ.');
-        setIsLoading(false);
-        return;
-      }
-      */
-      // Giả lập thành công
+      // API xác thực OTP (bạn có thể gắn lại khi cần)
+      const result = await axios.post('http://10.0.4.100:8080/otp/verify', payload)
+      console.log('Kết quả xác thực OTP:', result.data);
       setIsOtpModalOpen(false);
       setIsPasswordModalOpen(true);
     } catch (error) {
-      console.error('Lỗi khi xác nhận OTP:', error);
-      setError('Đã có lỗi xảy ra. Vui lòng thử lại.');
-      setIsLoading(false);
-      return;
+      console.error('Lỗi xác thực OTP:', error);
+      alert(error.response?.data?.detail || 'Mã OTP không hợp lệ hoặc đã hết hạn.');
+      setError('Mã OTP không hợp lệ hoặc hết hạn.');
     }
     setIsLoading(false);
   };
 
-  // Xử lý gửi mật khẩu mới
   const handlePasswordSubmit = async (password) => {
     setError('');
     setIsLoading(true);
 
     const payload = {
-      phone: formData.phone || '',
-      email: formData.email || '',
-      password,
+      phone_number: formData.phone,
+      new_password: password,
     };
 
-    console.log('Dữ liệu mật khẩu:', payload);
-
     try {
-      /*
-      const response = await fetch('http://your-api-endpoint/api/reset-password', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-      const result = await response.json();
-      if (result.success) {
-        setTempPassword(password);
-        setIsPasswordModalOpen(false);
-        setIsCongratsModalOpen(true);
-      } else {
-        setError(result.message || 'Không thể cập nhật mật khẩu.');
-        setIsLoading(false);
-        return;
-      }
-      */
-      // Giả lập thành công
+      // API đặt lại mật khẩu (giả lập thành công)
+      const result = await axios.put('http://10.0.4.100:8080/users/change-password', payload)
+      console.log('Kết quả đặt lại mật khẩu:', result.data);
       setIsPasswordModalOpen(false);
       setIsCongratsModalOpen(true);
     } catch (error) {
-      console.error('Lỗi khi gửi mật khẩu:', error);
-      setError('Đã có lỗi xảy ra. Vui lòng thử lại.');
-      setIsLoading(false);
-      return;
+      console.error('Lỗi gửi mật khẩu:', error);
+      alert(error.response?.data?.detail || 'Không thể cập nhật mật khẩu. Vui lòng thử lại.');
+      setError('Không thể cập nhật mật khẩu.');
     }
     setIsLoading(false);
   };
 
-  // Xử lý đóng tất cả modal
   const handleCloseModal = () => {
     setIsOtpModalOpen(false);
     setIsPasswordModalOpen(false);
     setIsCongratsModalOpen(false);
-    setInputValue('');
+    setFormData({ phone: '' });
     onClose();
   };
 
@@ -197,18 +117,18 @@ function Quenmatkhau({ onClose }) {
       <div className="register-right">
         <p className="greeting">Chúc bạn một ngày tốt lành!</p>
         <h2><b>Đặt lại mật khẩu</b></h2>
-        <p>Nhập số điện thoại hoặc email để nhận mã OTP.</p>
+        <p>Nhập số điện thoại để nhận mã OTP.</p>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Số điện thoại hoặc Email</label>
+            <label>Số điện thoại</label>
             <div className="input-container">
               <FaUser style={{ transform: 'scaleX(-1)' }} className="avatar-icon" />
               <input
                 type="text"
                 name="phone"
-                value={inputValue}
+                value={formData.phone}
                 onChange={handleChange}
-                placeholder="SĐT chính hoặc Email"
+                placeholder="Nhập số điện thoại"
                 required
                 disabled={isLoading}
               />

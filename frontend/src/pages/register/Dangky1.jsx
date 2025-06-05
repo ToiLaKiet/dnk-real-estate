@@ -9,7 +9,7 @@ import Otp from '../../components/ui/modal-otp.jsx'; // Component modal OTP
 import PasswordModal from './PasswordCreationModal.jsx'; // Component modal nhập mật khẩu
 import AccountTypeModal from './AccountTypeModal.jsx'; // Component modal chọn loại tài khoản
 import CongratsModal from './Chucmung.jsx'; // Component modal chúc mừng
-
+import axios from 'axios'; // Thư viện axios để gửi yêu cầu HTTP
 // Đăng ký tài khoản mới
 function Register() {
   const [formData, setFormData] = useState({
@@ -29,88 +29,70 @@ function Register() {
     setFormData({ ...formData, [name]: value });
     setError('');
   };
-
-  // Xử lý gửi form để yêu cầu OTP
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
     setIsLoading(true);
-
+  
     const phoneRegex = /^0\d{9,10}$/;
     if (!phoneRegex.test(formData.phone)) {
       setError('Số điện thoại không hợp lệ. Phải bắt đầu bằng 0 và có 10-11 số.');
       setIsLoading(false);
       return;
     }
-
-    const payload = { phone: formData.phone };
-    console.log('Dữ liệu đăng ký:', payload);
-
+  
     try {
-      /*
-      const response = await fetch('http://your-api-endpoint/api/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-      const result = await response.json();
-      if (result.success) {
-        setIsOtpModalOpen(true);
-      } else {
-        setError(result.message || 'Không thể gửi OTP.');
-        setIsLoading(false);
-        return;
-      }
-      */
-      // Giả lập thành công
+      const payload = {
+        target_type: "phone",
+        target: formData.phone,
+      };
+  
+      const result = await axios.post('http://10.0.4.100:8080/otp/send', payload);
+      console.log('Kết quả gửi OTP:', result.data);
+  
+      // Nếu không có lỗi, mở modal OTP
       setIsOtpModalOpen(true);
     } catch (error) {
-      console.error('Lỗi khi gửi yêu cầu:', error);
-      setError('Đã có lỗi xảy ra. Vui lòng thử lại.');
-      setIsLoading(false);
-      return;
+      console.error('Lỗi khi gửi yêu cầu:', error.response?.data?.detail || error);
+      alert(error.response?.data?.detail || 'Đã có lỗi xảy ra. Vui lòng thử lại.');
     }
+  
     setIsLoading(false);
   };
-
+  
   // Xử lý xác nhận mã OTP
   const handleVerifyOtp = async (otpCode) => {
     setError('');
     setIsLoading(true);
+  
     const payload = {
-      phone: formData.phone,
-      otp: otpCode,
+      target_type: 'phone',
+      target: formData.phone,
+      otp_code: otpCode,
     };
+  
     console.log('Dữ liệu OTP:', payload);
-
+  
     try {
-      /*
-      const response = await fetch('http://your-api-endpoint/api/verify-otp', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-      const result = await response.json();
-      if (result.success) {
+      const otp_recieved = await axios.post('http://10.0.4.100:8080/otp/verify', payload);
+      console.log('Kết quả xác nhận OTP:', otp_recieved);
+      // ✅ Use .data.detail, not .detail directly
+      if (otp_recieved.data) {
         setIsOtpModalOpen(false);
         setIsPasswordModalOpen(true);
-      } else {
-        setError(result.message || 'Mã OTP không hợp lệ.');
-        setIsLoading(false);
-        return;
       }
-      */
-      // Giả lập thành công
-      setIsOtpModalOpen(false);
-      setIsPasswordModalOpen(true);
     } catch (error) {
-      console.error('Lỗi khi xác nhận OTP:', error);
-      setError('Đã có lỗi xảy ra. Vui lòng thử lại.');
+      console.error('Lỗi khi xác nhận OTP:', error.response.data.detail || error);
+      alert(error.response.data.detail)
+      // Nếu có lỗi, hiển thị thông báo lỗi
+
       setIsLoading(false);
       return;
     }
+  
     setIsLoading(false);
   };
+  
 
   // Xử lý gửi mật khẩu
   const handlePasswordSubmit = async (password) => {
@@ -129,48 +111,51 @@ function Register() {
     setIsLoading(false);
   };
 
-  // Xử lý chọn loại tài khoản
   const handleAccountTypeSubmit = async (accountType) => {
     setError('');
     setIsLoading(true);
+    
     console.log('Dữ liệu đăng ký hoàn tất:', {
-      phone: formData.phone,
+      phone_number: formData.phone,
+      role: accountType,
       password: tempPassword,
-      accountType,
     });
-
+  
     try {
-      /*
-      const response = await fetch('http://your-api-endpoint/api/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          phone: formData.phone,
+      const response = await axios.post(
+        'http://10.0.4.100:8080/users/register',
+        {
+          phone_number: formData.phone,
+          role: accountType,
           password: tempPassword,
-          accountType,
-        }),
-      });
-      const result = await response.json();
-      if (result.success) {
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      const result = response.data;
+      console.log('Kết quả đăng ký:', result);
+  
+      if (result.detail === undefined || result.detail === null) {
         setIsAccountTypeModalOpen(false);
         setIsCongratsModalOpen(true);
       } else {
-        setError(result.message || 'Đăng ký thất bại.');
+        alert(result.detail.message || 'Đăng ký thất bại.');
         setIsLoading(false);
         return;
       }
-      */
-      // Giả lập thành công
-      setIsAccountTypeModalOpen(false);
-      setIsCongratsModalOpen(true);
     } catch (error) {
-      console.error('Lỗi đăng ký:', error);
-      setError('Đã có lỗi xảy ra. Vui lòng thử lại.');
+      console.error('Lỗi đăng ký:', error.response?.data?.detail?.message );
+      alert(error.response?.data?.detail?.message || 'Đăng ký thất bại.');
       setIsLoading(false);
       return;
     }
+  
     setIsLoading(false);
   };
+  
 
   // Xử lý đóng tất cả modal
   const handleCloseModal = () => {

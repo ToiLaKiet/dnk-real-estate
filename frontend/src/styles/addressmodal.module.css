@@ -1,4 +1,4 @@
-.addressModal {
+.amAddressModal {
   padding: 10px;
   padding-bottom: 20px;
   display: flex;
@@ -6,11 +6,11 @@
   width: 100%;
   max-width: auto;
   font-family: 'Be Vietnam Pro', sans-serif;
-  overflow-x:auto;
-  overflow-y:auto
+  overflow-x: auto;
+  overflow-y: auto;
 }
 
-.addressModal h2 {
+.amAddressModal h2 {
   font-family: 'Be Vietnam Pro', sans-serif;
   font-weight: 700;
   font-size: 24px;
@@ -18,14 +18,14 @@
   margin-bottom: 24px;
 }
 
-.formGroup {
+.amFormGroup {
   display: flex;
   flex-direction: column;
   gap: 16px;
   margin-bottom: 20px;
 }
 
-.formGroup label {
+.amFormGroup label {
   display: block;
   font-family: 'Be Vietnam Pro', sans-serif;
   font-weight: 600;
@@ -34,51 +34,51 @@
   padding: 5px;
 }
 
-.formGroup input,
-.formGroup select {
+.amFormGroup input,
+.amFormGroup select {
   width: 100%;
   padding: 10px 12px;
   margin-top: 4px;
   border: 1px solid #d1d5db;
   border-radius: 6px;
   font-family: 'Be Vietnam Pro', sans-serif;
-  font-weight: 400;
+  font-weight: normal;
   font-size: 16px;
   color: #1f2937;
-  background-color: #ffffff;
+  background-color: inherit;
   transition: all 0.2s ease-in-out;
 }
 
-.formGroup select {
-  padding: 10px 32px 10px 12px;
+.amFormGroup select {
+  padding: 8px 32px 8px 12px;
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none' stroke='%23005f73' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='1 4 6 9 11 4'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none' stroke='%23005f71' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='1 4 6 9 11 4'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 12px center;
 }
 
-.formGroup input:hover,
-.formGroup select:hover {
+.amFormGroup input:hover,
+.amFormGroup select:hover {
   border-color: #9ca3af;
   background-color: #f9fafb;
 }
 
-.formGroup input:focus,
-.formGroup select:focus {
+.amFormGroup input:focus,
+.amFormGroup select:focus {
   outline: none;
-  border-color: #005f73;
-  box-shadow: 0 0 0 3px rgba(0, 95, 115, 0.2);
+  border-color: #005f71;
+  box-shadow: 0 0 0 4px rgba(0, 95, 113, 0.2);
 }
 
-.buttons {
+.amButtons {
   margin-top: 20px;
   display: flex;
   gap: 12px;
 }
 
-.confirmButton {
-  background-color: #005f73;
-  color: #ffffff;
+.amConfirmButton {
+  background-color: #0056b3;
+  color: white;
   padding: 12px 24px;
   border: none;
   border-radius: 8px;
@@ -89,11 +89,11 @@
   transition: background-color 0.2s ease-in-out;
 }
 
-.confirmButton:hover {
-  background-color: #014f5f;
+.amConfirmButton:hover {
+  background-color: #003d82;
 }
 
-.backButton {
+.amBackButton {
   background-color: #e5e7eb;
   color: #374151;
   padding: 12px 24px;
@@ -106,6 +106,13 @@
   transition: all 0.2s ease-in-out;
 }
 
-.backButton:hover {
+.amBackButton:hover {
   background-color: #d1d5db;
+}
+
+.amError {
+  color: #dc2626;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
 }

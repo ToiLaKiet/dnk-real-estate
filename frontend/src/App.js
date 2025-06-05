@@ -18,6 +18,7 @@ import SearchBar3 from './assets/SearchBar-3.png'; // Import SearchBar3 image
 import SearchBar4 from './assets/SearchBar-4.png'; // Import SearchBar3 image
 import PostCreate from './components/ui/postcreate/postcreate.jsx';
 import TinTuc  from './pages/news/tintuc.jsx';
+import UserDashboard from './pages/userdashboard/userdashboard.jsx';
 function App() {
   const seUseCase = {
     all:1,
@@ -81,6 +82,7 @@ function App() {
       <Route path="/post-create" element={<PostCreate />} /> {/* Trang đăng bài */}
       <Route path="/nha-dat-cho-thue" element={<NhaDatChoThue />} /> {/* Trang dự án */}
       <Route path="/tin-tuc" element={<TinTuc />} /> {/* Trang dự án */}
+      <Route path="/profile" element={<UserDashboard />} /> {/* Trang dự án */}
     </Routes>
     </AuthProvider>
   );

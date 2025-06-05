@@ -106,21 +106,17 @@ function Header({ logoWidth = 180, logoHeight = 72 }) {
             </button>
             <div className={styles.avatarContainer} ref={dropdownRef}>
               <img
-                src={user?.avatar || 'https://via.placeholder.com/40'}
+                src={user?.avatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'}
                 alt="User Avatar"
                 className={styles.avatar}
                 onClick={toggleDropdown}
               />
+              
               {isDropdownOpen && (
                 <ul className={styles.dropdown}>
                   <li>
                     <Link to="/profile" onClick={() => setIsDropdownOpen(false)}>
-                      Trang cá nhân
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/my-posts" onClick={() => setIsDropdownOpen(false)}>
-                      Bài đăng của tôi
+                      Quản lý tài khoản
                     </Link>
                   </li>
                   <li>

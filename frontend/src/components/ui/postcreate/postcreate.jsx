@@ -34,7 +34,7 @@ const PostCreate = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    type: '',
+    type: '', // done
     address: {
       province: '',
       district: '',

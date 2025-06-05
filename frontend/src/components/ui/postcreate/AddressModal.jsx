@@ -1,24 +1,182 @@
+// import React, { useState, useEffect, useCallback } from 'react';
+// import Modal from '../modal-reg-log';
+// import axios from 'axios';
+// import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+// import styles from '../../../styles/addressmodal.module.css';
+
+// const provinces = [
+//   "Hà Nội", "Hà Giang", "Cao Bằng", "Bắc Kạn", "Tuyên Quang", "Lào Cai",
+//   "Điện Biên", "Lai Châu", "Sơn La", "Yên Bái", "Hoà Bình", "Thái Nguyên",
+//   "Lạng Sơn", "Quảng Ninh", "Bắc Giang", "Phú Thọ", "Vĩnh Phúc", "Bắc Ninh",
+//   "Hải Dương", "Hải Phòng", "Hưng Yên", "Thái Bình", "Hà Nam", "Nam Định",
+//   "Ninh Bình", "Thanh Hóa", "Nghệ An", "Hà Tĩnh", "Quảng Bình", "Quảng Trị",
+//   "Thừa Thiên Huế", "Đà Nẵng", "Quảng Nam", "Quảng Ngãi", "Bình Định", "Phú Yên",
+//   "Khánh Hòa", "Ninh Thuận", "Bình Thuận", "Kon Tum", "Gia Lai", "Đắk Lắk",
+//   "Đắk Nông", "Lâm Đồng", "Bình Phước", "Tây Ninh", "Bình Dương", "Đồng Nai",
+//   "Bà Rịa - Vũng Tàu", "Hồ Chí Minh", "Long An", "Tiền Giang", "Bến Tre",
+//   "Trà Vinh", "Vĩnh Long", "Đồng Tháp", "An Giang", "Kiên Giang", "Cần Thơ",
+//   "Hậu Giang", "Sóc Trăng", "Bạc Liêu", "Cà Mau"
+// ];
+
+// const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
+
+// const AddressModal = ({ isOpen, onClose, onSubmit }) => {
+//   const [tempAddress, setTempAddress] = useState({
+//     province: '',
+//     district: '',
+//     ward: '',
+//     street: '',
+//     project: '',
+//     houseNumber: '', // Thay displayAddress bằng houseNumber
+//     displayAddress: '', // Vẫn giữ displayAddress để lưu giá trị gộp
+//     coordinates: { lat: 16.047079, lng: 108.206230 } // Mặc định trung tâm Đà Nẵng
+//   });
+//   const [coordinates, setCoordinates] = useState({ lat: 16.047079, lng: 108.206230 });
+//   const [mapVisible, setMapVisible] = useState(false);
+//   const [error, setError] = useState(null);
+
+//   // Hàm gộp các trường thành displayAddress
+//   const generateDisplayAddress = useCallback(() => {
+//     const parts = [
+//       tempAddress.houseNumber,
+//       tempAddress.street,
+//       tempAddress.ward,
+//       tempAddress.district,
+//       tempAddress.province
+//     ].filter(part => part); // Loại bỏ các trường rỗng
+//     return parts.join(', ');
+//   }, [tempAddress.houseNumber, tempAddress.street, tempAddress.ward, tempAddress.district, tempAddress.province]);
+
+//   // Cập nhật displayAddress khi các trường liên quan thay đổi
+//   useEffect(() => {
+//     setTempAddress((prev) => ({
+//       ...prev,
+//       displayAddress: generateDisplayAddress()
+//     }));
+//   }, [tempAddress.houseNumber, tempAddress.street, tempAddress.ward, tempAddress.district, tempAddress.province, generateDisplayAddress]);
+
+//   // Lấy tọa độ từ Google Maps API
+//   const fetchCoordinates = useCallback(async () => {
+//     setError(null);
+//     const address = generateDisplayAddress();
+//     if (!address) return; // Không gọi API nếu địa chỉ rỗng
+//     try {
+//       const response = await axios.get(
+//         `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${GOOGLE_MAPS_API_KEY}`
+//       );
+//       if (response.data.results.length > 0) {
+//         const { lat, lng } = response.data.results[0].geometry.location;
+//         setCoordinates({ lat, lng });
+//         setTempAddress((prev) => ({ ...prev, coordinates: { lat, lng } }));
+//         setMapVisible(true);
+//       } else {
+//         setError('Không tìm thấy tọa độ cho địa chỉ này.');
+//       }
+//     } catch (error) {
+//       setError('Lỗi khi lấy tọa độ. Vui lòng thử lại.');
+//       console.error('Error fetching coordinates:', error);
+//     }
+//   }, [generateDisplayAddress]);
+
+//   // Gọi fetchCoordinates khi các trường địa chỉ thay đổi
+//   useEffect(() => {
+//     if (tempAddress.houseNumber || tempAddress.street || tempAddress.ward || tempAddress.district || tempAddress.province) {
+//       fetchCoordinates();
+//     }
+//   }, [tempAddress.houseNumber, tempAddress.street, tempAddress.ward, tempAddress.district, tempAddress.province, fetchCoordinates]);
+
+//   const handleChange = (e) => {
+//     const { name, value } = e.target;
+//     setTempAddress((prev) => ({ ...prev, [name]: value }));
+//   };
+
+//   const handleConfirm = () => {
+//     if (!tempAddress.province || !tempAddress.district || !tempAddress.ward || !tempAddress.houseNumber) {
+//       setError('Vui lòng nhập đầy đủ các trường bắt buộc.');
+//       return;
+//     }
+//     onSubmit({ address: tempAddress });
+//     onClose();
+//   };
+
+//   const handleMarkerDragEnd = (event) => {
+//     const newCoords = {
+//       lat: event.latLng.lat(),
+//       lng: event.latLng.lng()
+//     };
+//     setCoordinates(newCoords);
+//     setTempAddress((prev) => ({ ...prev, coordinates: newCoords }));
+//   };
+
+//   return (
+//     <Modal isOpen={isOpen} onClose={onClose}>
+//       <div className={styles.addressModal}>
+//         <h2>Nhập địa chỉ</h2>
+//         {error && <div className={styles.error}>{error}</div>}
+//         <div className={styles.formGroup}>
+//           <label>
+//             Tỉnh/Thành
+//             <select name="province" value={tempAddress.province} onChange={handleChange} required>
+//               <option value="">Chọn tỉnh/thành</option>
+//               {provinces.map((province) => (
+//                 <option key={province} value={province}>
+//                   {province}
+//                 </option>
+//               ))}
+//             </select>
+//           </label>
+//           <label>
+//             Quận/Huyện
+//             <input type="text" name="district" value={tempAddress.district} onChange={handleChange} required />
+//           </label>
+//           <label>
+//             Phường/Xã
+//             <input type="text" name="ward" value={tempAddress.ward} onChange={handleChange} required />
+//           </label>
+//           <label>
+//             Đường/Phố
+//             <input type="text" name="street" value={tempAddress.street} onChange={handleChange} />
+//           </label>
+//           <label>
+//             Dự án
+//             <input type="text" name="project" value={tempAddress.project} onChange={handleChange} />
+//           </label>
+//           <label>
+//             Số nhà
+//             <input type="text" name="houseNumber" value={tempAddress.houseNumber} onChange={handleChange} required />
+//           </label>
+//         </div>
+
+//         {mapVisible && coordinates && (
+//           <LoadScript googleMapsApiKey={GOOGLE_MAPS_API_KEY}>
+//             <GoogleMap mapContainerStyle={{ height: '300px', width: '100%' }} center={coordinates} zoom={15}>
+//               <Marker position={coordinates} draggable onDragEnd={handleMarkerDragEnd} />
+//             </GoogleMap>
+//           </LoadScript>
+//         )}
+
+//         <div className={styles.buttons}>
+//           <button onClick={handleConfirm} className={styles.confirmButton}>
+//             Xác nhận
+//           </button>
+//           <button onClick={onClose} className={styles.backButton}>
+//             Quay lại
+//           </button>
+//         </div>
+//       </div>
+//     </Modal>
+//   );
+// };
+
+// export default AddressModal;
 import React, { useState, useEffect, useCallback } from 'react';
 import Modal from '../modal-reg-log';
 import axios from 'axios';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import styles from '../../../styles/addressmodal.module.css';
 
-const provinces = [
-  "Hà Nội", "Hà Giang", "Cao Bằng", "Bắc Kạn", "Tuyên Quang", "Lào Cai",
-  "Điện Biên", "Lai Châu", "Sơn La", "Yên Bái", "Hoà Bình", "Thái Nguyên",
-  "Lạng Sơn", "Quảng Ninh", "Bắc Giang", "Phú Thọ", "Vĩnh Phúc", "Bắc Ninh",
-  "Hải Dương", "Hải Phòng", "Hưng Yên", "Thái Bình", "Hà Nam", "Nam Định",
-  "Ninh Bình", "Thanh Hóa", "Nghệ An", "Hà Tĩnh", "Quảng Bình", "Quảng Trị",
-  "Thừa Thiên Huế", "Đà Nẵng", "Quảng Nam", "Quảng Ngãi", "Bình Định", "Phú Yên",
-  "Khánh Hòa", "Ninh Thuận", "Bình Thuận", "Kon Tum", "Gia Lai", "Đắk Lắk",
-  "Đắk Nông", "Lâm Đồng", "Bình Phước", "Tây Ninh", "Bình Dương", "Đồng Nai",
-  "Bà Rịa - Vũng Tàu", "Hồ Chí Minh", "Long An", "Tiền Giang", "Bến Tre",
-  "Trà Vinh", "Vĩnh Long", "Đồng Tháp", "An Giang", "Kiên Giang", "Cần Thơ",
-  "Hậu Giang", "Sóc Trăng", "Bạc Liêu", "Cà Mau"
-];
-
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
+const CACHE_KEY = 'provinces_cache';
 
 const AddressModal = ({ isOpen, onClose, onSubmit }) => {
   const [tempAddress, setTempAddress] = useState({
@@ -26,40 +184,43 @@ const AddressModal = ({ isOpen, onClose, onSubmit }) => {
     district: '',
     ward: '',
     street: '',
-    project: '',
-    houseNumber: '', // Thay displayAddress bằng houseNumber
-    displayAddress: '', // Vẫn giữ displayAddress để lưu giá trị gộp
-    coordinates: { lat: 16.047079, lng: 108.206230 } // Mặc định trung tâm Đà Nẵng
+    houseNumber: '',
+    displayAddress: '',
+    coordinates: { lat: 16.047079, lng: 108.206230 } // Default: Đà Nẵng
   });
   const [coordinates, setCoordinates] = useState({ lat: 16.047079, lng: 108.206230 });
+  const [provinceName, setProvinceName] = useState('');
+  const [districtName, setDistrictName] = useState('');
+  const [wardName, setWardName] = useState('');
+  const [provinces, setProvinces] = useState([]);
+  const [districts, setDistricts] = useState([]);
+  const [wards, setWards] = useState([]);
+  const [isLoading, setIsLoading] = useState({ province: false, district: false, ward: false });
+  const [errors, setErrors] = useState({});
   const [mapVisible, setMapVisible] = useState(false);
-  const [error, setError] = useState(null);
 
-  // Hàm gộp các trường thành displayAddress
+  // Generate displayAddress from names
   const generateDisplayAddress = useCallback(() => {
     const parts = [
       tempAddress.houseNumber,
       tempAddress.street,
-      tempAddress.ward,
-      tempAddress.district,
-      tempAddress.province
-    ].filter(part => part); // Loại bỏ các trường rỗng
+      wardName,
+      districtName,
+      provinceName
+    ].filter(part => part);
     return parts.join(', ');
-  }, [tempAddress.houseNumber, tempAddress.street, tempAddress.ward, tempAddress.district, tempAddress.province]);
+  }, [tempAddress.houseNumber, tempAddress.street, wardName, districtName, provinceName]);
 
-  // Cập nhật displayAddress khi các trường liên quan thay đổi
+  // Update displayAddress
   useEffect(() => {
-    setTempAddress((prev) => ({
-      ...prev,
-      displayAddress: generateDisplayAddress()
-    }));
-  }, [tempAddress.houseNumber, tempAddress.street, tempAddress.ward, tempAddress.district, tempAddress.province, generateDisplayAddress]);
-
-  // Lấy tọa độ từ Google Maps API
-  const fetchCoordinates = useCallback(async () => {
-    setError(null);
     const address = generateDisplayAddress();
-    if (!address) return; // Không gọi API nếu địa chỉ rỗng
+    setTempAddress(prev => ({ ...prev, displayAddress: address }));
+  }, [generateDisplayAddress]);
+
+  // Fetch coordinates from Google Maps API
+  const fetchCoordinates = useCallback(async () => {
+    const address = generateDisplayAddress();
+    if (!address) return;
     try {
       const response = await axios.get(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${GOOGLE_MAPS_API_KEY}`
@@ -67,36 +228,129 @@ const AddressModal = ({ isOpen, onClose, onSubmit }) => {
       if (response.data.results.length > 0) {
         const { lat, lng } = response.data.results[0].geometry.location;
         setCoordinates({ lat, lng });
-        setTempAddress((prev) => ({ ...prev, coordinates: { lat, lng } }));
+        setTempAddress(prev => ({ ...prev, coordinates: { lat, lng } }));
         setMapVisible(true);
       } else {
-        setError('Không tìm thấy tọa độ cho địa chỉ này.');
+        setErrors(prev => ({ ...prev, coordinates: 'Không tìm thấy tọa độ cho địa chỉ này.' }));
       }
     } catch (error) {
-      setError('Lỗi khi lấy tọa độ. Vui lòng thử lại.');
+      setErrors(prev => ({ ...prev, coordinates: 'Lỗi khi lấy tọa độ. Vui lòng thử lại.' }));
       console.error('Error fetching coordinates:', error);
     }
   }, [generateDisplayAddress]);
 
-  // Gọi fetchCoordinates khi các trường địa chỉ thay đổi
+  // Trigger fetchCoordinates after houseNumber change, if no errors
   useEffect(() => {
-    if (tempAddress.houseNumber || tempAddress.street || tempAddress.ward || tempAddress.district || tempAddress.province) {
+    if (tempAddress.houseNumber && tempAddress.province && tempAddress.district && tempAddress.ward && tempAddress.street) {
       fetchCoordinates();
     }
-  }, [tempAddress.houseNumber, tempAddress.street, tempAddress.ward, tempAddress.district, tempAddress.province, fetchCoordinates]);
+  }, [tempAddress.houseNumber, fetchCoordinates]);
+
+  // Fetch provinces from cache or backend
+  useEffect(() => {
+    const fetchProvinces = async () => {
+      const cached = localStorage.getItem(CACHE_KEY);
+      if (cached) {
+        setProvinces(JSON.parse(cached));
+        return;
+      }
+      setIsLoading(prev => ({ ...prev, province: true }));
+      try {
+        const response = await axios.get('http://10.0.4.100:8080/locations/?type=province&parent_id=null');
+        const data = response.data;
+        setProvinces(data.map(({ location_id, name }) => ({ location_id, name })));
+        localStorage.setItem(CACHE_KEY, JSON.stringify(data));
+        setErrors(prev => ({ ...prev, province: null }));
+      } catch (error) {
+        setErrors(prev => ({ ...prev, province: 'Failed to load provinces. Please try again.' }));
+        console.error('Error fetching provinces:', error);
+      } finally {
+        setIsLoading(prev => ({ ...prev, province: false }));
+      }
+    };
+    fetchProvinces();
+  }, []);
+
+  // Fetch districts when province changes
+  useEffect(() => {
+    if (!tempAddress.province) {
+      setDistricts([]);
+      setWards([]);
+      setTempAddress(prev => ({ ...prev, district: '', ward: '', street: '', houseNumber: '' }));
+      setDistrictName('');
+      setWardName('');
+      return;
+    }
+    const fetchDistricts = async () => {
+      setIsLoading(prev => ({ ...prev, district: true }));
+      try {
+        const response = await axios.get(`http://10.0.4.100:8080/locations/?type=district&parent_id=${tempAddress.province}`);
+        const data = response.data;
+        setDistricts(data.map(({ location_id, name }) => ({ location_id, name })));
+        setErrors(prev => ({ ...prev, district: data.length ? null : 'No districts available.' }));
+      } catch (error) {
+        setErrors(prev => ({ ...prev, district: 'Failed to load districts. Please try again.' }));
+        console.error('Error fetching districts:', error);
+      } finally {
+        setIsLoading(prev => ({ ...prev, district: false }));
+      }
+    };
+    fetchDistricts();
+  }, [tempAddress.province]);
+
+  // Fetch wards when district changes
+  useEffect(() => {
+    if (!tempAddress.district) {
+      setWards([]);
+      setTempAddress(prev => ({ ...prev, ward: '', street: '', houseNumber: '' }));
+      setWardName('');
+      return;
+    }
+    const fetchWards = async () => {
+      setIsLoading(prev => ({ ...prev, ward: true }));
+      try {
+        const response = await axios.get(`http://10.0.4.100:8080/locations/?type=ward&parent_id=${tempAddress.district}`);
+        const data = response.data;
+        setWards(data.map(({ location_id, name }) => ({ location_id, name })));
+        setErrors(prev => ({ ...prev, ward: data.length ? null : 'No wards available.' }));
+      } catch (error) {
+        setErrors(prev => ({ ...prev, ward: 'Failed to load wards. Please try again.' }));
+        console.error('Error fetching wards:', error);
+      } finally {
+        setIsLoading(prev => ({ ...prev, ward: false }));
+      }
+    };
+    fetchWards();
+  }, [tempAddress.district]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setTempAddress((prev) => ({ ...prev, [name]: value }));
+    setTempAddress(prev => ({ ...prev, [name]: value }));
+    // Update names based on selection
+    if (name === 'province') {
+      const selected = provinces.find(p => p.location_id === value);
+      setProvinceName(selected ? selected.name : '');
+    } else if (name === 'district') {
+      const selected = districts.find(d => d.location_id === value);
+      setDistrictName(selected ? selected.name : '');
+    } else if (name === 'ward') {
+      const selected = wards.find(w => w.location_id === value);
+      setWardName(selected ? selected.name : '');
+    }
   };
 
   const handleConfirm = () => {
-    if (!tempAddress.province || !tempAddress.district || !tempAddress.ward || !tempAddress.houseNumber) {
-      setError('Vui lòng nhập đầy đủ các trường bắt buộc.');
-      return;
+    const newErrors = {};
+    if (!tempAddress.province) newErrors.province = 'Please select province';
+    if (!tempAddress.district) newErrors.district = 'Please select district';
+    if (!tempAddress.ward) newErrors.ward = 'Please select ward';
+    if (!tempAddress.street) newErrors.street = 'Please enter street';
+    if (!tempAddress.houseNumber) newErrors.houseNumber = 'Please enter house number';
+    setErrors(newErrors);
+    if (Object.keys(newErrors).length === 0) {
+      onSubmit({ address: tempAddress });
+      onClose();
     }
-    onSubmit({ address: tempAddress });
-    onClose();
   };
 
   const handleMarkerDragEnd = (event) => {
@@ -105,45 +359,89 @@ const AddressModal = ({ isOpen, onClose, onSubmit }) => {
       lng: event.latLng.lng()
     };
     setCoordinates(newCoords);
-    setTempAddress((prev) => ({ ...prev, coordinates: newCoords }));
+    setTempAddress(prev => ({ ...prev, coordinates: newCoords }));
   };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <div className={styles.addressModal}>
+      <div className={styles.amAddressModal}>
         <h2>Nhập địa chỉ</h2>
-        {error && <div className={styles.error}>{error}</div>}
-        <div className={styles.formGroup}>
+        <div className={styles.amFormGroup}>
           <label>
             Tỉnh/Thành
-            <select name="province" value={tempAddress.province} onChange={handleChange} required>
-              <option value="">Chọn tỉnh/thành</option>
-              {provinces.map((province) => (
-                <option key={province} value={province}>
-                  {province}
+            <select
+              name="province"
+              value={tempAddress.province}
+              onChange={handleChange}
+              disabled={isLoading.province}
+            >
+              <option value="">Choose province</option>
+              {provinces.map(({ location_id, name }) => (
+                <option key={location_id} value={location_id}>
+                  {name}
                 </option>
               ))}
             </select>
+            {isLoading.province && <span>Loading...</span>}
+            {errors.province && <span className={styles.amError}>{errors.province}</span>}
           </label>
           <label>
             Quận/Huyện
-            <input type="text" name="district" value={tempAddress.district} onChange={handleChange} required />
+            <select
+              name="district"
+              value={tempAddress.district}
+              onChange={handleChange}
+              disabled={!tempAddress.province || isLoading.district || !districts.length}
+            >
+              <option value="">Choose district</option>
+              {districts.map(({ location_id, name }) => (
+                <option key={location_id} value={location_id}>
+                  {name}
+                </option>
+              ))}
+            </select>
+            {isLoading.district && <span>Loading...</span>}
+            {errors.district && <span className={styles.amError}>{errors.district}</span>}
           </label>
           <label>
             Phường/Xã
-            <input type="text" name="ward" value={tempAddress.ward} onChange={handleChange} required />
+            <select
+              name="ward"
+              value={tempAddress.ward}
+              onChange={handleChange}
+              disabled={!tempAddress.district || isLoading.ward || !wards.length}
+            >
+              <option value="">Choose ward</option>
+              {wards.map(({ location_id, name }) => (
+                <option key={location_id} value={location_id}>
+                  {name}
+                </option>
+              ))}
+            </select>
+            {isLoading.ward && <span>Loading...</span>}
+            {errors.ward && <span className={styles.amError}>{errors.ward}</span>}
           </label>
           <label>
             Đường/Phố
-            <input type="text" name="street" value={tempAddress.street} onChange={handleChange} />
-          </label>
-          <label>
-            Dự án
-            <input type="text" name="project" value={tempAddress.project} onChange={handleChange} />
+            <input
+              type="text"
+              name="street"
+              value={tempAddress.street}
+              onChange={handleChange}
+              disabled={!tempAddress.ward}
+            />
+            {errors.street && <span className={styles.amError}>{errors.street}</span>}
           </label>
           <label>
             Số nhà
-            <input type="text" name="houseNumber" value={tempAddress.houseNumber} onChange={handleChange} required />
+            <input
+              type="text"
+              name="houseNumber"
+              value={tempAddress.houseNumber}
+              onChange={handleChange}
+              disabled={!tempAddress.ward}
+            />
+            {errors.houseNumber && <span className={styles.amError}>{errors.houseNumber}</span>}
           </label>
         </div>
 
@@ -154,12 +452,13 @@ const AddressModal = ({ isOpen, onClose, onSubmit }) => {
             </GoogleMap>
           </LoadScript>
         )}
+        {errors.coordinates && <span className={styles.amError}>{errors.coordinates}</span>}
 
-        <div className={styles.buttons}>
-          <button onClick={handleConfirm} className={styles.confirmButton}>
+        <div className={styles.amButtons}>
+          <button onClick={handleConfirm} className={styles.amConfirmButton}>
             Xác nhận
           </button>
-          <button onClick={onClose} className={styles.backButton}>
+          <button onClick={onClose} className={styles.amBackButton}>
             Quay lại
           </button>
         </div>
