@@ -1,76 +1,88 @@
 from sqlalchemy.orm import Session
-from app.models.user_model import User, UserRoleEnum
-from app.schemas.user_schema import UserCreate
 from sqlalchemy.exc import IntegrityError
-from typing import Optional
-from passlib.context import CryptContext
+from fastapi import HTTPException, status
 
+from app.models.user_model import User
+from app.schemas.user_schema import UserCreate, UserLogin, UserUpdate, TokenResponse
+from app.utils.hash import get_password_hash, verify_password
+from app.utils.token import create_access_token
+from typing import Optional, List
+from sqlalchemy import or_
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+# -------------------------------
+# ✅ Đăng ký user mới
+def create_user(db: Session, user_data: UserCreate) -> User:
+    hashed_password = get_password_hash(user_data.password)
 
-# Tạo user mới
-def create_user(db: Session, user: UserCreate, password_hash: str):
-    db_user = User(
-        username=user.username,
-        email=user.email,
-        password_hash=password_hash,
-        full_name=user.full_name,
-        phone_number=user.phone_number,
-        address=user.address,
-        role=user.role
+    new_user = User(
+        phone_number=user_data.phone_number,
+        password_hash=hashed_password,
+        role=user_data.role
     )
     try:
-        db.add(db_user)
+        db.add(new_user)
         db.commit()
-        db.refresh(db_user)
-        return db_user
+        db.refresh(new_user)
+        return new_user
     except IntegrityError:
         db.rollback()
-        raise ValueError("Username hoặc Email đã tồn tại.")
+        raise HTTPException(status_code=400, detail="Số điện thoại đã tồn tại")
 
-# Lấy danh sách tất cả user
-def get_all_users(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(User).offset(skip).limit(limit).all()
+# -------------------------------
+# ✅ Đăng nhập -> trả về access token
+def login_user(db: Session, login_data: UserLogin) -> TokenResponse:
+    user = db.query(User).filter(
+        (User.phone_number == login_data.login) | (User.email == login_data.login)
+    ).first()
 
-# Tìm user theo ID
-def get_user_by_id(db: Session, user_id: int) -> Optional[User]:
-    return db.query(User).filter(User.user_id == user_id).first()
+    if not user or not verify_password(login_data.password, user.password_hash):
+        raise HTTPException(status_code=401, detail="Thông tin đăng nhập không chính xác")
 
-# Tìm user theo email
-def get_user_by_email(db: Session, email: str) -> Optional[User]:
-    return db.query(User).filter(User.email == email).first()
+    access_token = create_access_token(data={"sub": str(user.user_id)})
+    return TokenResponse(access_token=access_token)
 
-# Tìm user theo username
-def get_user_by_username(db: Session, username: str) -> Optional[User]:
-    return db.query(User).filter(User.username == username).first()
-
-# Cập nhật thông tin user
-def update_user(db: Session, user_id: int, updates: dict):
-    db_user = get_user_by_id(db, user_id)
-    if not db_user:
-        return None
-    for key, value in updates.items():
-        setattr(db_user, key, value)
-    db.commit()
-    db.refresh(db_user)
-    return db_user
-
-# Xóa user
-def delete_user(db: Session, user_id: int):
-    db_user = get_user_by_id(db, user_id)
-    if not db_user:
-        return None
-    db.delete(db_user)
-    db.commit()
-    return db_user
-
-# Hàm kiểm tra mật khẩu người dùng nhập vào
-def verify_password(plain_password, hashed_password):
-    return pwd_context.verify(plain_password, hashed_password)
-
-# Hàm xác thực người dùng đăng nhập
-def authenticate_user(db: Session, username: str, password: str):
-    user = db.query(User).filter(User.username == username).first()
-    if not user or not verify_password(password, user.password_hash):
-        return None
+# -------------------------------
+# ✅ Tìm user theo ID
+def get_user_by_id(db: Session, user_id: int) -> User:
+    user = db.query(User).filter(User.user_id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="Người dùng không tồn tại")
     return user
+
+# -------------------------------
+# ✅ Cập nhật thông tin user
+def update_user(db: Session, user_id: int, user_update: UserUpdate) -> User:
+    user = get_user_by_id(db, user_id)
+    for field, value in user_update.dict(exclude_unset=True).items():
+        setattr(user, field, value)
+
+    db.commit()
+    db.refresh(user)
+    return user
+
+def get_user_by_phone_or_email(db: Session, target_type: str, target: str) -> Optional[User]:
+    if target_type == "phone":
+        return db.query(User).filter(User.phone_number == target).first()
+    elif target_type == "email":
+        return db.query(User).filter(User.email == target).first()
+    else:
+        return None
+    
+
+def change_password_by_phone(db: Session, phone_number: str, new_password: str) -> User:
+    user = db.query(User).filter(User.phone_number == phone_number).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="Không tìm thấy người dùng với số điện thoại này")
+
+    user.password_hash = get_password_hash(new_password)
+    db.commit()
+    db.refresh(user)
+    return user
+
+def get_user_by_email_or_phone(db: Session, identifier: str) -> Optional[User]:
+    return db.query(User).filter(
+        or_(User.email == identifier, User.phone_number == identifier)
+    ).first()
+
+def get_all_users(db: Session) -> List[User]:
+    return db.query(User).all()
