@@ -4,7 +4,6 @@ from datetime import datetime
 
 class PropertyVideoBase(BaseModel):
     video_url: str
-    caption: Optional[str] = None
 
 class PropertyVideoCreate(PropertyVideoBase):
     property_id:  Optional[int] = None
