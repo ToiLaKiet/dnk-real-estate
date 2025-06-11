@@ -2,11 +2,13 @@ import React, { createContext, useState, useEffect,useContext } from 'react';
 // import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+
 // 1. Tạo Context
 export const AuthContext = createContext();
 
 // 2. Tạo Provider
 export const AuthProvider = ({ children }) => {
+  const API_URL ='http://172.16.1.205:8080'
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -14,88 +16,55 @@ export const AuthProvider = ({ children }) => {
   // Kiểm tra đăng nhập khi khởi động app
   useEffect(() => {
     const checkAuth = async () => {
-      const token = localStorage.getItem('token'); // Mock token
-      const userData = localStorage.getItem('user');// Mock user data
-      
-      if (token && userData) {
+      const token = localStorage.getItem('token');
+
+      if (token) {
         try {
-          // Nếu có API thật thì dùng đoạn này
-          // const res = await axios.get('/api/auth/me', {
-          //   headers: { Authorization: `Bearer ${token}` }
-          // });
-          // setUser(res.data.user);
-          
-          // Mock data
-          setUser(JSON.parse(userData));
+          const res = await axios.get(`${API_URL}/users/me`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+  
+          setUser(res.data); // or res.data.user depending on your backend
           setIsAuthenticated(true);
-          console.log('User:', JSON.parse(userData));
+          console.log('User:', res.data);
+  
         } catch (err) {
+          console.error('Auth check failed:', err.response?.data || err.message);
           localStorage.removeItem('token');
           localStorage.removeItem('user');
+          setIsAuthenticated(false);
+          setUser(null);
         }
       }
+  
       setIsLoading(false);
     };
     checkAuth();
-  } , [useAuth]);
-
-  // Hàm đăng nhập
-  // const login = async ({ email, phone, password },onSuccess) => {
-  //   try {
-  //     // Nếu có API thật thì dùng đoạn này
-  //     // const payload = {
-  //     //   identifier: email? email : phone,
-  //     //   password: password,
-  //     // }
-  //     // const res = await axios.post('http://10.0.4.100:8080/users/login', payload);
-  //     // localStorage.setItem('token', res.token);
-  //     // localStorage.setItem('user', JSON.stringify(res.data.user));
-  //     // console.log('Đăng nhập thành công:', res);
-  //     // setUser(res.data.user);
-  //     // Mock data
-  //     const mockUser = {
-  //       user_id: '123',
-  //       name: email.split('@')[0] || 'Người dùng',
-  //       email: email,
-  //       phone: phone,
-  //       avatar: `https://i.pravatar.cc/150?u=${email}`,
-  //     };
-  //     localStorage.setItem('user', JSON.stringify(mockUser));
-  //     localStorage.setItem('token', 'mock-token-123'); // Mock token
-  //     setUser(mockUser);
-  //     setIsAuthenticated(true);
-  //     console.log('Đăng nhập thành công:', mockUser);
-  //     if (onSuccess) {
-  //       onSuccess();
-  //     }
-  //     return { success: true, user: mockUser };
-  //   } catch (error) {
-  //     console.error('Đăng nhập thất bại:', error);
-  //     alert('Đăng nhập thất bại. Vui lòng thử lại.');
-  //     return { success: false, message: error.message };
-  //   }
-  // }; 
+  }, []);
+  
   const login = async ({ login, password }, onSuccess) => {
     try {
       // Step 1: Send login request
-      const payload = {
-        login: login,
-        password: password,
-      };
-  
-      const res = await axios.post('http://10.0.4.100:8080/users/login', payload);
-  
+      const payload = new URLSearchParams();
+      payload.append('username', login);
+      payload.append('password', password);
+      const res = await axios.post(API_URL+'/users/login', payload, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
       // Step 2: Extract token
       const token = res.data.access_token;
       if (!token) {
         throw new Error('Token not received from login response.');
       }
-  
       // Save token to localStorage
       localStorage.setItem('token', token);
       console.log('Token saved to localStorage:', token);
       // Step 3: Get user info using the token
-      const userRes = await axios.get('http://10.0.4.100:8080/users/me', {
+      const userRes = await axios.get(API_URL+'/users/me', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -104,12 +73,10 @@ export const AuthProvider = ({ children }) => {
       const user = userRes.data;
       console.log('User data:', user);
       localStorage.setItem('user', JSON.stringify(user));
-  
       // Step 4: Update frontend state
       setUser(user);
       setIsAuthenticated(true);
       console.log('Đăng nhập thành công:', user);
-  
       if (onSuccess) {
         onSuccess();
       }

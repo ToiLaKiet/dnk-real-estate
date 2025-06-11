@@ -36,8 +36,6 @@ function ReportPosts ({ propertyId, user_id }) {
       user_id: user_id,
       reason: selectedReason,
       description: description.trim(),
-      createdAt: new Date().toISOString(),
-      status: 'pending'
     };
 
     try {

@@ -85,6 +85,7 @@ function PostPage() {
     autoplay: true,
   };
 
+  // Handle favorite and report actions
   const handleFavorite = () => {
     if (user) {
       console.log(`User ${user.user_id} ${isFavorite ? 'removed' : 'added'} post ${post.property_id} to favorites`);
@@ -95,6 +96,7 @@ function PostPage() {
     }
   };
 
+  // Handle report post action
   const handleReport = () => {
     console.log('handleReport: user=', user, 'isLoading=', isLoading);
     if (isLoading) {
@@ -109,6 +111,7 @@ function PostPage() {
     setReportsPostsModal(true);
   };
 
+  // Render media content
   const renderMedia = () => {
     if (!post?.media || !Array.isArray(post.media.images) || post.media.images.length === 0) {
       return (
@@ -160,10 +163,12 @@ function PostPage() {
     );
   };
 
+  // Render location information
   const renderLocation = () => {
     return post.address.displayAddress || 'Thông tin vị trí không khả dụng';
   };
 
+  // Format price based on type
   const formatPrice = (price, type) => {
     if (!price || typeof price !== 'number' || price <= 0 || isNaN(price)) {
       return 'Liên hệ để biết giá';

@@ -1,5 +1,5 @@
 .amAddressModal {
-  padding: 10px;
+  padding: 20px;
   padding-bottom: 20px;
   display: flex;
   flex-direction: column;
@@ -77,7 +77,7 @@
 }
 
 .amConfirmButton {
-  background-color: #0056b3;
+  background-color: #005f71;
   color: white;
   padding: 12px 24px;
   border: none;

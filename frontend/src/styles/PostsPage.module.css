@@ -32,6 +32,7 @@
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
+  animation: slide-in 0.5s ease-in;
 }
 
 .contactBox {
@@ -44,6 +45,7 @@
   padding: 20px;
   position: sticky;
   top: 20px;
+  animation: slide-in 0.5s ease-in;
   align-self: flex-start;
 }
 
@@ -52,11 +54,13 @@
   flex-direction: column;
   width: auto;
   gap: 20px;
+  animation: slide-in 0.5s ease-in;
 }
 
 .carousel {
   border-radius: 8px;
   overflow: hidden;
+  animation: slide-in 0.5s ease-in;
 }
 
 .mediaItem {
@@ -410,6 +414,7 @@
   }
 
 }
+
 @keyframes slide-in {
   from {
     transform: translateY(10px);

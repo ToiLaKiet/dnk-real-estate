@@ -7,6 +7,7 @@ import Otp from '../../components/ui/modal-otp.jsx';
 import CongratsModal from '../../pages/login/Chucmungchoquenmk.jsx';
 import PasswordModal from '../../pages/register/PasswordCreationModal.jsx';
 import axios from 'axios';
+import Modal from '../../components/ui/modal-reg-log.jsx';
 
 function Quenmatkhau({ onClose }) {
   const [formData, setFormData] = useState({ phone: '' });
@@ -40,7 +41,7 @@ function Quenmatkhau({ onClose }) {
         target_type: "phone",
         target: formData.phone,
       };
-      const result = await axios.post('http://10.0.4.100:8080/otp/send-without-existence', payload);
+      const result = await axios.post('http://172.16.2.54:8080/otp/send-forgot-password', payload);
       console.log('Kết quả gửi yêu cầu:', result.data);
       setIsOtpModalOpen(true);
     } catch (error) {
@@ -54,7 +55,6 @@ function Quenmatkhau({ onClose }) {
   const handleVerifyOtp = async (otpCode) => {
     setError('');
     setIsLoading(true);
-
     const payload = {
       target_type: 'phone',
       target: formData.phone,
@@ -63,9 +63,8 @@ function Quenmatkhau({ onClose }) {
 
     try {
       // API xác thực OTP (bạn có thể gắn lại khi cần)
-      const result = await axios.post('http://10.0.4.100:8080/otp/verify', payload)
+      const result = await axios.post('http://172.16.2.54:8080/otp/verify', payload)
       console.log('Kết quả xác thực OTP:', result.data);
-      setIsOtpModalOpen(false);
       setIsPasswordModalOpen(true);
     } catch (error) {
       console.error('Lỗi xác thực OTP:', error);
@@ -86,9 +85,10 @@ function Quenmatkhau({ onClose }) {
 
     try {
       // API đặt lại mật khẩu (giả lập thành công)
-      const result = await axios.put('http://10.0.4.100:8080/users/change-password', payload)
+      const result = await axios.put('http://172.16.2.54:8080/users/change-password', payload)
       console.log('Kết quả đặt lại mật khẩu:', result.data);
-      setIsPasswordModalOpen(false);
+      handleCloseModal('password');
+      onClose();
       setIsCongratsModalOpen(true);
     } catch (error) {
       console.error('Lỗi gửi mật khẩu:', error);
@@ -98,12 +98,18 @@ function Quenmatkhau({ onClose }) {
     setIsLoading(false);
   };
 
-  const handleCloseModal = () => {
-    setIsOtpModalOpen(false);
-    setIsPasswordModalOpen(false);
-    setIsCongratsModalOpen(false);
-    setFormData({ phone: '' });
-    onClose();
+  const handleCloseModal = (type) => {
+    if (type === 'otp') {
+      setIsOtpModalOpen(false);
+    } else
+    if (type === 'password') {
+      setIsPasswordModalOpen(false);
+    } else 
+    if (type === 'congrats') {
+      setIsCongratsModalOpen(false);
+      setFormData({ phone: '' });
+      onClose();  
+    }
   };
 
   return (
@@ -140,23 +146,27 @@ function Quenmatkhau({ onClose }) {
           </button>
         </form>
       </div>
-
+      
       {isOtpModalOpen && (
         <Otp
           data={formData}
           onVerify={handleVerifyOtp}
-          onClose={handleCloseModal}
+          onClose={()=>handleCloseModal('otp')}
         />
       )}
+
       {isPasswordModalOpen && (
         <PasswordModal
           data={formData}
           onSubmit={handlePasswordSubmit}
-          onClose={handleCloseModal}
+          onClose={()=>handleCloseModal('password')}
         />
       )}
       {isCongratsModalOpen && (
-        <CongratsModal onClose={handleCloseModal} />
+        <Modal>
+          <CongratsModal 
+          onClose={()=>handleCloseModal('congrats')} />
+        </Modal>
       )}
     </div>
   );

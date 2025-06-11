@@ -54,7 +54,7 @@
   align-items: center;
   height: 100%;
   animation: slide-in 0.25s ease-in;
-
+  z-index: 1000; /* Đảm bảo overlay nằm trên các phần tử khác */
 }
 
 .main-modal-content {

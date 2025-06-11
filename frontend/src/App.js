@@ -19,6 +19,8 @@ import SearchBar4 from './assets/SearchBar-4.png'; // Import SearchBar3 image
 import PostCreate from './components/ui/postcreate/postcreate.jsx';
 import TinTuc  from './pages/news/tintuc.jsx';
 import UserDashboard from './pages/userdashboard/userdashboard.jsx';
+import ImageUploadModal from './components/ui/postcreate/ImageUploadModal.jsx';
+import FavoritePosts from './pages/favorite/FavoritePage.jsx';
 function App() {
   const seUseCase = {
     all:1,
@@ -83,6 +85,8 @@ function App() {
       <Route path="/nha-dat-cho-thue" element={<NhaDatChoThue />} /> {/* Trang dự án */}
       <Route path="/tin-tuc" element={<TinTuc />} /> {/* Trang dự án */}
       <Route path="/profile" element={<UserDashboard />} /> {/* Trang dự án */}
+      <Route path="/post-create/image-upload" element={<ImageUploadModal />} /> {/* Trang dự án */}
+      <Route path="/favorite" element ={<FavoritePosts/>}/>
     </Routes>
     </AuthProvider>
   );

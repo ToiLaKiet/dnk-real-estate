@@ -6,7 +6,10 @@ import styles from '../../styles/UserDashboard.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquarePollVertical, faNewspaper, faCirclePlus, faUser, faLandmark, faFire, faBars } from '@fortawesome/free-solid-svg-icons';
 import Logo from '../../components/logo.js';
-
+import { useAuth } from '../../components/ui/context/AuthContext.jsx';
+import AccountTab from './AccountTab.jsx';
+import PostCreate from '../../components/ui/postcreate/postcreate.jsx';
+import PropertyManagement from './PropertyManangement.jsx';
 // Mock data (replace with real API calls)
 const mockProperties = [
   { property_id: 1, title: 'Căn hộ Quận 7', posted_by: 100, is_active: true, created_at: '2025-06-04T12:00:00Z' },
@@ -83,6 +86,12 @@ function UserDashboard() {
             <Logo className={styles.userdashboardLogo} width={130} height={100} />
             {/* Tabs Menu */}
             <div className={`${styles.userdashboardMenu} ${isMenuOpen ? styles.userdashboardMenuOpen : ''}`}>
+                  <button
+                    className={styles.userdashboardHamburger}
+                    onClick={() => setIsMenuOpen(false)} // Close menu on tab click
+                    >
+                    <FontAwesomeIcon icon={faBars} size="lg" />
+                  </button>
               {tabs.map((tab) => (
                 <Tab
                   key={tab.name}
@@ -91,12 +100,6 @@ function UserDashboard() {
                   }
                   onClick={() => setIsMenuOpen(false)} // Close menu on tab click
                 >
-                  <button
-                  className={styles.userdashboardHamburger}
-                  onClick={() => setIsMenuOpen(false)} // Close menu on tab click
-                  >
-                    <FontAwesomeIcon icon={faBars} size="lg" />
-                  </button>
                   <FontAwesomeIcon icon={tab.icon} className='mr-3' size='1x' />
                   {tab.name}
                 </Tab>
@@ -171,17 +174,49 @@ function UserDashboard() {
                 </div>
               </div>
             </Tab.Panel>
-
-            {/* Placeholder for other tabs */}
-            {tabs.map((tab) => (
-              tab.name !== 'Tổng Quan' && (
-                <Tab.Panel key={tab.name} className={styles.userdashboardPanel}>
-                  <div className={styles.userdashboardPlaceholder}>
-                    <p>{tab.name} - Chưa triển khai</p>
-                  </div>
-                </Tab.Panel>
-              )
-            ))}
+            {/* Tin Đăng Tab */}
+            <Tab.Panel className={styles.userdashboardPanel}>
+              <div className={styles.userdashboardPanelContent}>
+                <h2 className={styles.userdashboardTabName}>Tin Đăng</h2>
+                <hr></hr>
+                {/* {loading ? (
+                  <p>Đang tải...</p>
+                ) : error ? (
+                  <p className={styles.userdashboardError}>{error}</p>
+                ) : propertiesCount === 0 ? (
+                  <p>Bạn chưa có tin đăng nào.</p>
+                ) : (
+                  <ul className={styles.userdashboardPropertyList}>
+                    {mockProperties
+                      .filter((p) => p.posted_by === user_id && p.is_active)
+                      .map((property) => (
+                        <li key={property.property_id} className={styles.userdashboardPropertyItem}>
+                          <h3>{property.title}</h3>
+                          <span className={styles.userdashboardPropertyDate}>
+                            {format(new Date(property.created_at), 'dd/MM/yyyy')}
+                          </span>
+                        </li>
+                      ))}
+                  </ul>
+                )} */}
+                <PropertyManagement/>
+              </div>
+            </Tab.Panel>
+            {/* Đăng Tin Tab */}
+            <Tab.Panel className={styles.userdashboardPanel}>
+              <PostCreate />
+            </Tab.Panel>
+            {/* Tài khoản Tab */}
+            <Tab.Panel className={styles.userdashboardPanel}>
+              <AccountTab />
+            </Tab.Panel>
+            {/* Thanh Toán Tab */}
+            <Tab.Panel className={styles.userdashboardPanel}>
+              <div className={styles.userdashboardPanelContent}>
+                <h2 className={styles.userdashboardTabName}>Thanh Toán</h2>
+                <p>Chức năng thanh toán sẽ sớm được cập nhật.</p>
+              </div>
+            </Tab.Panel>
           </Tab.Panels>
         </div>
       </Tab.Group>

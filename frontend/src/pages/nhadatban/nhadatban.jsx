@@ -477,7 +477,7 @@ const NhaDatBan = () => {
 
   // Xử lý filter và phân trang
   const { displayPosts, totalPages } = useMemo(() => {
-    let filtered = posts.filter(post => post.type === 'nhadatban');
+    let filtered = posts.filter(post => post.type === 'nhadatban'); // doi thang nay thanh 'sell'
 
     if (searchFilters.text.trim()) {
       filtered = filtered.filter(post =>
@@ -487,7 +487,7 @@ const NhaDatBan = () => {
     }
 
     if (searchFilters.propertyType) {
-      filtered = filtered.filter(post => post.property_type === searchFilters.propertyType);
+      filtered = filtered.filter(post => post.property_type === searchFilters.propertyType); // đổi property_type thành 
     }
 
     if (searchFilters.province) {

@@ -2,7 +2,7 @@
   padding: 0px;
   display: flex;
   flex-direction: column;
-  width: 760px;
+  width: 100%;
   justify-content: start-center;
   height: 100vh;
   overflow-y: auto;
@@ -10,7 +10,31 @@
   max-height: 100%;
   font-family: 'Be Vietnam Pro';
   transition: background-color 0.2s ease-in-out;
-  padding: 10px;
+  padding: 30px;
+  gap:2px;
+}
+.hrContainer {
+  padding-top: 0px;
+  display: flex;
+  justify-content: center; /* or space-between, etc. */
+  align-items: center;
+  gap: 10px; /* space between the lines */
+}
+
+.hrOrange,
+.hrBlue {
+  border: none;
+  height: 4px;
+  width: 50%; /* or % */
+  display: block;
+}
+
+.hrOrange {
+  background-color: red;
+}
+
+.hrBlue {
+  background-color: gray;
 }
 
 .postCreate h2 {
@@ -18,7 +42,7 @@
   font-weight: 700;
   font-size: 24px;
   color: #1f2937;
-  margin-bottom: 24px;
+  margin-bottom: 1px;
 }
 
 .box {

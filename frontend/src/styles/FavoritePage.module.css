@@ -1,0 +1,323 @@
+/* Main container */
+.fpFlexbox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh;
+    font-family: 'Be Vietnam Pro', sans-serif;
+  }
+  
+  /* Content wrapper */
+  .fpContent {
+    max-width: 1200px;
+    width: 100%;
+    margin: 30px auto;
+    padding: 30px;
+    background: linear-gradient(135deg, #f5f6fa, #ffffff);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  }
+  
+  /* Header styling */
+  .userdashboardTabName {
+    font-size: 28px;
+    font-weight: 700;
+    background: linear-gradient(90deg, #990000, #ff4500);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+  
+  .decorativeHr {
+    border: none;
+    height: 3px;
+    background: linear-gradient(90deg, #990000, #ff4500);
+    margin-bottom: 20px;
+    border-radius: 2px;
+  }
+  
+  .userdashboardSection {
+    width: 100%;
+  }
+  
+  /* Favorite cards grid */
+  .fpFavoriteList {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 25px;
+    padding: 10px;
+  }
+  
+  /* Favorite card */
+  .fpFavoriteCard {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  
+  .fpFavoriteCard.slideUp {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .fpFavoriteCard:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Image wrapper */
+  .fpFavoriteImageWrapper {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .fpFavoriteImage {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+  
+  .fpFavoriteCard:hover .fpFavoriteImage {
+    transform: scale(1.1);
+  }
+  
+  .fpFavoriteImageWrapper::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5));
+  }
+  
+  /* Card content */
+  .fpFavoriteContent {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .fpFavoriteTitle {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+    line-height: 1.3;
+  }
+  
+  .fpFavoritePrice {
+    font-size: 18px;
+    font-weight: 500;
+    background: linear-gradient(90deg, #990000, #ff4500);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .fpFavoriteAddress,
+  .fpFavoriteType {
+    font-size: 14px;
+    color: #666;
+    font-style: italic;
+    margin: 0;
+  }
+  
+  /* Status badge */
+  .fpFavoriteStatus {
+    display: inline-block;
+    padding: 5px 10px;
+    font-size: 12px;
+    color: #fff;
+    border-radius: 5px;
+    transform: skew(-5deg);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .fpFavoriteStatus.pulse {
+    animation: pulse 1.5s infinite;
+  }
+  
+  /* View button */
+  .fpViewButton {
+    padding: 12px;
+    font-size: 16px;
+    background: linear-gradient(90deg, #990000, #ff4500);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-top: 10px;
+  }
+  
+  .fpViewButton:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(153, 0, 0, 0.3);
+  }
+  
+  /* Empty state */
+  .fpEmptyState {
+    text-align: center;
+    padding: 40px 20px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  }
+  
+  .fpEmptyIcon {
+    width: 60px;
+    height: 60px;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23990000" stroke-width="2"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>') no-repeat center;
+    margin: 0 auto 20px;
+  }
+  
+  .fpEmptyMessage {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 20px;
+  }
+  
+  .fpFindButton {
+    padding: 14px 24px;
+    font-size: 16px;
+    background: linear-gradient(90deg, #990000, #ff4500);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .fpFindButton:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(153, 0, 0, 0.3);
+  }
+  
+  .fpFindButton.pulse {
+    animation: pulse 1.5s infinite;
+  }
+  
+  /* Error message */
+  .fpErrorMessage {
+    font-size: 16px;
+    color: #d32f2f;
+    background: rgba(211, 47, 47, 0.1);
+    border: 1px solid #d32f2f;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    margin: 20px 0;
+  }
+  
+  /* Animations */
+  @keyframes slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(153, 0, 0, 0.4);
+    }
+    70% {
+      box-shadow: 0 0 0 10px rgba(153, 0, 0, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(153, 0, 0, 0);
+    }
+  }
+  
+  @keyframes shake {
+    0%, 100% {
+      transform: translateX(0);
+    }
+    10%, 30%, 50%, 70%, 90% {
+      transform: translateX(-5px);
+    }
+    20%, 40%, 60%, 80% {
+      transform: translateX(5px);
+    }
+  }
+  
+  .fadeIn {
+    animation: fade-in 0.8s ease-out;
+  }
+  
+  .shake {
+    animation: shake 0.6s ease;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 1200px) {
+    .fpContent {
+      max-width: 1000px;
+      padding: 20px;
+    }
+  
+    .fpFavoriteList {
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+  }
+  
+  @media (max-width: 1024px) {
+    .fpFavoriteList {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  
+    .userdashboardTabName {
+      font-size: 24px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .fpContent {
+      padding: 15px;
+    }
+  
+    .fpFavoriteList {
+      grid-template-columns: 1fr;
+    }
+  
+    .fpEmptyState {
+      padding: 30px 15px;
+    }
+  
+    .fpEmptyIcon {
+      width: 50px;
+      height: 50px;
+    }
+  
+    .fpEmptyMessage {
+      font-size: 16px;
+    }
+  
+    .fpFindButton {
+      padding: 12px 20px;
+      font-size: 14px;
+    }
+  }

@@ -9,9 +9,7 @@ import GoogleMapComponent from '../components/ui/googlemap.jsx';
 import styles from '../styles/PostsPage.module.css';
 import { FaHeart } from 'react-icons/fa';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { AuthContext } from '../components/ui/context/AuthContext.jsx';
 import { useLocation } from 'react-router-dom';
-
 import {
   faHome,
   faTag,
@@ -33,7 +31,6 @@ function Preview() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isFavorite, setIsFavorite] = useState(false);
-  const { isAuthenticated, user } = useContext(AuthContext);
   const location = useLocation();
   const postData = location.state?.package;
 
@@ -82,16 +79,6 @@ function Preview() {
     slidesToScroll: 1,
     arrows: true,
     autoplay: true,
-  };
-
-  const handleFavorite = () => {
-    // TODO: Implement backend request to add/remove favorite for post ${post.property_id}
-    setIsFavorite(!isFavorite);
-    if (isAuthenticated && user) {
-      console.log(`User ${user.id} ${isFavorite ? 'removed' : 'added'} post ${post.property_id} to favorites`);
-    } else {
-      console.log('User not authenticated, show login modal');
-    }
   };
 
   const renderMedia = () => {
@@ -191,7 +178,6 @@ function Preview() {
                   <h1 className={styles.title}>{post.title || 'Tin đăng không có tiêu đề'}</h1>
                   <FaHeart
                     className={`${styles.heartIcon} ${isFavorite ? styles.favorite : ''}`}
-                    onClick={handleFavorite}
                     aria-label={isFavorite ? 'Xóa khỏi yêu thích' : 'Thêm vào yêu thích'}
                   />
                 </div>

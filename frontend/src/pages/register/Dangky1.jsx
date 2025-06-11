@@ -15,6 +15,7 @@ function Register() {
   const [formData, setFormData] = useState({
     phone: '',
   });
+  const API_URL = 'http://172.16.1.205:8080'
   const [isOtpModalOpen, setIsOtpModalOpen] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [isAccountTypeModalOpen, setIsAccountTypeModalOpen] = useState(false);
@@ -47,7 +48,7 @@ function Register() {
         target: formData.phone,
       };
   
-      const result = await axios.post('http://10.0.4.100:8080/otp/send', payload);
+      const result = await axios.post(API_URL+'/otp/send', payload);
       console.log('Kết quả gửi OTP:', result.data);
   
       // Nếu không có lỗi, mở modal OTP
@@ -74,7 +75,7 @@ function Register() {
     console.log('Dữ liệu OTP:', payload);
   
     try {
-      const otp_recieved = await axios.post('http://10.0.4.100:8080/otp/verify', payload);
+      const otp_recieved = await axios.post(API_URL+'/otp/verify', payload);
       console.log('Kết quả xác nhận OTP:', otp_recieved);
       // ✅ Use .data.detail, not .detail directly
       if (otp_recieved.data) {
@@ -123,7 +124,7 @@ function Register() {
   
     try {
       const response = await axios.post(
-        'http://10.0.4.100:8080/users/register',
+        API_URL+'/users/register',
         {
           phone_number: formData.phone,
           role: accountType,

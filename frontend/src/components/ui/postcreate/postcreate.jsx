@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AddressModal from './AddressModal';
-import ImageUploadModal from './ImageUploadModal';
-import SuccessModal from './SuccessModal';
+import Login from '../../../pages/login/Dangnhap1.jsx';
+import Modal from '../modal-reg-log'
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import styles from '../../../styles/postcreate.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '../../../styles/App.css'; // Import CSS styles for the component
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
   faTag,
   faKey,
@@ -25,14 +24,14 @@ import {
   faEnvelope,
   faPhone,
   faHeading,
-  faFileAlt
+  faFileAlt,
+  faPencil
 } from '@fortawesome/free-solid-svg-icons';
 
 // Component chính để tạo bài đăng bất động sản
 const PostCreate = () => {
-  // State để quản lý trạng thái của các modal và dữ liệu form
-  const { user } = useAuth();
   const navigate = useNavigate();
+  const locate = useLocation();
   const [formData, setFormData] = useState({
     type: '', // done
     address: {
@@ -40,11 +39,9 @@ const PostCreate = () => {
       district: '',
       ward: '',
       street: '',
-      project: '',
       displayAddress: '',
       coordinates: { lat: 0, lng: 0 }
     },
-    user_id:'',
     propertyType: '',
     area: '',
     price: '',
@@ -57,23 +54,69 @@ const PostCreate = () => {
     contact: { name: '', email: '', phone: '' },
     title: '',
     description: '',
-    createdAt: '',
     media: {
       images: [],
       videoUrl: ''
     }
   });
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [postEdit, setPostEdit] = useState(locate?.state?.mode ?? false);
+  // Kiểm tra xem người dùng đã đăng nhập hay chưa
+  useEffect(() => {
+    const user = localStorage.getItem('user');
+    if (!user) {
+      // Nếu chưa đăng nhập, chuyển hướng về trang đăng nhập
+      setIsModalOpen(true);
+    }
+    //to check whether there is any passed data from previous component
+    if (locate.state!=undefined) {
+        const data = locate.state.postToEdit;
+        const features = {};
+        data.features.forEach((f) => {
+          features[f.feature_name] = f.feature_value;
+        });
+        setFormData({
+          type: data.type || '',
+          property_id: data.property_id,
+          address: {
+            province: '',  // You may fetch this from location_id if needed
+            district: '',
+            ward: '',
+            street: '',
+            displayAddress: data.address || '',
+            coordinates: {
+              lat: data.lat || 0,
+              lng: data.lng || 0
+            }
+          },
+          propertyType: features.category|| '',
+          area: data.area || '',
+          price: data.price || '',
+          legalDocuments: features.legalDocuments || '',
+          furniture: features.furniture || '',
+          bedrooms: features.bedrooms || '',
+          bathrooms: features.bathrooms || '',
+          houseDirection: features.houseDirection || '',
+          balconyDirection: features.balconyDirection || '',
+          contact: {
+            name: data.contact?.name || '',
+            email: data.contact?.email || '',
+            phone: data.contact?.phone || ''
+          },
+          title: data.title || '',
+          description: data.description || '',
+          media: {
+            images: (data.images || []).map((img) => img.image_url),
+            videoUrl: (data.videos && data.videos[0]?.video_url) || ''
+          }
+        });
+      }
+  },[]);
   // State để quản lý trạng thái mở/đóng của các modal và bước hiện tại
   // Modal để chọn địa chỉ
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
-  // Modal để upload hình ảnh
-  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
-  // Modal để hiển thị thông báo thành công
-  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   // Bước hiện tại trong quá trình tạo bài đăng
   const [currentStep, setCurrentStep] = useState(1);
-
 
   // Xử lý thay đổi dữ liệu từ các input
   const handleChange = (e) => {
@@ -102,7 +145,7 @@ const PostCreate = () => {
     e.preventDefault();
     setCurrentStep(2);
     // Nếu đã nhập địa chỉ thì mở modal upload hình ảnh
-    setIsImageModalOpen(true);
+    navigate('/post-create/image-upload', { state: { formData: formData , mode: postEdit } } );
   };
 
   const handleDataSubmit = (newData, options = {}) => {
@@ -120,6 +163,7 @@ const PostCreate = () => {
   
         // Danh sách các key hợp lệ
         const validKeys = options.validKeys || ['media', 'address', 'contact', 'user'];
+
         Object.keys(newData).forEach((key) => {
           if (!validKeys.includes(key)) {
             console.warn(`Key không hợp lệ: ${key}`);
@@ -151,25 +195,6 @@ const PostCreate = () => {
   
         console.log("formData sau khi cập nhật:", updatedData);
   
-        // Xử lý logic đóng/mở modal và chuyển bước
-        if (options.closeImageModal === true && isImageModalOpen) {
-          setIsImageModalOpen(false);
-          const now = new Date();
-          updatedData.createdAt = now.toISOString();
-          updatedData.user_id = user.id; // Lưu ID người dùng vào formData
-          console.log("✅ Form data sau khi hoàn tất ImageUploadModal:", updatedData);
-          // Gửi formData về backend (nếu cần)
-          // fetch('/api/properties', {
-          //   method: 'POST',
-          //   headers: { 'Content-Type': 'application/json' },
-          //   body: JSON.stringify(updatedData)
-          // })
-          //   .then(response => response.json())
-          //   .then(data => console.log('Thành công:', data))
-          //   .catch(error => console.error('Lỗi:', error));
-          setIsSuccessModalOpen(true);
-        }
-  
         if (typeof options.nextStep === 'number' && options.nextStep >= 0) {
           setCurrentStep(options.nextStep);
         } else if (options.nextStep !== undefined) {
@@ -183,22 +208,18 @@ const PostCreate = () => {
     }
   };
 
-  // Xử lý đóng SuccessModal
-  const handleCloseSuccessModal = () => {
-    setIsSuccessModalOpen(false);
-    navigate('/home'); // Điều hướng về trang home
-  };
-
-  // Xử lý đăng tiếp
-  const handleContinuePosting = () => {
-    setIsSuccessModalOpen(false);
-    setCurrentStep(1); // Quay lại bước 1
-  };
-
   return (
     <div className ='flex-box'>
       <div className={styles.postCreate}>
-        <h2>Đăng tin bất động sản - Bước {currentStep}</h2>
+        {postEdit ? (<h2> Chỉnh sửa tin đăng bất động sản - Bước 1</h2>) :(
+          <h2> Đăng tin bất động sản - Bước 1</h2>
+        )
+        }
+        <div className={styles.hrContainer}>
+          <hr className={styles.hrOrange} />
+          <hr className={styles.hrBlue} />
+        </div>
+
         <form onSubmit={handleSubmit}>
           {/* Box 1: Loại bài đăng */}
           <div className={styles.box}>
@@ -225,19 +246,26 @@ const PostCreate = () => {
             </div>
           </div>
 
-          {/* Box 2: Thông tin địa chỉ */}
+        {/* Box 2: Thông tin địa chỉ */}
           <div className={styles.box}>
             <h3>Thông tin địa chỉ</h3>
             {formData.address.coordinates.lat ? (
-              <LoadScript googleMapsApiKey="[YOUR_GOOGLE_MAPS_API_KEY]">
-                <GoogleMap
-                  mapContainerStyle={{ height: '250px', width: '100%', borderRadius: '8px' }}
-                  center={formData.address.coordinates}
-                  zoom={15}
-                >
-                  <Marker position={formData.address.coordinates} />
-                </GoogleMap>
-              </LoadScript>
+              <div className={styles.mapboxey}>
+                <div className = {styles.editingbutton}>
+                  <button color="primary" className={styles.editButton} onClick={() => setIsAddressModalOpen(true)}>
+                    <FontAwesomeIcon icon={faPencil} className={styles.editIcon} />
+                  </button>
+                </div>
+                <LoadScript googleMapsApiKey="[YOUR_GOOGLE_MAPS_API_KEY]">
+                  <GoogleMap
+                    mapContainerStyle={{ height: '250px', width: '100%', borderRadius: '8px' }}
+                    center={formData.address.coordinates}
+                    zoom={15}
+                  >
+                    <Marker position={formData.address.coordinates} />
+                  </GoogleMap>
+                </LoadScript>
+              </div>
             ) : (
               <div
                 className={styles.fakeInput}
@@ -249,6 +277,9 @@ const PostCreate = () => {
             )}
           </div>
 
+        {/*Nhập thông tin chi tiết*/}
+          {formData.address.coordinates.lat ? (
+          <>
           {/* Box 3: Thông tin chính */}
           <div className={styles.box}>
             <h3>Thông tin chính</h3>
@@ -263,11 +294,11 @@ const PostCreate = () => {
                 required
               >
                 <option value="">Chọn loại</option>
-                <option value="Nhà ở">Nhà ở</option>
-                <option value="Căn hộ">Căn hộ</option>
-                <option value="Đất nền">Đất nền</option>
-                <option value="Văn phòng">Văn phòng</option>
-                <option value="Mặt bằng kinh doanh">Mặt bằng kinh doanh</option>
+                <option value="shophouse">Shophouse</option> 
+                <option value="villa">Villa</option>
+                <option value="land">Đất nền</option>
+                <option value="townhouse">Nhà phố</option>
+                <option value="apartment">Căn hộ</option>
               </select>
             </label>
             <label className={styles.formLabel}>
@@ -466,33 +497,29 @@ const PostCreate = () => {
               />
             </label>
           </div>
-
           <button type="submit" className={styles.submitButton}>
             Tiếp tục
           </button>
+          </>
+          ):(
+          <></>
+          )}
         </form>
-
         {/* Các modal */}
+        { isAddressModalOpen && (
         <AddressModal
           isOpen={isAddressModalOpen}
           onClose={() => setIsAddressModalOpen(false)}
           onSubmit={(data) => handleDataSubmit(data, { nextStep: 2 })}
           formData={formData}
         />
-        <ImageUploadModal
-          isOpen={isImageModalOpen}
-          onClose={() => setIsImageModalOpen(false)}
-          onSubmit={(data) => handleDataSubmit(data, { closeImageModal: true, nextStep: 3 })}
-          formData={formData}
-        />
-        <SuccessModal
-          isOpen={isSuccessModalOpen}
-          onClose={handleCloseSuccessModal}
-          onContinue={handleContinuePosting}
-          // onPreview = {() => navigate('/preview', { state: { updatedData } })}
-          formData={formData}
-        />
+        )}
       </div>
+      {isModalOpen && (
+        <Modal isOpen={isModalOpen} onClose={()=>navigate('/home')}>
+          <Login onClose={() => setIsModalOpen(false)} />
+        </Modal>
+      )}
     </div>
   );
 };

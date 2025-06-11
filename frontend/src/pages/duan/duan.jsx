@@ -603,8 +603,8 @@ const DuAn = () => {
       <div className="duan-content">
         {/* Search Engine */}
         <div className='duan-title-box'>
-          <h1 className='duan-title'>TRANG TỔNG HỢP CÁC DỰ ÁN BẤT ĐỘNG SẢN</h1>
-          <h2 className='duan-des'>Trên hệ thống đang có {lengthOfdata} dự án.</h2>
+          {/* <h1 className='duan-title'>TRANG TỔNG HỢP CÁC DỰ ÁN BẤT ĐỘNG SẢN</h1> */}
+          <h2 className='duan-des'>Trên hệ thống đang có {lengthOfdata} dự án bất động sản.</h2> 
         </div>
         <div className="duan-search-engine-container">
           <div className="duan-search-engine">

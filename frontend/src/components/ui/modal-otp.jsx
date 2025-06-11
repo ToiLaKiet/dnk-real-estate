@@ -3,6 +3,29 @@ import '../../styles/reg.css';
 import Logo from '../../components/logo.js';
 import House from '../../components/house.js';
 import { FaArrowLeft } from 'react-icons/fa';
+import Countdown from 'react-countdown';
+
+function VerificationTimer() {
+  const fiveMinutesFromNow = Date.now() + 5 * 60 * 1000;
+
+  return (
+    <Countdown
+      date={fiveMinutesFromNow}
+      renderer={({ minutes, seconds, completed }) => {
+        if (completed) {
+          return <p className="Hieuluc">Mã xác minh đã hết hiệu lực</p>;
+        }
+
+        return (
+          <p className="Hieuluc">
+            Mã xác minh có hiệu lực trong vòng {String(minutes).padStart(2, '0')}:
+            {String(seconds).padStart(2, '0')}
+          </p>
+        );
+      }}
+    />
+  );
+}
 
 function Otp({ data, onVerify, onClose }) {
   const [otp, setOtp] = useState(['', '', '', '', '', '']); // State cho 6 chữ số OTP
@@ -30,6 +53,7 @@ function Otp({ data, onVerify, onClose }) {
     const otpCode = otp.join(''); // Kết hợp 6 chữ số thành chuỗi
     if (otpCode.length === 6) {
       onVerify(otpCode); // Truyền otpCode qua callback onVerify
+      onClose(); 
     } else {
       alert('Vui lòng nhập đầy đủ 6 chữ số OTP.');
     }
@@ -55,8 +79,8 @@ function Otp({ data, onVerify, onClose }) {
             </button>
             <h3>Nhập mã xác minh</h3>
             <p>
-              Chúng tôi đã gửi mã xác minh gồm 6 chữ số tới số điện thoại{' '}
-              <u>{data.phone}</u> qua tài khoản <b>Zalo</b> hoặc <b>SMS</b>
+              Chúng tôi đã gửi mã xác minh gồm 6 chữ số tới{' '}
+              <u>{data.phone || data.email }</u> qua tài khoản <b>Zalo</b> hoặc <b>SMS</b>
             </p>
             <div className="otp-group">
               {otp.map((digit, index) => (
@@ -71,7 +95,8 @@ function Otp({ data, onVerify, onClose }) {
                 />
               ))}
             </div>
-            <p className="Hieuluc">Mã xác minh có hiệu lực trong vòng 5 phút</p>
+            {/* <p className="Hieuluc">Mã xác minh có hiệu lực trong vòng 5 phút</p> */}
+            <VerificationTimer />
             <p className="resend-otp">
               Bạn không nhận được mã? <span onClick={handleResend}>Gửi lại</span>
             </p>
