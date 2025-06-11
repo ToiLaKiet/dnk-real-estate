@@ -2,6 +2,7 @@ from sqlalchemy import Column, BigInteger, String, Text, Enum, TIMESTAMP, Boolea
 from sqlalchemy.sql import func
 from app.database import Base
 import enum
+from sqlalchemy.orm import relationship
 
 # Enum Python để ánh xạ với ENUM trong PostgreSQL
 class UserRoleEnum(str, enum.Enum):
@@ -26,6 +27,9 @@ class User(Base):
     role = Column(Enum(UserRoleEnum), default=UserRoleEnum.buyer)
     created_at = Column(TIMESTAMP, server_default=func.now())
     updated_at = Column(TIMESTAMP, server_default=func.now(), onupdate=func.now())
+
+    reports = relationship("Report", back_populates="user", cascade="all, delete-orphan")
+    properties = relationship("Property", back_populates="user", cascade="all, delete-orphan")
 
     def __repr__(self):
         return f"<User {self.user_id} - {self.phone_number}>"

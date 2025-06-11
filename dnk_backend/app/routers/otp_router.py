@@ -52,8 +52,10 @@ def verify_otp(request: OTPVerifyRequest, db: Session = Depends(get_db)):
     if existing_user:
         if request.target_type == "phone":
             existing_user.is_phone_number_verified = True
+            print(f"Đã bật cờ phone")
         elif request.target_type == "email":
             existing_user.is_email_verified = True
+            print(f"Đã bật cờ email")
         db.commit()
 
     return {"message": "Mã OTP hợp lệ."}

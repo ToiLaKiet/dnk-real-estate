@@ -17,7 +17,8 @@ def create_user(db: Session, user_data: UserCreate) -> User:
     new_user = User(
         phone_number=user_data.phone_number,
         password_hash=hashed_password,
-        role=user_data.role
+        role=user_data.role,
+        is_phone_number_verified=True
     )
     try:
         db.add(new_user)
@@ -53,8 +54,10 @@ def get_user_by_id(db: Session, user_id: int) -> User:
 # ✅ Cập nhật thông tin user
 def update_user(db: Session, user_id: int, user_update: UserUpdate) -> User:
     user = get_user_by_id(db, user_id)
-    for field, value in user_update.dict(exclude_unset=True).items():
+    for field, value in user_update.model_dump(exclude_unset=True).items():
         setattr(user, field, value)
+        if field == "email":
+            user.is_email_verified = True 
 
     db.commit()
     db.refresh(user)

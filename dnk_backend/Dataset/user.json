@@ -1,102 +1,128 @@
 [
-    {
-      "username": "nguyenhoang",
-      "email": "hoangnguyen@example.com",
-      "full_name": "Nguyễn Hoàng",
-      "phone_number": "0901234567",
-      "address": "123 Nguyễn Trãi, Quận 1, TP.HCM",
-      "role": "seller",
-      "password": "password123"
-    }
-    ,
-    {
-      "username": "phamvananh",
-      "email": "anhpham@example.com",
-      "full_name": "Phạm Văn Anh",
-      "phone_number": "0987654321",
-      "address": "456 Hai Bà Trưng, Quận 3, TP.HCM",
-      "role": "buyer",
-      "password": "password456"
-    }
-    ,
-    {
-      "username": "lethuytrang",
-      "email": "thuytrang@example.com",
-      "full_name": "Lê Thùy Trang",
-      "phone_number": "0912345678",
-      "address": "789 Lê Văn Sỹ, Phú Nhuận, TP.HCM",
-      "role": "seller",
-      "password": "password789"
-    }
-    ,
-    {
-      "username": "tranquocbao",
-      "email": "quocbao@example.com",
-      "full_name": "Trần Quốc Bảo",
-      "phone_number": "0971122334",
-      "address": "12 Hoàng Hoa Thám, Quận Bình Thạnh, TP.HCM",
-      "role": "buyer",
-      "password": "password012"
-    }
-    ,
-    {
-      "username": "hoangkimthoa",
-      "email": "kimthoa@example.com",
-      "full_name": "Hoàng Kim Thoa",
-      "phone_number": "0922233445",
-      "address": "77 Trường Chinh, Quận Tân Bình, TP.HCM",
-      "role": "seller",
-      "password": "password345"
-    }
-    ,
-    {
-      "username": "dohuynhtam",
-      "email": "tamdo@example.com",
-      "full_name": "Đỗ Huỳnh Tâm",
-      "phone_number": "0945566778",
-      "address": "66 Võ Văn Kiệt, Quận 5, TP.HCM",
-      "role": "buyer",
-      "password": "password678"
-    }
-    ,
-    {
-      "username": "buituananh",
-      "email": "tuananhbui@example.com",
-      "full_name": "Bùi Tuấn Anh",
-      "phone_number": "0933445566",
-      "address": "888 Nguyễn Văn Cừ, Quận 10, TP.HCM",
-      "role": "seller",
-      "password": "password910"
-    }
-    ,
-    {
-      "username": "nguyendieulinh",
-      "email": "dieulinh@example.com",
-      "full_name": "Nguyễn Diệu Linh",
-      "phone_number": "0966122334",
-      "address": "101 Trần Hưng Đạo, Quận 1, TP.HCM",
-      "role": "buyer",
-      "password": "password112"
-    }
-    ,
-    {
-      "username": "trinhbaonhi",
-      "email": "baonhi@example.com",
-      "full_name": "Trịnh Bảo Nhi",
-      "phone_number": "0911765432",
-      "address": "222 Nguyễn Thị Minh Khai, Quận 3, TP.HCM",
-      "role": "seller",
-      "password": "password222"
-    }
-    ,
-    {
-      "username": "ngovanthang",
-      "email": "vanthang@example.com",
-      "full_name": "Ngô Văn Thắng",
-      "phone_number": "0955112233",
-      "address": "333 Cách Mạng Tháng Tám, Quận 10, TP.HCM",
-      "role": "buyer",
-      "password": "password333"
-    }
-  ]
-  
+  {
+    "phone_number": "0787721105",
+    "password": "Password123*",
+    "role": "seller"
+  }
+    
+  {
+    "full_name": "Phan Công Nam",
+    "email": "pcn2005@gmail.com",
+    "tax_number": "1234567890123",
+    "company_name": "DNK",
+    "address": "Thôn Thạch Căn, xã Phú Dương, huyện Phú Vang, Thành phố Huế"
+  }
+]
+
+[
+  {
+    "phone_number": "0909123456",
+    "password": "Toi*Admin1",
+    "role": "admin"
+  }
+
+  {
+    "full_name": "Admin là admin",
+    "email": "admin@gmail.com",
+    "tax_number": "",
+    "company_name": "DNK",
+    "address": "123 Nguyễn Trãi, Quận 1, TP.HCM"
+  }
+]
+
+[
+
+  {
+    "phone_number": "0912345678",
+    "password": "SellerPass123!",
+    "role": "seller"
+  }
+
+  {
+    "full_name": "Lê Thị Kim Oanh",
+    "email": "oanh.le@gmail.com",
+    "tax_number": "9876543210987",
+    "company_name": "OanhLand",
+    "address": "456 Lý Thường Kiệt, Quận Tân Bình, TP.HCM"
+  }
+]
+
+[
+  {
+    "phone_number": "0933556677",
+    "password": "SellHouse456@",
+    "role": "seller"
+  }
+
+  {
+    "full_name": "Trần Minh Quân",
+    "email": "tran.quan@quanhousing.vn",
+    "tax_number": "1029384756123",
+    "company_name": "Quân Housing",
+    "address": "12 Nguyễn Văn Linh, Quận Hải Châu, TP. Đà Nẵng"
+  }
+]
+
+[
+  {
+    "phone_number": "0977998877",
+    "password": "RealEstate789*",
+    "role": "seller"
+  }
+
+  {
+    "full_name": "Đỗ Thị Hạnh",
+    "email": "hanh.do@hanhreal.com",
+    "tax_number": "5647382910123",
+    "company_name": "Hạnh Real",
+    "address": "77 Phạm Văn Đồng, Quận Cầu Giấy, Hà Nội"
+  }
+]
+
+[
+  {
+    "phone_number": "0922334455",
+    "password": "BuyNow123#",
+    "role": "buyer"
+  }
+
+  {
+    "full_name": "Nguyễn Thị Mai",
+    "email": "mai.nguyen@gmail.com",
+    "tax_number": "",
+    "company_name": "",
+    "address": "101 Bà Triệu, Quận Hai Bà Trưng, Hà Nội"
+  }
+]
+
+[
+  {
+    "phone_number": "0966112233",
+    "password": "HouseHunt456!",
+    "role": "buyer"
+  }
+
+  {
+    "full_name": "Phạm Văn Khánh",
+    "email": "khanh.pham1995@yahoo.com",
+    "tax_number": "",
+    "company_name": "",
+    "address": "67 Nguyễn Văn Cừ, Quận Ninh Kiều, TP. Cần Thơ"
+  }
+]
+
+[
+  {
+    "phone_number": "0944667788",
+    "password": "SafeBuy789@",
+    "role": "buyer"
+  }
+
+  {
+    "full_name": "Lý Gia Hưng",
+    "email": "hung.ly@outlook.com",
+    "tax_number": "",
+    "company_name": "",
+    "address": "198 Trường Chinh, Quận Thanh Xuân, Hà Nội"
+  }
+]

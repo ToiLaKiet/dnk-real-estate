@@ -1,172 +1,197 @@
 from sqlalchemy.orm import Session
+from app.models import property_model
+from app.schemas.property_schema import PropertyCreate, PropertyUpdate
 from app.models.property_model import Property
-from app.schemas.property_schema import PropertyCreate
-from app.crud import property_feature_crud, property_image_crud, property_video_crud, location_crud
-from app.schemas import property_feature_schema, property_image_schema, property_video_schema, location_schema
-from typing import List, Optional
-from app.models.location_model import LocationTypeEnum, Location 
+from datetime import datetime, UTC
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
+from app.crud import contact_crud
+from app.schemas.contact_schema import ContactCreate
+from app.schemas.property_feature_schema import PropertyFeatureCreate
+from app.schemas.property_image_schema import PropertyImageCreate
+from app.schemas.property_video_schema import PropertyVideoCreate
+from app.crud import property_feature_crud, property_image_crud, property_video_crud
+from app.schemas import property_feature_schema, property_image_schema, property_video_schema
+from app.models.property_model import PropertyStatusEnum
+
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
 
+def create_property(db: Session, property_in: PropertyCreate, user_id: int):
 
-def create_property(db: Session, property_data: PropertyCreate):
-    # 1. Tạo bản ghi chính trong bảng properties
-    db_property = Property(
-        user_id=property_data.user_id,
-        category_id=property_data.category_id,
-        location_id=property_data.location_id,
-        title=property_data.title,
-        description=property_data.description,
-        price=property_data.price,
-        area=property_data.area,
-        address=property_data.address,
-        property_type=property_data.property_type,
-        status=property_data.status,
+    # 1. Tạo property
+    property_data = property_in.model_dump(
+        exclude={"contact_name", "contact_phone", "contact_email", "features", "images", "videos"}
     )
+    try:
+        db_property = Property(**property_data)
+    except Exception as e:
+        print(f"Error creating Property: {e}")
+        return None
+
+    
+    db_property.user_id = user_id
+    db_property.created_at = datetime.now(UTC)
+    db_property.updated_at = datetime.now(UTC)
+
     db.add(db_property)
     db.commit()
     db.refresh(db_property)
 
-    # 2. Thêm các feature
-    for feature in property_data.features:
-        feature_data = property_feature_schema.PropertyFeatureCreate(
-            **feature.model_dump(), property_id=db_property.property_id
-        )
-        property_feature_crud.create_property_feature(db, feature_data)
+    # 2. Tạo liên hệ (Contact)
+    contact_in = ContactCreate(
+        name=property_in.contact_name,
+        phone=property_in.contact_phone,
+        email=property_in.contact_email,
+        property_id=db_property.property_id
+    )
+    contact = contact_crud.create_contact(db, contact_in)
+    
 
-    # 3. Thêm các image
-    for image in property_data.images:
-        image_data = property_image_schema.PropertyImageCreate(
-            **image.model_dump(), property_id=db_property.property_id
+    # 3. Tạo các feature liên quan
+    for feature in property_in.features:
+        db_feature = PropertyFeatureCreate(
+            property_id=db_property.property_id,
+            feature_name=feature.feature_name,
+            feature_value=feature.feature_value
         )
-        property_image_crud.create_property_image(db, image_data)
+        property_feature_crud.create_property_feature(db, db_feature)
 
-    # 4. Thêm các video
-    for video in property_data.videos:
-        video_data = property_video_schema.PropertyVideoCreate(
-            **video.model_dump(), property_id=db_property.property_id
+    # 4. Tạo các image liên quan
+    for image in property_in.images:
+        db_image = PropertyImageCreate(
+            property_id=db_property.property_id,
+            image_url=image.image_url,
+            caption=image.caption,
+            is_primary=image.is_primary
         )
-        property_video_crud.create_property_video(db, video_data)
+        property_image_crud.create_property_image(db, db_image)
+
+    # 5. Tạo các video liên quan
+    for video in property_in.videos:
+        db_video = PropertyVideoCreate(
+            property_id=db_property.property_id,
+            video_url=video.video_url
+        )
+        property_video_crud.create_property_video(db, db_video)
 
     return db_property
 
 
-def get_properties(db: Session, skip: int = 0, limit: int = 100):
+
+def get_property(db: Session, property_id: int):
+    return db.query(Property).filter(Property.property_id == property_id).first()
+
+
+def get_all_properties(db: Session, skip: int = 0, limit: int = 100):
     return db.query(Property).offset(skip).limit(limit).all()
+
+
+def get_properties_by_user(db: Session, user_id: int):
+    return db.query(Property).filter(Property.user_id == user_id).all()
 
 def get_property_by_id(db: Session, property_id: int):
     return db.query(Property).filter(Property.property_id == property_id).first()
 
-def update_property(db: Session, property_id: int, property_data: PropertyCreate):
-    # 1. Tìm bất động sản theo ID
-    db_property = db.query(Property).filter(Property.property_id == property_id).first()
-    if not db_property:
-        return None
 
-    # 2. Cập nhật các trường cơ bản
-    db_property.user_id = property_data.user_id
-    db_property.category_id = property_data.category_id
-    db_property.location_id = property_data.location_id
-    db_property.title = property_data.title
-    db_property.description = property_data.description
-    db_property.price = property_data.price
-    db_property.area = property_data.area
-    db_property.address = property_data.address
-    db_property.property_type = property_data.property_type
-    db_property.status = property_data.status
+def update_property_status(db: Session, property_id: int, new_status: PropertyStatusEnum):
+    property_item = db.query(Property).filter(Property.property_id == property_id).first()
 
+    if not property_item:
+        return None  # Router sẽ xử lý HTTPException
+
+    property_item.status = new_status
+    db.commit()
+    db.refresh(property_item)
+    return property_item
+
+def update_property(db: Session, property_id: int, property_in: PropertyCreate, user_id: int):
+    existing_property = db.query(Property).filter(Property.property_id == property_id, Property.user_id == user_id).first()
+
+    if not existing_property:
+        return None  
+
+    db.delete(existing_property)
     db.commit()
 
-    # 3. Xóa và thêm lại các feature
+    new_property = create_property(db, property_in, user_id)
+    return new_property
 
 
-    # Xóa toàn bộ feature, image, video cũ
-    property_feature_crud.delete_features_by_property_id(db, property_id)
-    property_image_crud.delete_images_by_property_id(db, property_id)
-    property_video_crud.delete_videos_by_property_id(db, property_id)
 
-    # Thêm lại mới
-    for feature in property_data.features:
-        feature_data = property_feature_schema.PropertyFeatureCreate(
-            **feature.model_dump(), property_id=property_id
-        )
-        property_feature_crud.create_property_feature(db, feature_data)
+def delete_property(db: Session, property_id: int, user_id: int):
+    property_item = get_property_by_id(db, property_id)
+    
+    if property_item and property_item.user_id == user_id:
+        db.delete(property_item)
+        db.commit()
+        return {"message": "Property deleted successfully"}
+    
+    return None
 
-    for image in property_data.images:
-        image_data = property_image_schema.PropertyImageCreate(
-            **image.model_dump(), property_id=property_id
-        )
-        property_image_crud.create_property_image(db, image_data)
 
-    for video in property_data.videos:
-        video_data = property_video_schema.PropertyVideoCreate(
-            **video.model_dump(), property_id=property_id
-        )
-        property_video_crud.create_property_video(db, video_data)
-
-    db.refresh(db_property)
-    return db_property
-
-def delete_property(db: Session, property_id: int) -> bool:
-    property_obj = db.query(Property).filter(Property.property_id == property_id).first()
-    if not property_obj:
-        return False
-
-    # Nếu bạn muốn, có thể xóa liên quan (images, videos, features, contacts...) ở đây
-    db.delete(property_obj)
-    db.commit()
-    return True
 
 def search_properties(
     db: Session,
-    province_id: Optional[str] = None,
-    district_id: Optional[str] = None,
-    ward_id: Optional[str] = None,
     min_price: float = None,
     max_price: float = None,
     min_area: float = None,
     max_area: float = None,
-    property_type: Optional[str] = None,
-    status: Optional[str] = None
-) -> List[Property]:
+    property_type: str = None,
+    location_id: str = None,
+    category: str = None,
+    status: str = None
+):
     query = db.query(Property)
 
-    # Lọc theo địa điểm
-    if ward_id:
-        query = query.filter(Property.ward_id == ward_id)
-    elif district_id:
-        # Lấy tất cả các ward_id thuộc district
-        wards = db.query(Location.location_id).filter(
-            Location.parent_id == district_id,
-            Location.type == LocationTypeEnum.ward
-        ).all()
-        ward_ids = [w.location_id for w in wards]
-        query = query.filter(Property.ward_id.in_(ward_ids))
-    elif province_id:
-        # Lấy tất cả district trong province
-        districts = db.query(Location.location_id).filter(
-            Location.parent_id == province_id,
-            Location.type == LocationTypeEnum.district
-        ).all()
-        district_ids = [d.location_id for d in districts]
-        wards = db.query(Location.location_id).filter(
-            Location.parent_id.in_(district_ids),
-            Location.type == LocationTypeEnum.ward
-        ).all()
-        ward_ids = [w.location_id for w in wards]
-        query = query.filter(Property.ward_id.in_(ward_ids))
-
-    # Lọc các điều kiện khác
     if min_price is not None:
         query = query.filter(Property.price >= min_price)
     if max_price is not None:
         query = query.filter(Property.price <= max_price)
+
     if min_area is not None:
         query = query.filter(Property.area >= min_area)
     if max_area is not None:
         query = query.filter(Property.area <= max_area)
+
     if property_type:
         query = query.filter(Property.property_type == property_type)
+
+    if location_id:
+        query = query.filter(Property.location_id == location_id)
+
+    if category is not None:
+        query = query.filter(Property.category == category)
+
     if status:
         query = query.filter(Property.status == status)
 
+
     return query.all()
+
+def get_all_properties_no_limit(db: Session):
+    return db.query(Property).all()
+
+# Gợi ý bất động sản dựa trên TF-IDF + Cosine Similarity
+def recommend_properties(db: Session, input_property: dict, top_n: 5):
+    properties = get_all_properties_no_limit(db)
+    
+    if not properties:
+        return []
+
+    # Chuyển đổi dữ liệu thành danh sách văn bản
+    docs = [" ".join([prop.title, prop.description, prop.category]) for prop in properties]
+    
+    vectorizer = TfidfVectorizer()
+    tfidf_matrix = vectorizer.fit_transform(docs)
+
+    # Xử lý property đầu vào
+    input_text = " ".join([input_property.get("title", ""), input_property.get("description", ""), input_property.get("category", "")])
+    input_vec = vectorizer.transform([input_text])
+
+    # Tính độ tương đồng
+    similarities = cosine_similarity(input_vec, tfidf_matrix).flatten()
+    recommended_indices = similarities.argsort()[::-1][:top_n]
+
+    return [properties[i] for i in recommended_indices]

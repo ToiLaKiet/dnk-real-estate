@@ -1,0 +1,28 @@
+[
+    {
+      "property_id": 101,
+      "reason": "Thông tin sai sự thật",
+      "description": "Giá đăng rẻ bất thường so với mặt bằng chung, nghi lừa đảo."
+    },
+    {
+      "property_id": 102,
+      "reason": "Ảnh không đúng thực tế",
+      "description": "Hình ảnh là ảnh minh họa lấy từ internet, không phải ảnh thật của nhà."
+    },
+    {
+      "property_id": 103,
+      "reason": "Tin trùng lặp",
+      "description": "Tin này đã xuất hiện nhiều lần với nội dung và hình ảnh y hệt."
+    },
+    {
+      "property_id": 104,
+      "reason": "Ngôn ngữ phản cảm",
+      "description": "Tiêu đề và nội dung chứa ngôn từ thiếu tôn trọng người đọc."
+    },
+    {
+      "property_id": 105,
+      "reason": "Không liên lạc được",
+      "description": "Số điện thoại trong tin đăng không tồn tại hoặc không liên lạc được."
+    }
+  ]
+  

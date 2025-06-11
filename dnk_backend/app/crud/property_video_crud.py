@@ -9,8 +9,7 @@ from app.schemas.property_video_schema import PropertyVideoCreate
 def create_property_video(db: Session, video_create: PropertyVideoCreate) -> PropertyVideo:
     video = PropertyVideo(
         property_id=video_create.property_id,
-        video_url=video_create.video_url,
-        caption=video_create.caption,
+        video_url=video_create.video_url
     )
     db.add(video)
     db.commit()

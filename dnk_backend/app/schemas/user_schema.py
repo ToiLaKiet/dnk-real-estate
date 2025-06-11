@@ -7,7 +7,7 @@ from app.models.user_model import UserRoleEnum
 # ✅ Schema cơ bản: base
 class UserBase(BaseModel):
     full_name: Optional[str] = None
-    email: Optional[EmailStr] = None
+    email: Optional[str] = None
     phone_number: str
     tax_number: Optional[str] = None
     company_name: Optional[str] = None
@@ -42,7 +42,7 @@ class UserRead(UserBase):
 # ✅ Schema để cập nhật thông tin người dùng
 class UserUpdate(BaseModel):
     full_name: Optional[str] = None
-    email: Optional[EmailStr] = None
+    email: Optional[str] = None
     tax_number: Optional[str] = None
     company_name: Optional[str] = None
     address: Optional[str] = None

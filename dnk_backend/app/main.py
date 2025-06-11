@@ -29,9 +29,14 @@ Base.metadata.create_all(bind=engine)
 
 app.include_router(user_router.router)
 app.include_router(otp_router.router)
+app.include_router(news_router.router)
 app.include_router(property_router.router)
+app.include_router(favorite_router.router)
+app.include_router(report_router.router)
 app.include_router(location_router.router)
+app.include_router(contact_router.router)
 app.include_router(property_feature_router.router)
 app.include_router(property_image_router.router)
 app.include_router(property_video_router.router)
-app.include_router(category_router.router)
+
+

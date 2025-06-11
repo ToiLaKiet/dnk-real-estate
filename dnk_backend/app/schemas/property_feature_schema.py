@@ -9,6 +9,10 @@ class PropertyFeatureBase(BaseModel):
 class PropertyFeatureCreate(PropertyFeatureBase):
     property_id: Optional[int] = None
 
+class PropertyFeatureUpdate(BaseModel):
+    feature_name: Optional[str] = None
+    feature_value: Optional[str] = None
+
 class PropertyFeatureRead(PropertyFeatureBase):
     feature_id: int
     property_id: int

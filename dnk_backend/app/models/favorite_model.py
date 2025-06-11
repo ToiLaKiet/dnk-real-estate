@@ -6,8 +6,8 @@ class Favorite(Base):
     __tablename__ = "favorites"
 
     favorite_id = Column(BigInteger, primary_key=True, index=True)
-    user_id = Column(BigInteger, ForeignKey("users.user_id"), nullable=False)
-    property_id = Column(BigInteger, ForeignKey("properties.property_id"), nullable=False)
+    user_id = Column(BigInteger, ForeignKey("users.user_id", ondelete="CASCADE"), nullable=False)
+    property_id = Column(BigInteger, ForeignKey("properties.property_id", ondelete="CASCADE"), nullable=False)
     created_at = Column(TIMESTAMP, server_default=func.now())
 
     __table_args__ = (

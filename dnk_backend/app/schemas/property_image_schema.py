@@ -10,6 +10,11 @@ class PropertyImageBase(BaseModel):
 class PropertyImageCreate(PropertyImageBase):
     property_id: Optional[int] = None
 
+class PropertyImageUpdate(BaseModel):
+    image_url: Optional[str] = None
+    caption: Optional[str] = None
+    is_primary: Optional[bool] = False
+
 class PropertyImageRead(PropertyImageBase):
     image_id: int
     property_id: int
