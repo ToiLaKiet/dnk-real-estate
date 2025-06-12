@@ -22,21 +22,13 @@ const ImageUploadModal = () => {
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({})
-  const [images, setImages] = useState([(formData.images)?.map((img) => img.image_url)] || []);
-  const [videoUrl, setVideoUrl] = useState(formData.videos.video_url);
+  const [images, setImages] = useState((locate?.state?.images)?.map((img) => img.image_url) || []);
+  const [videoUrl, setVideoUrl] = useState(locate?.state?.media?.video_url);
   const [editMode, setEditMode] = useState(locate?.state?.mode ?? false);
 
   useEffect(() => {
-    if(!user) {
-      alert('Bạn cần đăng nhập để thực hiện thao tác này');
-      if (locate.state) {
-          setFormData(locate.state.formData);
-        }
-    }
-    else {
-      // Nếu không có dữ liệu từ state, có thể redirect hoặc hiển thị thông báo
+    if(locate.state==undefined){
       navigate('/post-create');
-      console.error('No form data provided');
     }
   }, []);
   // const [expandedSection, setExpandedSection] = useState(null);
@@ -146,9 +138,9 @@ const ImageUploadModal = () => {
             { feature_name: "houseDirection", feature_value: updatedData.houseDirection || '' },
             { feature_name: "balconyDirection", feature_value: updatedData.balconyDirection || '' },
           ],
-          images : updatedData.media.images,
+          images : updatedData.media?.images ?? [],
           videos:[{
-           video_url:updatedData.media.videoUrl
+           video_url:updatedData.media?.videoUrl ?? ''
           }],
           contact_name: updatedData.contact?.name || '',
           contact_email: updatedData.contact?.email || '',

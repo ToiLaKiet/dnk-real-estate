@@ -451,7 +451,6 @@ const DuAn = () => {
     const province = query.get("province") || "";
     const area = query.get("area") || "";
     const price = query.get("price") || "";
-
     setSearchFilters({
       text,
       province,
@@ -602,10 +601,10 @@ const DuAn = () => {
       <Header />
       <div className="duan-content">
         {/* Search Engine */}
-        <div className='duan-title-box'>
-          {/* <h1 className='duan-title'>TRANG TỔNG HỢP CÁC DỰ ÁN BẤT ĐỘNG SẢN</h1> */}
+         {/* <div className='duan-title-box'>
+          <h1 className='duan-title'>TRANG TỔNG HỢP CÁC DỰ ÁN BẤT ĐỘNG SẢN</h1>
           <h2 className='duan-des'>Trên hệ thống đang có {lengthOfdata} dự án bất động sản.</h2> 
-        </div>
+        </div>  */}
         <div className="duan-search-engine-container">
           <div className="duan-search-engine">
             <div className="search-bar">
@@ -614,7 +613,7 @@ const DuAn = () => {
                 <input
                   type="text"
                   placeholder="Tìm kiếm dự án..."
-                  className="search-input"
+                  className="duan-search-input"
                   value={searchFilters.text}
                   onChange={(e) => handleFilterChange("text", e.target.value)}
                 />
@@ -657,6 +656,10 @@ const DuAn = () => {
             </div>
           </div>
         </div>
+        <div className="duan-title-box">
+          <h1 className="duan-title">Trang tổng hợp các dự án bất động sản</h1>
+          <h2 className="duan-des">Trên hệ thống đang có {lengthOfdata} bất động sản dạng này.</h2>
+        </div>
         {/* Danh sách dự án */}
         <div className="project-list">
           {displayProjects.length > 0 ? (
@@ -697,6 +700,7 @@ const DuAn = () => {
                   </div>
                   <p className="project-description">{truncateDescription(project.description, 100)}</p>
                 </div>
+                <hr style={{ border: '1px solid gray' }} />
                 <div className="card-bottom">
                   {project.user_id && <span className="user-info">Đăng bởi: {project.user_id}</span>}
                   <a href={`tel:${project.contact.phone}`} className="phone-button">

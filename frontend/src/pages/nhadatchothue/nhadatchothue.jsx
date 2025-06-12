@@ -617,10 +617,10 @@ const NhaDatChoThue = () => {
     <div className="page-container">
       <Header />
       <div className="ndb-content">
-        <div className="ndb-title-box">
+        {/* <div className="ndb-title-box">
           <h1 className="ndb-title">TRANG TỔNG HỢP CÁC BẤT ĐỘNG SẢN CHO THUÊ</h1>
           <h2 className="ndb-des">Trên hệ thống đang có {lengthOfdata} bất động sản cho thuê.</h2>
-        </div>
+        </div> */}
         <div className="nhadatban-search-engine-container">
           <div className="nhadatban-search-engine">
             <div className="search-bar">
@@ -629,7 +629,7 @@ const NhaDatChoThue = () => {
                 <input
                   type="text"
                   placeholder="Tìm kiếm bài đăng cho thuê..."
-                  className="search-input"
+                  className="ndb-search-input"
                   value={searchFilters.text}
                   onChange={(e) => handleFilterChange('text', e.target.value)}
                 />
@@ -683,7 +683,10 @@ const NhaDatChoThue = () => {
             </div>
           </div>
         </div>
-
+        <div className="ndb-title-box">
+          <h1 className="ndb-title">Trang tổng hợp các bất động sản đang được cho thuê</h1>
+          <h2 className="ndb-des">Trên hệ thống đang có {lengthOfdata} bất động sản dạng này.</h2>
+        </div>
         {/* Danh sách bài đăng */}
         <div className="posts-list">
           {displayPosts.length > 0 ? (
@@ -724,6 +727,8 @@ const NhaDatChoThue = () => {
                   </div>
                   <p className="post-description">{truncateDescription(post.description, 100)}</p>
                 </div>
+                <hr style={{ border: '1px solid gray' }} />
+
                 <div className="card-bottom">
                   {post.user_id && <span className="user-info">Đăng bởi: {post.user_id}</span>}
                   <a href={`tel:${post.contact.phone}`} className="phone-button">
