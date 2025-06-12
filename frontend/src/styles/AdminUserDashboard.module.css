@@ -1,0 +1,363 @@
+.userdashboardWrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  background-color: white;
+  animation: slide-in 0.5s ease-in;
+  height: 100%;
+}
+
+.udInnerWrapper {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  max-width: inherit;
+  margin: 0 auto;
+  gap: 10px;
+  animation: slide-in 0.5s ease-in;
+}
+.AdminselectionBanner{
+  color:white;
+  font-weight: bold;
+  background: linear-gradient(270deg, #C067D7 0%, #22079E 100%);
+  width: 100%;
+  min-height: 30px;
+  max-height: 70px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.fireiconbox {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  padding-top: 10px;
+}
+
+.userdashboardTabList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background: #100086;
+  box-shadow: 4px 4px 4px 4px rgba(0, 0, 0, 0.25);
+  max-width: 150px;
+  width: 15%;
+  height: inherit;
+  max-height: 100%;
+  align-items: flex-start;
+  box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.1);
+  animation: slide-in 0.5s ease-in;
+}
+.adminstrongbox{
+  display: flex;
+  width:100%;
+  height: 100%;
+  min-height: 50px;
+  justify-content: center;
+}
+.big{
+  font-size: 100px;
+}
+.userdashboardHamburger {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  color: white;
+}
+
+.userdashboardLogo {
+  object-fit: contain;
+}
+
+.userdashboardMenu {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.userdashboardTab {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  color:white;
+  width: 100%;
+  text-align: left;
+  font-size: 16px;
+  font-weight: 500;
+  padding:10px;
+  cursor: pointer;
+  padding: 12px 10px;
+  transition: color 0.3s ease, background-color 0.3s ease;
+  min-height: 44px; /* Ensure tap target size */
+}
+
+.userdashboardTab:hover {
+  color: #fff;
+  background-color: #8C7CFF;
+}
+
+.userdashboardTabSelected {
+ background-color: #8C7CFF;
+}
+
+.userdashboardTabPanels {
+  flex: 1;
+  width: 100%;
+  max-width: 1400px;
+  background-color: #fff;
+  
+}
+
+.userdashboardPanel {
+  max-width: 1200px;
+  margin: 0 auto;
+
+}
+
+.userdashboardOverviewContainer {
+  display: flex;
+  flex-direction: column;
+  animation: slide-in 0.5s ease-in;
+  gap: 40px;
+}
+
+.userdashboardSection {
+  display: flex;
+  flex-direction: column;
+  gap:10px;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  padding-bottom: 40px;
+}
+.userdashboardSectioncontent {
+  display: flex;
+  flex-direction: row;
+  gap:10px;
+  width: 100%;
+  height: auto;
+  max-width: 1600px;
+  padding-bottom: 40px;
+}
+
+
+.userdashboardTabName {
+  padding-top: 20px;
+  font-size: 32px;
+  font-weight: 700;
+  color: #333;
+  text-align: flex-start;
+}
+
+.userdashboardSectionTitle {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+}
+
+.userdashboardInfoBox {
+  border-radius: 7px;
+  background: linear-gradient(180deg, rgba(217, 217, 217, 0.25) 0%, rgba(255, 0, 0, 0.25) 100%);
+  padding: 20px;
+  width:30%;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  font-size: 16px;
+  color: #333;
+}
+.userdashboardInfoBox2 {
+  border-radius: 5px;
+  background: linear-gradient(180deg, rgba(217, 217, 217, 0.25) 0%, rgba(214, 147, 218, 0.25) 100%);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  font-size: 16px;
+  color: #333;
+}
+.userdashboardSubSectionContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.userdashboardSubSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.userdashboardSubSectionTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+}
+
+.userdashboardNotificationList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.userdashboardNotificationItem {
+  padding: 10px 0;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.userdashboardNotificationItem:last-child {
+  border-bottom: none;
+}
+
+.userdashboardNotificationDate {
+  font-size: 14px;
+  color: #999;
+}
+
+.userdashboardError {
+  color: #d32f2f;
+  font-size: 16px;
+}
+
+.userdashboardPlaceholder {
+  text-align: center;
+  font-size: 18px;
+  color: #666;
+  padding: 40px;
+}
+
+@media (max-width: 1024px) {
+  .udInnerWrapper {
+    flex-direction: row;
+  }
+  .AdminselectionBanner{
+    visibility:hidden;
+  }
+  .userdashboardTabList {
+    flex-direction: column;
+    max-width: 120px;
+    width: 15%;
+    height: 100%;
+    gap: 15px;
+    padding: 15px 8px;
+    box-shadow: none;
+    border-right: 1px solid #e9ecef;
+  }
+  .userdashboardTab {
+    font-size: 14px;
+    padding: 10px 8px;
+    gap: 6px;
+  }
+  .userdashboardLogo {
+    width: 100px;
+    height: 80px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .udInnerWrapper {
+    flex-direction: column;
+  }
+
+  .userdashboardTabList {
+    flex-direction: column;
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    padding: 10px;
+    position: relative;
+  }
+
+  .userdashboardHamburger {
+    display: block;
+    position: absolute;
+    background: #100086;
+    top: 10px;
+    left: 10px;
+  }
+
+  .userdashboardLogo {
+    width: 80px;
+    height: 60px;
+    margin: 10px auto;
+  }
+
+  .userdashboardMenu {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100%;
+    padding: 60px 20px 20px;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 1000;
+    background: linear-gradient(270deg, #C067D7 0%, #22079E 100%);;
+  }
+
+  .userdashboardMenuOpen {
+    display: flex;
+    transform: translateX(0);
+  }
+
+  .userdashboardTab {
+    font-size: 14px;
+    padding: 12px 15px;
+    gap: 8px;
+  }
+
+  .userdashboardTabPanels {
+    padding: 20px 15px;
+  }
+
+  .userdashboardTabName {
+    font-size: 28px;
+  }
+
+  .userdashboardSectionTitle {
+    font-size: 20px;
+  }
+
+  .userdashboardSubSectionContainer {
+    flex-direction: column;
+  }
+
+  .userdashboardSubSectionTitle {
+    font-size: 18px;
+  }
+
+  .userdashboardInfoBox {
+    font-size: 14px;
+    padding: 15px;
+  }
+
+  .userdashboardNotificationDate {
+    font-size: 13px;
+  }
+
+  .userdashboardPlaceholder {
+    font-size: 16px;
+    padding: 20px;
+  }
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateY(10px);
+    opacity: 0.25;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+

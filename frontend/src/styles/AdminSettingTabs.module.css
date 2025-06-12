@@ -1,0 +1,217 @@
+.stFlexbox {
+    display: flex;
+    flex-direction: column;
+    max-width: 854px;
+    width: 100%;
+    padding: 5px;
+    background-color: #fff;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    animation: slide-in 0.5s ease-in;
+  }
+  
+  .stDropdown {
+    margin-bottom: 20px;
+  }
+  
+  .stDropdownHeader {
+    width: 100%;
+    background: none;
+    border: none;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: left;
+    padding: 10px 15px;
+    cursor: pointer;
+    color: #333;
+    transition: color 0.3s ease, background-color 0.3s ease;
+  }
+  
+  .stDropdownHeader:hover {
+    color: #990000;
+    background-color: #f8f9fa;
+  }
+  
+  .stDropdownHeaderActive {
+    color: #990000;
+    font-weight: 700;
+    background-color: #f8f9fa;
+  }
+  
+  .stDropdownContent {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    justify-content: left;
+    border:#990000 1px solid;
+    margin-top: 10px;
+    background-color: #fff;
+  }
+  
+  .stFormGroup {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  
+  .stPasswordInput {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #d9d9d9;
+    border-radius: 8px;
+    background: #fff;
+    color: #555;
+  }
+  
+  .stPasswordRequirements {
+    list-style: none;
+    padding-left: 20px;
+    margin-top: 10px;
+    font-size: 14px;
+  }
+  
+  .stPasswordRequirement {
+    color: #555;
+    margin-bottom: 8px;
+  }
+  
+  .stRequirementMet {
+    color: #28a745;
+  }
+  
+  .stRequirementIcon {
+    margin-right: 8px;
+  }
+  
+  .stError {
+    font-size: 14px;
+    color: #d32f2f;
+  }
+  
+  .stButtonGroup {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .stUpdateButton {
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    background: #990000;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .stUpdateButton:hover {
+    background: #b30000;
+  }
+  
+  .stDeleteButton {
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    background: #990000;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .stDeleteButton:hover {
+    background: #b30000;
+  }
+  
+  .stCancelButton {
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    background: #f0f0f0;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: background 0.3s ease;
+  }
+  
+  .stCancelButton:hover {
+    background: #e0e0e0;
+  }
+  
+  .stConfirmModal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    width: auto;
+    max-width: 400px;
+    text-align: center;
+  }
+  
+  .stModalButtonGroup {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  @media (max-width: 1024px) {
+    .stFlexbox {
+      max-width: 700px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .stFlexbox {
+      max-width: 100%;
+      padding: 15px;
+    }
+  
+    .stPasswordInput,
+    .stUpdateButton,
+    .stDeleteButton,
+    .stCancelButton {
+      font-size: 14px;
+      padding: 10px 16px;
+    }
+  
+    .stPasswordRequirements {
+      font-size: 13px;
+    }
+  
+    .stError {
+      font-size: 13px;
+    }
+  
+    .stConfirmModal {
+      padding: 15px;
+      max-width: 90%;
+    }
+  }
+  
+  @keyframes slide-in {
+    from {
+      transform: translateY(10px);
+      opacity: 0.25;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }

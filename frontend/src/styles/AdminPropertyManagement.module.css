@@ -1,0 +1,256 @@
+.pmFlexbox {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 100%;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  animation: slide-in 0.5s ease-out;
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.userdashboardTabName {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.userdashboardSection {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.pmSectionTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.pmFilterRow {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.pmSearchInput {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  width: 200px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.pmSearchInput:focus {
+  color: #22079E;
+}
+
+.pmDateInput {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  width: 150px;
+  outline: none;
+  transition: border-color 0.3s;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.pmDateInput:focus {
+  color: linear-gradient(270deg, #C067D7 0%, #22079E 100%)
+}
+
+.pmClearButton {
+  padding: 10px 16px;
+  font-size: 16px;
+  background-color: #6c757d;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.pmClearButton:hover {
+  background-color: #5a6268;
+}
+
+.pmSubTabList {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.pmSubTab {
+  font-size: 16px;
+  color: #333;
+  padding: 10px 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.pmSubTab:hover {
+  color: linear-gradient(270deg, #C067D7 0%, #22079E 100%);
+}
+
+.pmSubTabSelected {
+  color:  #22079E;
+  font-weight: 700;
+  border-bottom: 3px solid  #22079E;
+}
+
+.pmSubTabPanel {
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+}
+
+.pmPropertyList {
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  width: 100%;
+  gap: 20px;
+}
+
+.pmPropertyCard {
+  display:flex;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
+  transition: transform 0.3s;
+}
+
+.pmPropertyCard:hover {
+  transform: translateY(-5px);
+}
+
+.pmPropertyImage {
+  width: 50%;
+  height: 100%;
+  object-fit: cover;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.pmPropertyContent {
+  padding: 15px;
+}
+
+.pmPropertyTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.pmPropertyPrice {
+  font-size: 16px;
+  color: #22079E;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.pmPropertyAddress,
+.pmPropertyType {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.pmPropertyStatus {
+  display: inline-block;
+  padding: 4px 8px;
+  font-size: 12px;
+  color: #fff;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.pmEditButton {
+  padding: 10px;
+  font-size: 16px;
+  background-color:  #22079E;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 100%;
+}
+
+.pmEditButton:hover {
+  background-color: #7a0000;
+}
+
+.pmCreateButton {
+  padding: 12px 20px;
+  font-size: 16px;
+  background-color: #22079E;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  display: block;
+  margin: 20px auto;
+  transition: background-color 0.3s;
+}
+
+.pmCreateButton:hover {
+  background-color: #7a0000;
+}
+
+.pmErrorMessage {
+  font-size: 16px;
+  color: #d32f2f;
+  text-align: center;
+  margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+  .pmFilterRow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .pmSearchInput,
+  .pmDateInput,
+  .pmClearButton {
+    width: 100%;
+  }
+
+  .pmSubTabList {
+    flex-wrap: wrap;
+  }
+
+  .pmPropertyList {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+  .pmPropertyList {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

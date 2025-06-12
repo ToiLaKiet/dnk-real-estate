@@ -21,6 +21,7 @@ import TinTuc  from './pages/news/tintuc.jsx';
 import UserDashboard from './pages/userdashboard/userdashboard.jsx';
 import ImageUploadModal from './components/ui/postcreate/ImageUploadModal.jsx';
 import FavoritePosts from './pages/favorite/FavoritePage.jsx';
+import AdminDashboard from './pages/admindashboard/admindashboard.jsx';
 function App() {
   const seUseCase = {
     all:1,
@@ -87,6 +88,7 @@ function App() {
       <Route path="/profile" element={<UserDashboard />} /> {/* Trang dự án */}
       <Route path="/post-create/image-upload" element={<ImageUploadModal />} /> {/* Trang dự án */}
       <Route path="/favorite" element ={<FavoritePosts/>}/>
+      <Route path="/admin" element ={<AdminDashboard/>}/>
     </Routes>
     </AuthProvider>
   );
