@@ -438,11 +438,15 @@ const NhaDatBan = () => {
   const [favorites, setFavorites] = useState({});
   const [lengthOfdata, setLengthOfdata] = useState(0);
   const postsPerPage = 8;
-
   // Fetch initial favorites
   useEffect(() => {
+    const token = localStorage.getItem('token');
     if (user?.user_id) {
-      axios.get(`/favorites?user_id=${user.user_id}`)
+      axios.get(`/favorites`,{
+        headers:{
+          Authorization : `Bearer ${token}`
+        }
+      })
         .then((response) => {
           const favoriteMap = {};
           response.data.forEach((fav) => {
@@ -561,6 +565,7 @@ const NhaDatBan = () => {
     }
 
     const isCurrentlyFavorited = favorites[propertyId];
+
     setFavorites((prev) => ({
       ...prev,
       [propertyId]: !isCurrentlyFavorited
@@ -569,13 +574,12 @@ const NhaDatBan = () => {
     try {
       if (isCurrentlyFavorited) {
         await axios.delete('/favorites', {
-          data: { user_id: user.user_id, property_id: propertyId }
+          user_id: user.user_id, property_id: propertyId 
         });
       } else {
         await axios.post('/favorites', {
           property_id: propertyId,
           user_id: user.user_id,
-          created: new Date().toISOString()
         });
       }
     } catch (error) {

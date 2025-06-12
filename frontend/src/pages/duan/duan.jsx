@@ -429,8 +429,13 @@ const DuAn = () => {
 
   // Fetch initial favorites
   useEffect(() => {
+    const token = localStorage.getItem('token');
     if (user?.user_id) {
-      axios.get(`/favorites?user_id=${user.user_id}`)
+      axios.get(`/favorites`,{
+        headers:{
+          Authorization : `Bearer ${token}`
+        }
+      })
         .then((response) => {
           const favoriteMap = {};
           response.data.forEach((fav) => {

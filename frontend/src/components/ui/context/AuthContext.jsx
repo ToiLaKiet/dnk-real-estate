@@ -8,7 +8,7 @@ export const AuthContext = createContext();
 
 // 2. Tạo Provider
 export const AuthProvider = ({ children }) => {
-  const API_URL ='http://172.16.1.205:8080'
+  const API_URL ='http://172.16.2.34:8080'
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);

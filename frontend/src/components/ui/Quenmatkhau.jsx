@@ -16,7 +16,7 @@ function Quenmatkhau({ onClose }) {
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-
+  const API_URL = 'http://172.16.2.34:8080';
   // Chỉ xử lý số điện thoại
   const handleChange = (e) => {
     const { value } = e.target;
@@ -41,7 +41,7 @@ function Quenmatkhau({ onClose }) {
         target_type: "phone",
         target: formData.phone,
       };
-      const result = await axios.post('http://172.16.2.54:8080/otp/send-forgot-password', payload);
+      const result = await axios.post(API_URL+'/otp/send-forgot-password', payload);
       console.log('Kết quả gửi yêu cầu:', result.data);
       setIsOtpModalOpen(true);
     } catch (error) {
@@ -63,7 +63,7 @@ function Quenmatkhau({ onClose }) {
 
     try {
       // API xác thực OTP (bạn có thể gắn lại khi cần)
-      const result = await axios.post('http://172.16.2.54:8080/otp/verify', payload)
+      const result = await axios.post(API_URL+'/otp/verify', payload)
       console.log('Kết quả xác thực OTP:', result.data);
       setIsPasswordModalOpen(true);
     } catch (error) {
@@ -85,7 +85,7 @@ function Quenmatkhau({ onClose }) {
 
     try {
       // API đặt lại mật khẩu (giả lập thành công)
-      const result = await axios.put('http://172.16.2.54:8080/users/change-password', payload)
+      const result = await axios.put(API_URL+'/users/forget-password', payload)
       console.log('Kết quả đặt lại mật khẩu:', result.data);
       handleCloseModal('password');
       onClose();

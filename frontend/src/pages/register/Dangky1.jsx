@@ -15,7 +15,7 @@ function Register() {
   const [formData, setFormData] = useState({
     phone: '',
   });
-  const API_URL = 'http://172.16.1.205:8080'
+  const API_URL = 'http://172.16.2.34:8080'
   const [isOtpModalOpen, setIsOtpModalOpen] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [isAccountTypeModalOpen, setIsAccountTypeModalOpen] = useState(false);

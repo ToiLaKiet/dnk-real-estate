@@ -44,7 +44,7 @@
     border: 1px solid #e9ecef;
     border-radius: 8px;
     justify-content: left;
-    border:#990000 1px solid;
+    box-shadow: 4px 4px 0px 4px black 50% ;
     margin-top: 10px;
     background-color: #fff;
   }
@@ -52,7 +52,7 @@
   .stFormGroup {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-items: left;
     gap: 8px;
     margin-bottom: 20px;
   }
@@ -67,10 +67,14 @@
   }
   
   .stPasswordRequirements {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    gap: 10px;
     list-style: none;
-    padding-left: 20px;
     margin-top: 10px;
     font-size: 14px;
+
   }
   
   .stPasswordRequirement {

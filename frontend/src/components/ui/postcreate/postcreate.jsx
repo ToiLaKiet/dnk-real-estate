@@ -69,7 +69,7 @@ const PostCreate = () => {
       setIsModalOpen(true);
     }
     //to check whether there is any passed data from previous component
-    if (locate.state!=undefined) {
+    if (locate.state!=null) {
         const data = locate.state.postToEdit;
         const features = {};
         data.features.forEach((f) => {
@@ -79,7 +79,7 @@ const PostCreate = () => {
           type: data.type || '',
           property_id: data.property_id,
           address: {
-            province: '',  // You may fetch this from location_id if needed
+            province: '',  
             district: '',
             ward: '',
             street: '',
@@ -90,8 +90,8 @@ const PostCreate = () => {
             }
           },
           propertyType: features.category|| '',
-          area: data.area || '',
-          price: data.price || '',
+          area: data.area || 0,
+          price: data.price || 0,
           legalDocuments: features.legalDocuments || '',
           furniture: features.furniture || '',
           bedrooms: features.bedrooms || '',
@@ -120,18 +120,29 @@ const PostCreate = () => {
 
   // Xử lý thay đổi dữ liệu từ các input
   const handleChange = (e) => {
-    // Lấy tên và giá trị của trường input
-    const { name, value } = e.target;
-    if (name.includes('contact.')) { // Kiểm tra nếu trường là contact
+    const { name, value, type } = e.target;
+  
+    // Kiểm tra nếu là trường trong contact
+    if (name.includes('contact.')) {
       const field = name.split('.')[1];
       setFormData((prev) => ({
         ...prev,
-        contact: { ...prev.contact, [field]: value }
+        contact: {
+          ...prev.contact,
+          [field]: value
+        }
       }));
     } else {
-      setFormData((prev) => ({ ...prev, [name]: value }));
+      // Ép kiểu nếu là trường số
+      const parsedValue = type === 'number' ? parseInt(value, 10) || 0 : value;
+  
+      setFormData((prev) => ({
+        ...prev,
+        [name]: parsedValue
+      }));
     }
   };
+  
 
   // Xử lý thay đổi loại bài đăng (bán/cho thuê)
   const handleTypeChange = (type) => {
@@ -366,7 +377,7 @@ const PostCreate = () => {
               <FontAwesomeIcon icon={faBed} className={styles.formLabelIcon} />
               Số phòng ngủ
               <input
-                type="number"
+                type="text"
                 name="bedrooms"
                 value={formData.bedrooms}
                 onChange={handleChange}
@@ -378,7 +389,7 @@ const PostCreate = () => {
               <FontAwesomeIcon icon={faShower} className={styles.formLabelIcon} />
               Số phòng tắm vệ sinh
               <input
-                type="number"
+                type="text"
                 name="bathrooms"
                 value={formData.bathrooms}
                 onChange={handleChange}

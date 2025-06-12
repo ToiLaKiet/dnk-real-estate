@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../components/ui/context/AuthContext';
 import styles from '../../styles/SettingTabs.module.css';
 
 const SettingsTab = () => {
   const { user } = useAuth();
+  const API_URL = 'http://172.16.2.34:8080';
   const [activeDropdown, setActiveDropdown] = useState(null);
+  const navigate = useNavigate();
   const [passwordData, setPasswordData] = useState({
     oldPassword: '',
     newPassword: '',
@@ -60,18 +63,35 @@ const SettingsTab = () => {
     }
 
     try {
-      const response = await axios.post(`/users/${user.user_id}/change-password`, {
-        oldPassword: passwordData.oldPassword,
-        newPassword: passwordData.newPassword,
-      });
-      if (response.data.success) {
+      const payload = {
+        phone_number: user.phone_number,
+        new_password: passwordData.newPassword,
+        old_password : passwordData.oldPassword,
+      }
+      console.log(payload);
+      const token = localStorage.getItem('token');
+      console.log(token);
+      const response = await axios.put(API_URL+`/users/change-password`, payload,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          }
+        });
+      console.log(response);
+      if (response.data.detail===undefined) {
         setPasswordData({ oldPassword: '', newPassword: '', confirmPassword: '' });
         setRequirements({ minLength: false, uppercase: false, number: false });
         setActiveDropdown(null);
+        alert('Thay đổi mật khẩu thành công');
+      }
+      else{
+        setErrors({
+          general: response.data?.detail || 'Cập nhật mật khẩu thất bại.',
+        });
       }
     } catch (error) {
       setErrors({
-        general: error.response?.data?.error || 'Cập nhật mật khẩu thất bại.',
+        general: error.data?.detail || 'Cập nhật mật khẩu thất bại.',
       });
     }
   };
@@ -79,10 +99,19 @@ const SettingsTab = () => {
   // Handle account deletion
   const handleDeleteAccount = async () => {
     try {
-      const response = await axios.delete(`/users/${user.user_id}`);
-      if (response.data.success) {
+      const token = localStorage.getItem('token');
+      const response = await axios.delete(API_URL+`/users/me`,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          }
+        });
+      console.log(response);
+      if (response.data.message) {
         setIsDeleteModalOpen(false);
         // Optionally trigger logout or redirect
+        navigate('/home');
+        alert(response.data.message);
       }
     } catch (error) {
       setErrors({
@@ -108,7 +137,7 @@ const SettingsTab = () => {
                 type="password"
                 id="oldPassword"
                 name="oldPassword"
-                value={passwordData.oldPassword}
+                value={passwordData.oldPassword ?? ""}
                 onChange={handlePasswordChange}
                 className={styles.stPasswordInput}
               />
@@ -120,7 +149,7 @@ const SettingsTab = () => {
                 type="password"
                 id="newPassword"
                 name="newPassword"
-                value={passwordData.newPassword}
+                value={passwordData.newPassword ?? ""}
                 onChange={handlePasswordChange}
                 className={styles.stPasswordInput}
               />
@@ -146,7 +175,7 @@ const SettingsTab = () => {
                 type="password"
                 id="confirmPassword"
                 name="confirmPassword"
-                value={passwordData.confirmPassword}
+                value={passwordData.confirmPassword ?? ""}
                 onChange={handlePasswordChange}
                 className={styles.stPasswordInput}
               />

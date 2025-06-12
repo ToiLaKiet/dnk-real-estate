@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Tab } from '@headlessui/react';
-import { format } from 'date-fns';
-import Footer from '../../components/ui/parts/footer.jsx';
 import styles from '../../styles/AdminUserDashboard.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSquarePollVertical, faNewspaper, faCirclePlus, faUser, faLandmark, faFire, faBars } from '@fortawesome/free-solid-svg-icons';
+import { faSquarePollVertical, faNewspaper, faCirclePlus, faUser, faLandmark, faBars } from '@fortawesome/free-solid-svg-icons';
 import Logo from '../../components/logo.js';
 import { useAuth } from '../../components/ui/context/AuthContext.jsx';
 import AccountTab from './AdminAccountTab.jsx';
@@ -19,14 +17,9 @@ const mockProperties = [
   { property_id: 5, title: 'Căn hộ Cầu Giấy', posted_by: 100, is_active: true, created_at: '2025-05-31T12:00:00Z' },
 ];
 
-const mockNotifications = [
-  { notification_id: 1, message: 'Hệ thống bảo trì 01/07/2025', created_at: '2025-06-04T10:00:00Z' },
-  { notification_id: 2, message: 'Cập nhật chính sách giá mới', created_at: '2025-06-03T15:00:00Z' },
-];
 
 function AdminDashboard() {
   const [propertiesCount, setPropertiesCount] = useState(0);
-  const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -44,9 +37,6 @@ function AdminDashboard() {
           (p) => p.posted_by === user_id && p.is_active
         );
         setPropertiesCount(userProperties.length);
-
-        // Mock API: Fetch notifications
-        setNotifications(mockNotifications);
       } catch (err) {
         console.error('Lỗi khi tải dữ liệu:', err);
         setError('Không thể tải dữ liệu. Vui lòng thử lại.');
@@ -110,6 +100,7 @@ function AdminDashboard() {
           <Tab.Panels className={styles.userdashboardTabPanels}>
             {/* Tổng Quan Tab */}
             <Tab.Panel className={styles.userdashboardPanel}>
+              <Logo/>
               <div className={styles.userdashboardOverviewContainer}>
                 {/* Section 1: Tab Name */}
                 <div className={styles.userdashboardSection}>
@@ -118,7 +109,7 @@ function AdminDashboard() {
                 </div>
                 {/* Section 2: Account Overview */}
                 <div className={styles.userdashboardSection}>
-                <h2 className={styles.userdashboardSectionTitle}>Tổng quan trang web</h2>
+                  <h2 className={styles.userdashboardSectionTitle}>Tổng quan trang web</h2>
                   <div className={styles.userdashboardSectioncontent}>
                   <div className={styles.userdashboardInfoBox}>
                     {loading ? (
@@ -148,48 +139,7 @@ function AdminDashboard() {
                   </div>
                   </div>
                 </div>
-                {/* Section 3: Personalized Info */}
-                <div className={styles.userdashboardSection}>
-                  <h2 className={styles.userdashboardSectionTitle}>Thông tin dành riêng cho bạn</h2>
-                  <div className={styles.userdashboardSubSectionContainer}>
-                    {/* Quan Trọng Box */}
-                    <div className={styles.userdashboardSubSection}>
-                      <div className={styles.userdashboardInfoBox2}>
-                        <div className={styles.fireiconbox}>
-                          <FontAwesomeIcon icon={faFire} style={{ color: '#FF5733' }} size="1x" />
-                          <h3 className={styles.userdashboardSubSectionTitle}>Quan Trọng</h3>
-                        </div>
-                        {loading ? (
-                          <p>Đang tải...</p>
-                        ) : error ? (
-                          <p className={styles.userdashboardError}>{error}</p>
-                        ) : notifications.length > 0 ? (
-                          <ul className={styles.userdashboardNotificationList}>
-                            {notifications.map((n) => (
-                              <li key={n.notification_id} className={styles.userdashboardNotificationItem}>
-                                <p>{n.message}</p>
-                                <span className={styles.userdashboardNotificationDate}>
-                                  {format(new Date(n.created_at), 'dd/MM/yyyy')}
-                                </span>
-                              </li>
-                            ))}
-                          </ul>
-                        ) : (
-                          <p>Không có thông báo quan trọng.</p>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Gợi Ý Box */}
-                    <div className={styles.userdashboardSubSection}>
-                      <div className={styles.userdashboardInfoBox2}>
-                      <h3 className={styles.userdashboardSubSectionTitle}>Gợi ý</h3>
-                        <p>Chưa có gợi ý nào.</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+               </div>
             </Tab.Panel>
             {/* Tin Đăng Tab */}
             <Tab.Panel className={styles.userdashboardPanel}>

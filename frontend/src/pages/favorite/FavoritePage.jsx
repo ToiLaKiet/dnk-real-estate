@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -5,27 +6,6 @@ import Header from '../../components/ui/parts/header';
 import Footer from '../../components/ui/parts/footer';
 import styles from '../../styles/FavoritePage.module.css';
 import '../../styles/App.css';
-
-const mockFavorites = [
-  {
-    id: '11',
-    title: 'Căn hộ cao cấp Quận 7',
-    price: 2500000000,
-    address: '123 Nguyễn Hữu Thọ, Quận 7, TP.HCM',
-    property_type: 'apartment',
-    status: 'available',
-    images: ['https://example.com/images/prop001-1.jpg'],
-  },
-  {
-    id: 'POST002',
-    title: 'Nhà phố Cầu Giấy',
-    price: 4500000000,
-    address: '456 Nguyễn Du, Cầu Giấy, Hà Nội',
-    property_type: 'house',
-    status: 'pending',
-    images: ['https://example.com/images/prop002-1.jpg'],
-  },
-];
 
 const FavoriteCard = ({ post, index }) => {
   const navigate = useNavigate();
@@ -82,24 +62,39 @@ const FavoritePosts = () => {
   const navigate = useNavigate();
   const [favorites, setFavorites] = useState([]);
   const [error, setError] = useState(null);
+  const API_URL = 'http://172.16.2.34:8080';
 
   useEffect(() => {
-    const user = { user_id: 1 };
-    // const user = JSON.parse(localStorage.getItem('user'));
-    // if (!user || !user.user_id) {
-    //   setError('Đã xảy ra lỗi, vui lòng thử lại');
-    //   return;
-    // }
-
-    // Placeholder API call
-    // axios.get(`/users/${user.user_id}/favorites`)
-    //   .then(response => setFavorites(response.data.favorites))
-    //   .catch(() => setError('Đã xảy ra lỗi, vui lòng thử lại'));
-    console.log('Setting mock favorites:', mockFavorites);
-    setFavorites(mockFavorites);
+    const fetchData = async () => {
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (!user || !user.user_id) {
+        setError('Đã xảy ra lỗi, vui lòng thử lại');
+        return;
+      }
+      // Placeholder API call
+      const token = localStorage.getItem('token');
+      console.log(token);
+      const response = await axios.get(API_URL+`/favorites/`,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          // Add other headers if needed
+        }
+      });
+      const data =[];
+      if(response.data.length > 0){
+        for (const item of response.data) {
+          // Your logic here
+          const iter = item.property_id;
+          const res = await axios.get(API_URL+`/properties/${iter}`);
+          data.push(res.data);
+        }
+      }
+      console.log(data);
+      setFavorites(data);
+    }
+    fetchData();
   }, []);
-
-  console.log('Favorites state:', favorites);
 
   if (error) {
     return (
@@ -130,7 +125,7 @@ const FavoritePosts = () => {
               <p className={styles.fpEmptyMessage}>Chưa có bài đăng yêu thích</p>
               <button
                 className={`${styles.fpFindButton} ${styles.pulse}`}
-                onClick={() => navigate('/nhadatban')}
+                onClick={() => navigate('/home')}
               >
                 Tìm bài đăng
               </button>

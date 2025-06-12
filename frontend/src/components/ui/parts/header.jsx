@@ -94,7 +94,7 @@ function Header({ logoWidth = 180, logoHeight = 72 }) {
       <div className={styles.authSection}>
         {isAuthenticated ? (
           <>
-            <Link to="/favourite-posts" className={styles.favouriteIcon}>
+            <Link to="/favorite" className={styles.favouriteIcon}>
               <FontAwesomeIcon icon={faHeart} />
             </Link>
             <button

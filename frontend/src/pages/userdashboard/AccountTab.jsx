@@ -7,7 +7,7 @@ import userDashboardStyles from '../../styles/UserDashboard.module.css'; // Reus
 import Otp from '../../components/ui/modal-otp';
 import SettingsTab from './SettingTabs';
 const AccountTab = () => {
-  const API_URL ='http://172.16.1.205:8080'; // Use environment variable for API URL
+  const API_URL ='http://172.16.2.34:8080'; // Use environment variable for API URL
   const { user, isLoading } = useAuth();
   const [formData, setFormData] = useState(null);
   const [errors, setErrors] = useState({});
@@ -21,9 +21,9 @@ const AccountTab = () => {
         user_id: user.user_id,
         role: user.role,
         full_name: user.full_name || '',
-        tax_number: user.tax_number || '',
+        tax_number: user.tax_number || null,
         phone_number: user.phone_number || '',
-        email: user.email || '',
+        email: user.email || null,
         company_name: user.company_name || '',
         address: user.address || '',
         created_at: user.created_at,
@@ -182,7 +182,7 @@ const AccountTab = () => {
                     type="text"
                     id="role"
                     name="role"
-                    value={formData.role}
+                    value={formData.role ?? ""}
                     disabled
                     className={styles.atInput}
                   />
@@ -195,7 +195,7 @@ const AccountTab = () => {
                       type="text"
                       id="full_name"
                       name="full_name"
-                      value={formData.full_name}
+                      value={formData.full_name ?? ""}
                       onChange={handleInputChange}
                       className={styles.atInput}
                     />
@@ -207,7 +207,7 @@ const AccountTab = () => {
                       type="text"
                       id="tax_number"
                       name="tax_number"
-                      value={formData.tax_number}
+                      value={formData.tax_number ?? ""}
                       onChange={handleInputChange}
                       className={styles.atInput}
                       placeholder = "Ví dụ: 1234567890 hoặc 1234567890-123"
@@ -225,7 +225,7 @@ const AccountTab = () => {
                     type="text"
                     id="phone_number"
                     name="phone_number"
-                    value={formData.phone_number}
+                    value={formData.phone_number ?? ""}
                     disabled
                     className={styles.atInput}
                   />
@@ -238,7 +238,7 @@ const AccountTab = () => {
                       type="text"
                       id="email"
                       name="email"
-                      value={formData.email}
+                      value={formData.email ?? ""}
                       onChange={handleInputChange}
                       className={styles.atInput}
                     />
@@ -259,7 +259,7 @@ const AccountTab = () => {
                     type="text"
                     id="company_name"
                     name="company_name"
-                    value={formData.company_name}
+                    value={formData.company_name ?? ""}
                     onChange={handleInputChange}
                     className={styles.atInput}
                   />
@@ -272,7 +272,7 @@ const AccountTab = () => {
                     type="text"
                     id="address"
                     name="address"
-                    value={formData.address}
+                    value={formData.address ?? ""}
                     onChange={handleInputChange}
                     className={styles.atInput}
                   />

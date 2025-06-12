@@ -49,6 +49,7 @@ function PostPage() {
         }
 
         const postId = parseInt(id, 10);
+        
         if (isNaN(postId) || postId <= 0) {
           throw new Error(`ID tin đăng phải là số nguyên dương, nhận được: "${id}"`);
         }

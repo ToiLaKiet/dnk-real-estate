@@ -1,95 +1,200 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import SuccessModal from './SuccessModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faUpload,
   faPlus,
-  // faImage,
-  // faArrowsRotate,
-  // faChevronDown
 } from '@fortawesome/free-solid-svg-icons';
 import styles from '../../../styles/imageuploadmodal.module.css';
-import { useNavigate,useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext'
 
-// Component modal để upload hình ảnh và video
 const ImageUploadModal = () => {  
-  const API_URL ='http://172.16.1.205:8080/'; // Thay đổi thành URL API của bạn
+  const API_URL = 'http://172.16.2.34:8080/';
   const { user } = useAuth();
   const navigate = useNavigate();
-  const locate = useLocation();
+  const location = useLocation(); // Sửa typo: locate -> location
+  
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
-  const [currentStep, setCurrentStep] = useState(1);
-  const [formData, setFormData] = useState({})
-  const [images, setImages] = useState((locate?.state?.images)?.map((img) => img.image_url) || []);
-  const [videoUrl, setVideoUrl] = useState(locate?.state?.media?.video_url);
-  const [editMode, setEditMode] = useState(locate?.state?.mode ?? false);
+  const [formData, setFormData] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  
+  // Sửa lỗi editMode
+  const [editMode] = useState(location?.state?.mode ?? false);
+  
+  // Khởi tạo images với structure nhất quán
+  const [images, setImages] = useState(() => {
+    const stateImages = location?.state?.images;
+    if (stateImages && Array.isArray(stateImages)) {
+      return stateImages.map((img, index) => ({
+        id: `existing-${index}`,
+        preview: img.image_url,
+        isExisting: true
+      }));
+    }
+    return [];
+  });
+  
+  const [videoUrl, setVideoUrl] = useState(location?.state?.media?.video_url || '');
+
+  // Cleanup object URLs on unmount
+  useEffect(() => {
+    return () => {
+      images.forEach(image => {
+        if (image.preview && !image.isExisting) {
+          URL.revokeObjectURL(image.preview);
+        }
+      });
+    };
+  }, []);
 
   useEffect(() => {
-    if(locate.state==undefined){
+    console.log(location.state);
+    if (location.state === null) {
       navigate('/post-create');
     }
-  }, []);
-  // const [expandedSection, setExpandedSection] = useState(null);
-  // Xử lý upload hình ảnh
-  const handleImageUpload = (e) => {
+    else{
+      setFormData(location.state.formData);
+    }
+  }, [location, navigate]);
+
+  // Validate video URL
+  const isValidVideoUrl = (url) => {
+    if (!url) return true; // Optional field
+    const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+/;
+    const tiktokRegex = /^(https?:\/\/)?(www\.)?tiktok\.com\/.+/;
+    return youtubeRegex.test(url) || tiktokRegex.test(url);
+  };
+
+  // Xử lý upload hình ảnh với validation tốt hơn
+  const handleImageUpload = useCallback((e) => {
     const files = Array.from(e.target.files);
     const newImages = [...images];
+    const maxFileSize = 5 * 1024 * 1024; // 5MB
 
     files.forEach(file => {
-      // Kiểm tra định dạng file và kích thước
-      if (newImages.length < 10 && file.type.startsWith('image/')) {
-        newImages.push({
-          // Tạo đối tượng hình ảnh mới với URL tạm thời
-          file,
-          preview: URL.createObjectURL(file),
-        });
+      // Validation
+      if (newImages.length >= 10) {
+        alert('Chỉ được upload tối đa 10 ảnh');
+        return;
       }
-    });
-    setImages(newImages);
-  };
+      
+      if (!file.type.startsWith('image/')) {
+        alert(`File ${file.name} không phải là hình ảnh`);
+        return;
+      }
+      
+      if (file.size > maxFileSize) {
+        alert(`File ${file.name} quá lớn. Kích thước tối đa là 5MB`);
+        return;
+      }
 
-  // Xóa hình ảnh
-  const handleRemoveImage = (index) => {
+      newImages.push({
+        id: `new-${Date.now()}-${Math.random()}`,
+        file,
+        preview: URL.createObjectURL(file),
+        isExisting: false
+      });
+    });
+    
+    setImages(newImages);
+  }, [images]);
+
+  // Sửa lỗi xóa hình ảnh
+  const handleRemoveImage = useCallback((index) => {
     const newImages = [...images];
-    URL.revokeObjectURL(newImages[index].preview);
+    const imageToRemove = newImages[index];
+    
+    // Cleanup object URL nếu không phải existing image
+    if (imageToRemove && imageToRemove.preview && !imageToRemove.isExisting) {
+      URL.revokeObjectURL(imageToRemove.preview);
+    }
+    
     newImages.splice(index, 1);
     setImages(newImages);
-  };
+  }, [images]);
 
-  // Xử lý thay đổi URL video
+  // Xử lý thay đổi URL video với validation
   const handleVideoUrlChange = (e) => {
-    setVideoUrl(e.target.value);
+    const url = e.target.value;
+    setVideoUrl(url);
+    
+    if (url && !isValidVideoUrl(url)) {
+      console.warn('URL video không hợp lệ');
+    }
   };
 
-  // Xử lý đóng SuccessModal
   const handleCloseSuccessModal = () => {
     setIsSuccessModalOpen(false);
-    navigate('/profile'); // Điều hướng về trang home
+    navigate('/profile');
   };
 
-  // Xử lý đăng tiếp
   const handleContinuePosting = () => {
     setIsSuccessModalOpen(false);
     navigate('/post-create');
-    setCurrentStep(1); // Quay lại bước 1
+  };
+
+  // Sửa lỗi async logic
+  const letspostCreate = async (payload, updatedData) => {
+    try {
+      setIsLoading(true);
+      const token = localStorage.getItem('token');
+      
+      if (!token) {
+        throw new Error('Không tìm thấy token xác thực');
+      }
+
+      let response;
+      const config = {
+        headers: {
+          "Content-Type": 'application/json',
+          Authorization: `Bearer ${token}`
+        }
+      };
+
+      if (editMode) {
+        payload['property_id'] = updatedData.property_id;
+        console.log("Data payload gửi về backend (edit):", payload);
+        // Cần thay đổi endpoint cho edit
+        response = await axios.put(`${API_URL}properties/${updatedData.property_id}`, payload, config);
+      } else {
+        console.log("Data payload gửi về backend (create):", payload);
+        response = await axios.post(`${API_URL}properties/`, payload, config);
+      }
+
+      console.log("Response từ backend:", response.data);
+      setIsSuccessModalOpen(true);
+      
+    } catch (error) {
+      console.error("Lỗi khi gửi dữ liệu:", error);
+      
+      if (error.response) {
+        // Server responded with error status
+        alert(`Lỗi từ server: ${error.response.data?.message || 'Có lỗi xảy ra'}`);
+      } else if (error.request) {
+        // Request was made but no response received
+        alert('Không thể kết nối tới server. Vui lòng thử lại.');
+      } else {
+        // Something else happened
+        alert(`Lỗi: ${error.message}`);
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleDataSubmit = (newData, options = {}) => {
     try {
-      // Kiểm tra dữ liệu đầu vào
-      if (!newData || typeof newData !== 'object' || newData === null || Object.keys(newData).length === 0) {
+      if (!newData || typeof newData !== 'object' || Object.keys(newData).length === 0) {
         console.error("Dữ liệu không hợp lệ hoặc rỗng:", newData);
         return;
       }
       
-      // Cập nhật formData
       setFormData((prev) => {
         const updatedData = { ...prev };
         console.log("Dữ liệu đầu vào:", newData);
-  
-        // Danh sách các key hợp lệ
+
         const validKeys = options.validKeys || ['media', 'address', 'contact', 'user'];
 
         Object.keys(newData).forEach((key) => {
@@ -97,11 +202,9 @@ const ImageUploadModal = () => {
             console.warn(`Key không hợp lệ: ${key}`);
             return;
           }
-  
+
           if (key === 'media') {
-            // Kiểm tra dữ liệu media có hợp lệ không
             if (newData.media && typeof newData.media === 'object' && !Array.isArray(newData.media)) {
-              // Cập nhật dữ liệu media
               updatedData['media'] = {
                 images: newData.media.images || (prev.media?.images || []),
                 videoUrl: newData.media.videoUrl || (prev.media?.videoUrl || '')
@@ -109,28 +212,24 @@ const ImageUploadModal = () => {
             } else {
               console.warn("Dữ liệu media không hợp lệ:", newData.media);
             }
-          } 
+          }
         });
-        console.log("formData sau khi cập nhật:", updatedData);
-        updatedData.user_id = user?.id; // Lưu ID người dùng vào formData
+        updatedData.user_id = user?.id;
         console.log("✅ Form data sau khi hoàn tất ImageUploadModal:", updatedData);
-        // Tạo payload để gửi về backend 
-        const bayg = new Date().toLocaleDateString;
-
+      
+        // Tạo payload
         const data_payload = {
           title: updatedData?.title || '',
-          description : updatedData?.description|| '',
-          address: updatedData?.address?.displayAddress|| '',
-          property_type: updatedData?.type|| '',
-          status: "pending",
-          lat : updatedData.address?.coordinates?.lat || 0,
-          lng : updatedData.address?.coordinates?.lng || 0,
-          location_id : updatedData.address?.ward|| '', 
+          description: updatedData?.description || '',
+          address: updatedData?.address?.displayAddress || '',
+          property_type: updatedData?.type || '',
+          lat: updatedData.address?.coordinates?.lat || 0,
+          lng: updatedData.address?.coordinates?.lng || 0,
+          location_id: updatedData.address?.ward || '', 
           area: updatedData.area || 0,
           price: updatedData.price || 0,
-          features:[
-            { feature_name: "category", feature_value: updatedData.property_type || '' },
-            { feature_name: "legalDocuments", feature_value: updatedData.legalDocuments || '' },
+          category: updatedData.propertyType || '',
+          features: [
             { feature_name: "legalDocuments", feature_value: updatedData.legalDocuments || '' },
             { feature_name: "furniture", feature_value: updatedData.furniture || '' },
             { feature_name: "bedrooms", feature_value: updatedData.bedrooms || 0 },
@@ -138,69 +237,41 @@ const ImageUploadModal = () => {
             { feature_name: "houseDirection", feature_value: updatedData.houseDirection || '' },
             { feature_name: "balconyDirection", feature_value: updatedData.balconyDirection || '' },
           ],
-          images : updatedData.media?.images ?? [],
-          videos:[{
-           video_url:updatedData.media?.videoUrl ?? ''
+          images: updatedData.media?.images ?? [],
+          videos: [{
+            video_url: updatedData.media?.videoUrl ?? ''
           }],
           contact_name: updatedData.contact?.name || '',
           contact_email: updatedData.contact?.email || '',
           contact_phone: updatedData.contact?.phone || '',
-          expire_at: bayg
+          expire_at: new Date().toISOString() // Sửa lỗi date
         };
-
-        const token = localStorage.getItem('token');
-        // For post editing API call
-        const responseFromBackend = {};
-        if(editMode){
-          data_payload.push({property_id: updatedData.property_id})
-          console.log("Data payload gửi về backend:", data_payload);
-          // Change to the route of post editing here.
-          responseFromBackend = axios.post(API_URL+'properties/', data_payload,{
-            headers: {
-                "Content-Type": 'application/json',
-                Authorization: `Bearer ${token}`
-              }
-            }
-          )
-        }
-        // Gửi formData về backend (nếu cần) for post creating
-        else
-        {
-          console.log("Data payload gửi về backend:", data_payload);
-          responseFromBackend = axios.post(API_URL+'properties/', data_payload,{
-            headers: {
-                "Content-Type": 'application/json',
-                Authorization: `Bearer ${token}`
-              }
-            }
-          )
-        }
-        console.log("Data payload gửi về backend:", data_payload,"Payload này là cho chỉnh sửa tin:",editMode);
-      if(responseFromBackend.data) {
-        console.error("Lỗi từ backend:", responseFromBackend.data);
-        return;
-      }
-      else
-       setIsSuccessModalOpen(true);
-      return updatedData;
-      
+        console.log('data_payload',data_payload);
+        letspostCreate(data_payload, updatedData);
+        return data_payload;
       });
     } catch (error) {
-      console.error("Lỗi trong handleDataSubmit:", error?.response?.data);
+      console.error("Lỗi trong handleDataSubmit:", error);
+      alert('Có lỗi xảy ra khi xử lý dữ liệu');
     }
   };
 
-  // Mở/đóng hướng dẫn
-  // const toggleSection = (section) => {
-  //   setExpandedSection(expandedSection === section ? null : section);
-  // };
-
-  // Xử lý submit dữ liệu
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Chuẩn bị dữ liệu media để gửi
+    
+    // Validation
+    if (images.length < 3) {
+      alert('Vui lòng tải lên ít nhất 3 hình ảnh');
+      return;
+    }
+    
+    if (videoUrl && !isValidVideoUrl(videoUrl)) {
+      alert('URL video không hợp lệ. Vui lòng nhập đường dẫn YouTube hoặc TikTok');
+      return;
+    }
+
     const mediaData = {
-      media:{
+      media: {
         images: images.map(img => ({
           caption: "",
           is_primary: false,
@@ -209,33 +280,59 @@ const ImageUploadModal = () => {
         videoUrl: videoUrl || null
       }
     };
-    handleDataSubmit(mediaData)
+    
+    handleDataSubmit(mediaData);
   };
   
   return (
-      <div className={styles.imageUploadModal}>
-        <h2>Đăng tin bất động sản - Bước 2</h2>
-        <div className={styles.hrContainer}>
-          <hr className={styles.hrOrange} />
-          <hr className={styles.hrBlue} />
+    <div className={styles.imageUploadModal}>
+      <h2>Đăng tin bất động sản - Bước 2</h2>
+      <div className={styles.hrContainer}>
+        <hr className={styles.hrOrange} />
+        <hr className={styles.hrBlue} />
+      </div>
+      <h2>Hình ảnh</h2>
+
+      <div className={styles.uploadSection}>
+        <div className={styles.requirement}>
+          <span className={styles.infoIcon}>!</span> Đăng tối thiểu 3 ảnh thường
         </div>
-        <h2>Hình ảnh</h2>
 
-        {/* Khu vực upload hình ảnh */}
-        <div className={styles.uploadSection}>
-          <div className={styles.requirement}>
-            <span className={styles.infoIcon}>!</span> Đăng tối thiểu 3 ảnh thường
-          </div>
-
-          <div className={styles.dropArea}>
-            {images.length === 0 ? (
-              <>
-                <div className={styles.uploadIcon}>
-                  <FontAwesomeIcon icon={faUpload} />
+        <div className={styles.dropArea}>
+          {images.length === 0 ? (
+            <>
+              <div className={styles.uploadIcon}>
+                <FontAwesomeIcon icon={faUpload} />
+              </div>
+              <p>Kéo thả vào đây hoặc</p>
+              <label className={styles.uploadButton}>
+                <FontAwesomeIcon icon={faPlus} /> Thêm ảnh lên từ thiết bị
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleImageUpload}
+                  hidden
+                />
+              </label>
+            </>
+          ) : (
+            <div className={styles.imageGrid}>
+              {images.map((image, index) => (
+                <div key={image.id} className={styles.imagePreview}>
+                  <img src={image.preview} alt={`Preview ${index + 1}`} />
+                  <button
+                    className={styles.removeButton}
+                    onClick={() => handleRemoveImage(index)}
+                    aria-label="Remove image"
+                  >
+                    ×
+                  </button>
                 </div>
-                <p>Kéo thả vào đây hoặc</p>
-                <label className={styles.uploadButton}>
-                  <FontAwesomeIcon icon={faPlus} /> Thêm ảnh lên từ thiết bị
+              ))}
+              {images.length < 10 && (
+                <label className={styles.addMoreImage}>
+                  <FontAwesomeIcon icon={faPlus} />
                   <input
                     type="file"
                     accept="image/*"
@@ -244,73 +341,55 @@ const ImageUploadModal = () => {
                     hidden
                   />
                 </label>
-              </>
-            ) : (
-              <div className={styles.imageGrid}>
-                {images.map((image, index) => (
-                  <div key={index} className={styles.imagePreview}>
-                    <img src={image.preview} alt={`Preview ${index + 1}`} />
-                    <button
-                      className={styles.removeButton}
-                      onClick={() => handleRemoveImage(index)}
-                      aria-label="Remove image"
-                    >
-                      ×
-                    </button>
-                  </div>
-                ))}
-                {images.length < 10 && (
-                  <label className={styles.addMoreImage}>
-                    <FontAwesomeIcon icon={faPlus} />
-                    <input
-                      type="file"
-                      accept="image/*"
-                      multiple
-                      onChange={handleImageUpload}
-                      hidden
-                    />
-                  </label>
-                )}
-              </div>
-            )}
-          </div>
+              )}
+            </div>
+          )}
         </div>
-
-        {/* Nhập URL video */}
-        <div className={styles.videoSection}>
-          <h3>Video <span className={styles.optional}>(không bắt buộc)</span></h3>
-          <input
-            type="text"
-            className={styles.videoUrlInput}
-            value={videoUrl}
-            onChange={handleVideoUrlChange}
-            placeholder="Dán đường dẫn Youtube hoặc Tiktok"
-          />
-        </div>
-
-        {/* Nút hành động */}
-        <div className={styles.actionButtons}>
-          <button className={styles.backButton} onClick={()=>navigate('/post-create',{state: {formData}, mode:{editMode} })}>
-            Quay lại
-          </button>
-          <button
-            className={styles.continueButton}
-            onClick={handleSubmit}
-            disabled={images.length < 3}
-          >
-            Tiếp tục
-          </button>
-        </div>
-        <SuccessModal
-          isOpen={isSuccessModalOpen}
-          onClose={handleCloseSuccessModal}
-          onContinue={handleContinuePosting}
-          // onPreview = {() => navigate('/preview', { state: { updatedData } })}
-          formData={formData}
-        />
       </div>
+
+      <div className={styles.videoSection}>
+        <h3>Video <span className={styles.optional}>(không bắt buộc)</span></h3>
+        <input
+          type="text"
+          className={styles.videoUrlInput}
+          value={videoUrl}
+          onChange={handleVideoUrlChange}
+          placeholder="Dán đường dẫn Youtube hoặc Tiktok"
+        />
+        {videoUrl && !isValidVideoUrl(videoUrl) && (
+          <div className={styles.errorMessage}>
+            URL video không hợp lệ
+          </div>
+        )}
+      </div>
+
+      <div className={styles.actionButtons}>
+        <button 
+          className={styles.backButton} 
+          onClick={() => navigate('/post-create', {
+            state: { formData, mode: editMode }
+          })}
+          disabled={isLoading}
+        >
+          Quay lại
+        </button>
+        <button
+          className={styles.continueButton}
+          onClick={handleSubmit}
+          disabled={images.length < 3 || isLoading}
+        >
+          {isLoading ? 'Đang xử lý...' : 'Tiếp tục'}
+        </button>
+      </div>
+      
+      <SuccessModal
+        isOpen={isSuccessModalOpen}
+        onClose={handleCloseSuccessModal}
+        onContinue={handleContinuePosting}
+        formData={formData}
+      />
+    </div>
   );
 };
 
 export default ImageUploadModal;
-
