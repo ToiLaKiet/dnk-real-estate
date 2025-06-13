@@ -23,7 +23,8 @@ import ImageUploadModal from './components/ui/postcreate/ImageUploadModal.jsx';
 import FavoritePosts from './pages/favorite/FavoritePage.jsx';
 import AdminDashboard from './pages/admindashboard/admindashboard.jsx';
 import NotFoundPage from './pages/error/404.jsx';
-import AdminUserManagement from './pages/admindashboard/AdminUserManagement.jsx';
+import AppBa from './pages/featurednews/AppBa.jsx'; // Import AppBa component
+
 function App() {
   const seUseCase = {
     all:1,
@@ -72,7 +73,8 @@ function App() {
                 <SearchEngine useCase={seUseCase}/>
               </div>
             </div>
-            <FeaturedNews /> 
+            <div className='m-app-container'><FeaturedNews /> </div>
+            <AppBa />
             <Footer />
           </div>
         }
@@ -92,7 +94,6 @@ function App() {
       <Route path="/favorite" element ={<FavoritePosts/>}/>
       <Route path="/admin" element ={<AdminDashboard/>}/>
       <Route path="*" element={<NotFoundPage />} /> {/* Trang 404 */}
-      <Route path="/admin/user-management" element={<AdminUserManagement />} /> {/* Trang quản lý người dùng của quản trị viên */}
     </Routes>
     </AuthProvider>
   );

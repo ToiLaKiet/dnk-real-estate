@@ -11,7 +11,19 @@
 .content {
   padding: 5px;
   width: 100%;
-  background: white;
+  background: #F1F1F1;
+  animation: slide-in 0.5s ease-in;
+}
+
+.m-app-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  background: #F1F1F1;
+  min-height: 100vh;
+  padding-top:70px;
+  height: auto;
   animation: slide-in 0.5s ease-in;
 }
 
@@ -241,3 +253,245 @@
     opacity: 1;
   }
 }
+
+.appba-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: inherit;
+  width: 100%;
+  margin: 30px;
+  padding: 60px 20px 20px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  animation: slide-in 0.8s ease-out;
+}
+
+.appba-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.appba-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 15px;
+  background: linear-gradient(135deg, #990000, #cc0000);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.appba-subtitle {
+  font-size: 1.2rem;
+  color: #666;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.appba-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-auto-flow: row;
+  gap: 20px;
+  width: 100%;
+  margin-bottom: 50px;
+
+}
+
+.appba-card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  /* box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); */
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.appba-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.appba-card-image {
+  position: relative;
+  height: 220px;
+  overflow: hidden;
+}
+
+.appba-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.appba-card:hover .appba-card-image img {
+  transform: scale(1.05);
+}
+
+.appba-card-overlay {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+.appba-card-badge {
+  background: #990000;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.appba-card-badge.trending {
+  background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+}
+
+.appba-card-badge.premium {
+  background: linear-gradient(135deg, #ffd700, #ffed4a);
+  color: #333;
+}
+
+.appba-card-content {
+  padding: 25px;
+}
+
+.appba-card-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.appba-card-description {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  font-size: 0.95rem;
+}
+
+.appba-card-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #990000, #cc0000);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.appba-card-button:hover {
+  background: linear-gradient(135deg, #7a0000, #990000);
+  transform: translateX(5px);
+}
+
+.appba-button-icon {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.3s ease;
+}
+
+.appba-card-button:hover .appba-button-icon {
+  transform: translateX(3px);
+}
+
+/* Stats Section */
+.appba-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 30px;
+  width: 100%;
+  max-width: 800px;
+  padding: 30px;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border-radius: 20px;
+  border: 1px solid #dee2e6;
+}
+
+.appba-stat-item {
+  text-align: center;
+  padding: 20px;
+}
+
+.appba-stat-number {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #990000;
+  margin-bottom: 5px;
+  animation: countUp 2s ease-out;
+}
+
+.appba-stat-label {
+  font-size: 0.9rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+
+/* Animations */
+@keyframes countUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .appba-container {
+    padding: 40px 15px;
+  }
+
+  .appba-title {
+    font-size: 2rem;
+  }
+
+  .appba-subtitle {
+    font-size: 1rem;
+  }
+
+  .appba-content {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .appba-card-content {
+    padding: 20px;
+  }
+
+  .appba-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .appba-stat-number {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .appba-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .appba-card-image {
+    height: 180px;
+  }
+}
+
