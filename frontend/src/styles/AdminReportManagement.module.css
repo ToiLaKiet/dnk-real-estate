@@ -1,0 +1,699 @@
+/* AdminReportManagement.module.css */
+.rmContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    max-width: 100%;
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    animation: slide-in 0.5s ease-out;
+  }
+  
+  @keyframes slide-in {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  .rmTitle {
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .rmSection {
+    width: 100%;
+    margin-top: 20px;
+  }
+  
+  .rmSectionTitle {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+  }
+  
+  /* Filters */
+  .rmFilterRow {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    align-items: center;
+  }
+  
+  .rmSearchInput {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 300px;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  
+  .rmSearchInput:focus {
+    border-color: #990000;
+  }
+  
+  .rmFilterSelect {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 180px;
+    outline: none;
+    transition: border-color 0.3s;
+    font-family: 'Be Vietnam Pro', sans-serif;
+  }
+  
+  .rmFilterSelect:focus {
+    border-color: #990000;
+  }
+  
+  .rmClearButton {
+    padding: 10px 16px;
+    font-size: 16px;
+    background-color: #6c757d;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .rmClearButton:hover {
+    background-color: #5a6268;
+  }
+  
+  /* Reports List Header */
+  .rmReportsHeader {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 2fr 1fr 1.5fr;
+    gap: 15px;
+    padding: 15px 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px 8px 0 0;
+    font-weight: 600;
+    color: #333;
+    border: 1px solid #ddd;
+  }
+  
+  .rmHeaderUser,
+  .rmHeaderReason,
+  .rmHeaderDetail,
+  .rmHeaderStatus,
+  .rmHeaderActions {
+    text-align: center;
+  }
+  
+  .rmHeaderUser {
+    text-align: left;
+  }
+  
+  /* Reports List */
+  .rmReportsList {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  
+  .rmReportCard {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 2fr 1fr 1.5fr;
+    gap: 15px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-top: none;
+    background: white;
+    align-items: center;
+    transition: background-color 0.3s;
+  }
+  
+  .rmReportCard:hover {
+    background-color: #f8f9fa;
+  }
+  
+  .rmReportCard:last-child {
+    border-radius: 0 0 8px 8px;
+  }
+  
+  .rmReportUser {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .rmUserAvatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ddd;
+  }
+  
+  .rmUserInfo {
+    flex: 1;
+  }
+  
+  .rmUserName {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 3px 0;
+  }
+  
+  .rmUserId {
+    font-size: 12px;
+    color: #666;
+    margin: 0;
+  }
+  
+  .rmReportReason {
+    text-align: center;
+    font-size: 14px;
+    color: #555;
+    font-weight: 500;
+  }
+  
+  .rmReportDetail {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.4;
+    max-height: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2; /* Standard property for compatibility */
+    -webkit-box-orient: vertical;
+  }
+  
+  .rmReportStatus {
+    text-align: center;
+  }
+  
+  .rmStatusBadge {
+    display: inline-block;
+    padding: 6px 12px;
+    font-size: 12px;
+    color: #fff;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+  
+  .rmReportActions {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+  }
+  
+  .rmDetailButton {
+    padding: 8px 12px;
+    font-size: 14px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: 'Be Vietnam Pro', sans-serif;
+  }
+  
+  .rmDetailButton:hover {
+    background-color: #0056b3;
+  }
+  
+  .rmDeleteButton {
+    padding: 8px 12px;
+    font-size: 14px;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: 'Be Vietnam Pro', sans-serif;
+  }
+  
+  .rmDeleteButton:hover {
+    background-color: #c82333;
+  }
+  
+  /* Pagination */
+  .rmPagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin-top: 30px;
+    padding: 20px 0;
+  }
+  
+  .rmPaginationButton {
+    padding: 8px 12px;
+    font-size: 14px;
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    min-width: 40px;
+  }
+  
+  .rmPaginationButton:hover:not(:disabled) {
+    background-color: #f8f9fa;
+    border-color: #990000;
+    color: #990000;
+  }
+  
+  .rmPaginationButton:disabled {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    cursor: not-allowed;
+    border-color: #dee2e6;
+  }
+  
+  .rmPaginationActive {
+    background-color: #990000 !important;
+    color: #fff !important;
+    border-color: #990000 !important;
+  }
+  
+  .rmPaginationActive:hover {
+    background-color: #7a0000 !important;
+    border-color: #7a0000 !important;
+  }
+  
+  /* Detail Modal */
+  .rmDetailModalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 20px;
+    animation: slide-in 0.3s ease-in;
+  }
+  
+  .rmDetailModalContent {
+    background: white;
+    border-radius: 10px;
+    max-width: 900px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    animation: slide-in 0.3s ease-in;
+  }
+  
+  .rmDetailCloseButton {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 10;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .rmDetailCloseButton:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .rmDetailHeader {
+    padding: 20px 20px 10px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .rmDetailTitle {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+    margin-right: 40px;
+  }
+  
+  .rmDetailBody {
+    padding: 20px;
+  }
+  
+  /* Report Information */
+  .rmInfoSection {
+    margin-bottom: 30px;
+  }
+  
+  .rmInfoSection h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #990000;
+    padding-bottom: 5px;
+  }
+  
+  .rmInfoGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+  }
+  
+  .rmInfoItem {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .rmInfoItem strong {
+    color: #555;
+    font-weight: 600;
+  }
+  
+  .rmInfoItem span {
+    color: #333;
+  }
+  
+  .rmReportDetailText {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #990000;
+    line-height: 1.6;
+    color: #555;
+    font-size: 14px;
+  }
+  
+  /* Reporter Information */
+  .rmReporterInfo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  
+  .rmReporterAvatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #ddd;
+  }
+  
+  .rmReporterDetails {
+    flex: 1;
+  }
+  
+  .rmReporterName {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 5px 0;
+  }
+  
+  .rmReporterEmail {
+    font-size: 14px;
+    color: #666;
+    margin: 0 0 3px 0;
+  }
+  
+  .rmReporterPhone {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+  }
+  
+  /* Property Information */
+  .rmPropertyInfo {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  
+  .rmPropertyTitle {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 10px 0;
+  }
+  
+  .rmPropertyPrice {
+    font-size: 16px;
+    color: #990000;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+  }
+  
+  .rmPropertyAddress {
+    font-size: 14px;
+    color: #666;
+    margin: 0 0 8px 0;
+  }
+  
+  .rmPropertyDescription {
+    line-height: 1.6;
+    color: #555;
+    font-size: 14px;
+    margin: 0;
+  }
+  
+  /* Property Images */
+  .rmPropertyImages {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    overflow-x: auto;
+    padding: 10px 0;
+  }
+  
+  .rmPropertyImage {
+    width: 120px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid #ddd;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+  
+  .rmPropertyImage:hover {
+    transform: scale(1.05);
+  }
+  
+  /* Detail Actions */
+  .rmDetailActions {
+    padding: 20px;
+    border-top: 1px solid #eee;
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+  }
+  
+  .rmDetailDeletePropertyButton {
+    padding: 12px 24px;
+    font-size: 16px;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: 'Be Vietnam Pro', sans-serif;
+  }
+  
+  .rmDetailDeletePropertyButton:hover {
+    background-color: #c82333;
+  }
+  
+  /* Messages */
+  .rmLoadingMessage,
+  .rmNoReportsMessage {
+    text-align: center;
+    padding: 40px 20px;
+    font-size: 16px;
+    color: #666;
+    font-family: 'Be Vietnam Pro', sans-serif;
+  }
+  
+  .rmLoadingMessage {
+    color: #990000;
+  }
+  
+  .rmErrorMessage {
+    font-size: 16px;
+    color: #d32f2f;
+    text-align: center;
+    margin: 20px 0;
+    padding: 10px;
+    background-color: #ffebee;
+    border: 1px solid #ffcdd2;
+    border-radius: 5px;
+  }
+  
+  /* Report Reason Colors */
+  .rmReasonSpam {
+    background-color: #ffc107;
+    color: #333;
+  }
+  
+  .rmReasonFake {
+    background-color: #dc3545;
+  }
+  
+  .rmReasonInappropriate {
+    background-color: #fd7e14;
+  }
+  
+  .rmReasonOther {
+    background-color: #6c757d;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .rmFilterRow {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  
+    .rmSearchInput,
+    .rmFilterSelect,
+    .rmClearButton {
+      width: 100%;
+    }
+  
+    .rmReportsHeader {
+      display: none;
+    }
+  
+    .rmReportCard {
+      grid-template-columns: 1fr;
+      gap: 15px;
+      text-align: left;
+    }
+  
+    .rmReportUser {
+      justify-content: flex-start;
+    }
+  
+    .rmReportReason,
+    .rmReportStatus {
+      text-align: left;
+    }
+  
+    .rmReportActions {
+      justify-content: flex-start;
+    }
+  
+    .rmDetailModalContent {
+      margin: 10px;
+      max-height: 95vh;
+    }
+  
+    .rmInfoGrid {
+      grid-template-columns: 1fr;
+    }
+  
+    .rmReporterInfo {
+      flex-direction: column;
+      text-align: center;
+    }
+  
+    .rmPropertyImages {
+      justify-content: center;
+    }
+  
+    .rmDetailActions {
+      flex-direction: column;
+    }
+  
+    .rmDetailDeletePropertyButton {
+      width: 100%;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .rmReportDetail {
+      -webkit-line-clamp: 3;
+      line-clamp: 3; /* Standard property for compatibility */
+      max-height: 60px;
+    }
+  
+    .rmPropertyImages {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .rmPropertyImage {
+      width: 100%;
+      max-width: 200px;
+      height: 120px;
+    }
+  }
+  
+  /* Additional utility classes */
+  .rmTextCenter {
+    text-align: center;
+  }
+  
+  .rmMb20 {
+    margin-bottom: 20px;
+  }
+  
+  .rmMt20 {
+    margin-top: 20px;
+  }
+  
+  /* Status colors */
+  .rmStatusPending {
+    background-color: #ffc107;
+    color: #333;
+  }
+  
+  .rmStatusResolved {
+    background-color: #28a745;
+  }
+  
+  .rmStatusDismissed {
+    background-color: #6c757d;
+  }
+  
+  /* Loading spinner */
+  .rmLoadingSpinner {
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #990000;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }

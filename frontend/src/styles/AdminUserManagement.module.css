@@ -1,0 +1,560 @@
+/* AdminUserManagement.module.css */
+.umContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    max-width: 100%;
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    animation: slide-in 0.5s ease-out;
+  }
+  
+  @keyframes slide-in {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  .umTitle {
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .umSection {
+    width: 100%;
+    margin-top: 20px;
+  }
+  
+  .umSectionTitle {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+  }
+  
+  /* Filters */
+  .umFilterRow {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    align-items: center;
+  }
+  
+  .umSearchInput {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 300px;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  
+  .umSearchInput:focus {
+    border-color: #990000;
+  }
+  
+  .umFilterSelect {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 180px;
+    outline: none;
+    transition: border-color 0.3s;
+    font-family: 'Be Vietnam Pro', sans-serif;
+  }
+  
+  .umFilterSelect:focus {
+    border-color: #990000;
+  }
+  
+  .umClearButton {
+    padding: 10px 16px;
+    font-size: 16px;
+    background-color: #6c757d;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .umClearButton:hover {
+    background-color: #5a6268;
+  }
+  
+  /* Users List Header */
+  .umUsersHeader {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr;
+    gap: 15px;
+    padding: 15px 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px 8px 0 0;
+    font-weight: 600;
+    color: #333;
+    border: 1px solid #ddd;
+  }
+  
+  .umHeaderInfo,
+  .umHeaderPhone,
+  .umHeaderRole,
+  .umHeaderStatus,
+  .umHeaderActions {
+    text-align: center;
+  }
+  
+  .umHeaderInfo {
+    text-align: left;
+  }
+  
+  /* Users List */
+  .umUsersList {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  
+  .umUserCard {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr;
+    gap: 15px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-top: none;
+    background: white;
+    align-items: center;
+    transition: background-color 0.3s;
+  }
+  
+  .umUserCard:hover {
+    background-color: #f8f9fa;
+  }
+  
+  .umUserCard:last-child {
+    border-radius: 0 0 8px 8px;
+  }
+  
+  .umUserInfo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .umUserAvatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ddd;
+  }
+  
+  .umUserDetails {
+    flex: 1;
+  }
+  
+  .umUserName {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 5px 0;
+  }
+  
+  .umUserEmail {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+  }
+  
+  .umUserPhone,
+  .umUserRole {
+    text-align: center;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .umUserStatus {
+    text-align: center;
+  }
+  
+  .umStatusBadge {
+    display: inline-block;
+    padding: 6px 12px;
+    font-size: 12px;
+    color: #fff;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+  
+  .umUserActions {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+  }
+  
+  .umDetailButton {
+    padding: 8px 16px;
+    font-size: 14px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: 'Be Vietnam Pro', sans-serif;
+  }
+  
+  .umDetailButton:hover {
+    background-color: #0056b3;
+  }
+  
+  .umDeleteButton {
+    padding: 8px 16px;
+    font-size: 14px;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: 'Be Vietnam Pro', sans-serif;
+  }
+  
+  .umDeleteButton:hover {
+    background-color: #c82333;
+  }
+  
+  /* Pagination */
+  .umPagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin-top: 30px;
+    padding: 20px 0;
+  }
+  
+  .umPaginationButton {
+    padding: 8px 12px;
+    font-size: 14px;
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    min-width: 40px;
+  }
+  
+  .umPaginationButton:hover:not(:disabled) {
+    background-color: #f8f9fa;
+    border-color: #990000;
+    color: #990000;
+  }
+  
+  .umPaginationButton:disabled {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    cursor: not-allowed;
+    border-color: #dee2e6;
+  }
+  
+  .umPaginationActive {
+    background-color: #990000 !important;
+    color: #fff !important;
+    border-color: #990000 !important;
+  }
+  
+  .umPaginationActive:hover {
+    background-color: #7a0000 !important;
+    border-color: #7a0000 !important;
+  }
+  
+  /* Detail Modal */
+  .umDetailModalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 20px;
+    animation: slide-in 0.3s ease-in;
+  }
+  
+  .umDetailModalContent {
+    background: white;
+    border-radius: 10px;
+    max-width: 800px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    animation: slide-in 0.3s ease-in;
+  }
+  
+  .umDetailCloseButton {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 10;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .umDetailCloseButton:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .umDetailHeader {
+    padding: 20px 20px 10px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .umDetailUserInfo {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .umDetailAvatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #ddd;
+  }
+  
+  .umDetailName {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 10px 0;
+  }
+  
+  .umDetailStatus {
+    display: inline-block;
+    padding: 6px 12px;
+    font-size: 14px;
+    color: #fff;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+  
+  .umDetailBody {
+    padding: 20px;
+  }
+  
+  .umInfoSection {
+    margin-bottom: 30px;
+  }
+  
+  .umInfoSection h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #990000;
+    padding-bottom: 5px;
+  }
+  
+  .umInfoGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+  }
+  
+  .umInfoItem {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .umInfoItem strong {
+    color: #555;
+    font-weight: 600;
+  }
+  
+  .umInfoItem span {
+    color: #333;
+  }
+  
+  /* Properties List */
+  .umPropertiesList {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .umPropertyCard {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    background: #f8f9fa;
+  }
+  
+  .umPropertyInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .umPropertyTitle {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+  }
+  
+  .umPropertyDescription {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.4;
+    margin: 0;
+  }
+  
+  .umPropertyMeta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .umPropertyStatus {
+    display: inline-block;
+    padding: 4px 8px;
+    font-size: 12px;
+    color: #fff;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+  
+  .umPropertyDate {
+    font-size: 12px;
+    color: #999;
+  }
+  
+  /* Detail Actions */
+  .umDetailActions {
+    padding: 20px;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .umDetailDeleteButton {
+    padding: 12px 24px;
+    font-size: 16px;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: 'Be Vietnam Pro', sans-serif;
+  }
+  
+  .umDetailDeleteButton:hover {
+    background-color: #c82333;
+  }
+  
+  /* Messages */
+  .umLoadingMessage,
+  .umNoUsersMessage,
+  .umNoPropertiesMessage {
+    text-align: center;
+    padding: 40px 20px;
+    font-size: 16px;
+    color: #666;
+    font-family: 'Be Vietnam Pro', sans-serif;
+  }
+  
+  .umLoadingMessage {
+    color: #990000;
+  }
+  
+  .umErrorMessage {
+    font-size: 16px;
+    color: #d32f2f;
+    text-align: center;
+    margin: 20px 0;
+    padding: 10px;
+    background-color: #ffebee;
+    border: 1px solid #ffcdd2;
+    border-radius: 5px;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .umFilterRow {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  
+    .umSearchInput,
+    .umFilterSelect,
+    .umClearButton {
+      width: 100%;
+    }
+  
+    .umUsersHeader {
+      display: none;
+    }
+  
+    .umUserCard {
+      grid-template-columns: 1fr;
+      gap: 15px;
+      text-align: center;
+    }
+  
+    .umUserInfo {
+      justify-content: center;
+      text-align: center;
+    }
+  
+    .umUserActions {
+      justify-content: center;
+    }
+  
+    .umDetailModalContent {
+      margin: 10px;
+      max-height: 95vh;
+    }
+  
+    .umInfoGrid {
+      grid-template-columns: 1fr;
+    }
+  
+    .umDetailUserInfo {
+      flex-direction: column;
+      text-align: center;
+    }
+  
+    .umPropertyMeta {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }

@@ -10,6 +10,7 @@ import { useAuth } from '../../components/ui/context/AuthContext.jsx';
 import AccountTab from './AccountTab.jsx';
 import PostCreate from '../../components/ui/postcreate/postcreate.jsx';
 import PropertyManagement from './PropertyManangement.jsx';
+import { useNavigate } from 'react-router-dom';
 // Mock data (replace with real API calls)
 const mockProperties = [
   { property_id: 1, title: 'Căn hộ Quận 7', posted_by: 100, is_active: true, created_at: '2025-06-04T12:00:00Z' },
@@ -30,11 +31,19 @@ function UserDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+  const navigate = useNavigate();
   // Mock user_id (replace with useAuth hook)
   const user_id = 100;
 
   useEffect(() => {
+    const {user} = localStorage.getItem('token') ? JSON.parse(localStorage.getItem('token')) : {};
+    if (!user || !user.user_id) {
+      console.error('User not found in localStorage');
+      // Redirect to home if user is not logged in
+      alert('Bạn cần đăng nhập để truy cập trang này.');
+      navigate('/*');
+      return;
+    }
     const fetchData = async () => {
       setLoading(true);
       try {

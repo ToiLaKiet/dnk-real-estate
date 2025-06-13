@@ -22,6 +22,8 @@ import UserDashboard from './pages/userdashboard/userdashboard.jsx';
 import ImageUploadModal from './components/ui/postcreate/ImageUploadModal.jsx';
 import FavoritePosts from './pages/favorite/FavoritePage.jsx';
 import AdminDashboard from './pages/admindashboard/admindashboard.jsx';
+import NotFoundPage from './pages/error/404.jsx';
+import AdminUserManagement from './pages/admindashboard/AdminUserManagement.jsx';
 function App() {
   const seUseCase = {
     all:1,
@@ -89,6 +91,8 @@ function App() {
       <Route path="/post-create/image-upload" element={<ImageUploadModal />} /> {/* Trang dự án */}
       <Route path="/favorite" element ={<FavoritePosts/>}/>
       <Route path="/admin" element ={<AdminDashboard/>}/>
+      <Route path="*" element={<NotFoundPage />} /> {/* Trang 404 */}
+      <Route path="/admin/user-management" element={<AdminUserManagement />} /> {/* Trang quản lý người dùng của quản trị viên */}
     </Routes>
     </AuthProvider>
   );

@@ -1,0 +1,352 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700&display=swap');
+
+.not-found-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #B1CAE2 0%, #1a1a2e 50%, #16213e 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  animation: slide-in 0.5s ease-in;
+}
+
+.stars {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, #eee, transparent),
+    radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+    radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+    radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.6), transparent),
+    radial-gradient(2px 2px at 160px 30px, #fff, transparent);
+  background-repeat: repeat;
+  background-size: 200px 100px;
+  animation: twinkle 4s infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; }
+}
+
+.content-404 {
+  text-align: center;
+  z-index: 10;
+  position: relative;
+  padding: 20px;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  animation: slide-in 0.5s ease-in;
+}
+
+/* Logo section */
+.logo-section {
+  margin-bottom: 2rem;
+  animation: slide-in 0.5s ease-in;
+}
+
+.logo-image {
+  max-width: 200px;
+  height: auto;
+  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.3));
+  animation: float 3s ease-in-out infinite;
+}
+
+.text-logo {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  font-family: 'Be Vietnam Pro', sans-serif;
+  animation: float 3s ease-in-out infinite;
+}
+
+.error-code {
+  font-size: 8rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.error-code span {
+  display: inline-block;
+  animation: float 3s ease-in-out infinite;
+  text-shadow: 0 0 30px rgba(74, 144, 226, 0.8);
+}
+
+.four {
+  color: #990000;
+}
+
+.zero {
+  color: #990000; /* Using your red color */
+  animation-delay: -1s;
+}
+
+.error-code .four:last-child {
+  color: #990000;
+  animation-delay: -2s;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+.astronaut {
+  margin: 2rem 0;
+  display: flex;
+  justify-content: center;
+}
+
+.astronaut-body {
+  position: relative;
+  animation: astronaut-float 4s ease-in-out infinite;
+}
+
+.helmet {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(145deg, #f0f0f0, #c8c8c8);
+  border-radius: 50%;
+  position: relative;
+  border: 3px solid #B1CAE2; /* Using your banner color */
+}
+
+.helmet::before {
+  content: '';
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: rgba(177, 202, 226, 0.3);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.body {
+  width: 50px;
+  height: 70px;
+  background: linear-gradient(145deg, #e0e0e0, #b0b0b0);
+  border-radius: 25px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.arm {
+  width: 8px;
+  height: 40px;
+  background: #d0d0d0;
+  border-radius: 4px;
+  position: absolute;
+  top: 70px;
+}
+
+.arm.left {
+  left: -15px;
+  transform: rotate(-30deg);
+}
+
+.arm.right {
+  right: -15px;
+  transform: rotate(30deg);
+}
+
+.leg {
+  width: 10px;
+  height: 30px;
+  background: #d0d0d0;
+  border-radius: 5px;
+  position: absolute;
+  top: 130px;
+}
+
+.leg.left {
+  left: 5px;
+}
+
+.leg.right {
+  right: 5px;
+}
+
+@keyframes astronaut-float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(5deg); }
+}
+
+.title-404 {
+  font-size: 2.5rem;
+  color: #fff;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.message-404 {
+  font-size: 1.2rem;
+  color: #f0f0f0;
+  margin-bottom: 3rem;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.home-button-404 {
+  background: linear-gradient(45deg, #B1CAE2, #4a90e2);
+  border: none;
+  padding: 15px 30px;
+  border-radius: 5px; /* Matching your modal border radius */
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 auto;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 20px rgba(177, 202, 226, 0.3);
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.home-button-404:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(177, 202, 226, 0.5);
+  background: linear-gradient(45deg, #990000, #cc0000); /* Your hover red color */
+}
+
+.rocket {
+  font-size: 1.2rem;
+  animation: rocket-bounce 1s infinite;
+}
+
+@keyframes rocket-bounce {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+}
+
+.floating-elements {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.planet {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.7;
+}
+
+.planet-1 {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(45deg, #B1CAE2, #4a90e2);
+  top: 20%;
+  left: 10%;
+  animation: orbit 20s linear infinite;
+}
+
+.planet-2 {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(45deg, #990000, #cc0000);
+  top: 70%;
+  right: 15%;
+  animation: orbit 15s linear infinite reverse;
+}
+
+.satellite {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background: #ffd700;
+  top: 30%;
+  right: 20%;
+  animation: satellite-move 12s ease-in-out infinite;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+@keyframes orbit {
+  0% { transform: rotate(0deg) translateX(100px) rotate(0deg); }
+  100% { transform: rotate(360deg) translateX(100px) rotate(-360deg); }
+}
+
+@keyframes satellite-move {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(50px, -30px) rotate(90deg); }
+  50% { transform: translate(0, -60px) rotate(180deg); }
+  75% { transform: translate(-50px, -30px) rotate(270deg); }
+}
+
+/* Using your existing slide-in animation */
+@keyframes slide-in {
+  from {
+    transform: translateY(10px);
+    opacity: 0.25;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Responsive design matching your patterns */
+@media (max-width: 1600px) {
+  .content-404 {
+    max-width: 90%;
+  }
+  
+  .error-code {
+    font-size: 6rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .content-404 {
+    width: 95%;
+    padding: 20px 10px;
+  }
+  
+  .error-code {
+    font-size: 4rem;
+    gap: 0.5rem;
+  }
+  
+  .title-404 {
+    font-size: 1.8rem;
+  }
+  
+  .message-404 {
+    font-size: 1rem;
+    padding: 0 20px;
+  }
+  
+  .logo-image {
+    max-width: 150px;
+  }
+  
+  .text-logo {
+    font-size: 1.5rem;
+  }
+  
+  .planet-1, .planet-2 {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .home-button-404 {
+    width: 90%;
+    max-width: 300px;
+  }
+}

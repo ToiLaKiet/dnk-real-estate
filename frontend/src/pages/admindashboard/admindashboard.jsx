@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Tab } from '@headlessui/react';
 import styles from '../../styles/AdminUserDashboard.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSquarePollVertical, faNewspaper, faCirclePlus, faUser, faLandmark, faBars } from '@fortawesome/free-solid-svg-icons';
+import { faSquarePollVertical, faNewspaper, faCirclePlus, faUser, faLandmark, faBars, faUsers, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 import Logo from '../../components/logo.js';
-import { useAuth } from '../../components/ui/context/AuthContext.jsx';
 import AccountTab from './AdminAccountTab.jsx';
-import PostCreate from '../../components/ui/postcreate/postcreate.jsx';
 import PropertyManagement from './AdminPropertyManangement.jsx';
+import AdminPropertyList from './AdminPropertyList.jsx';
+import AdminUserManagement from './AdminUserManagement.jsx';
+import AdminReportManagement from './AdminReportManagement.jsx';
 // Mock data (replace with real API calls)
 const mockProperties = [
   { property_id: 1, title: 'Căn hộ Quận 7', posted_by: 100, is_active: true, created_at: '2025-06-04T12:00:00Z' },
@@ -49,8 +50,10 @@ function AdminDashboard() {
 
   const tabs = [
     { name: 'Tổng Quan', icon: faSquarePollVertical },
-    { name: 'Tin Đăng', icon: faNewspaper },
-    { name: 'Đăng Tin', icon: faCirclePlus },
+    { name: 'Duyệt Tin Đăng', icon: faNewspaper },
+    { name: 'Quản Lý Tin Đăng', icon: faCirclePlus },
+    { name: 'Quản Lý Tài Khoản', icon: faUsers },
+    { name: 'Quản Lý Báo Cáo', icon: faTriangleExclamation },
     { name: 'Tài Khoản', icon: faUser },
     { name: 'Thanh Toán', icon: faLandmark },
   ];
@@ -100,7 +103,7 @@ function AdminDashboard() {
           <Tab.Panels className={styles.userdashboardTabPanels}>
             {/* Tổng Quan Tab */}
             <Tab.Panel className={styles.userdashboardPanel}>
-              <Logo/>
+              <div className={styles.adminlogoBox}><Logo width={500}/></div>
               <div className={styles.userdashboardOverviewContainer}>
                 {/* Section 1: Tab Name */}
                 <div className={styles.userdashboardSection}>
@@ -144,34 +147,30 @@ function AdminDashboard() {
             {/* Tin Đăng Tab */}
             <Tab.Panel className={styles.userdashboardPanel}>
               <div className={styles.userdashboardPanelContent}>
-                <h2 className={styles.userdashboardTabName}>Tin Đăng</h2>
+                <div className={styles.adminlogoBox}><Logo width={500}/></div>
+                <h2 className={styles.userdashboardTabName}>Duyệt Tin Đăng</h2>
                 <hr></hr>
-                {/* {loading ? (
-                  <p>Đang tải...</p>
-                ) : error ? (
-                  <p className={styles.userdashboardError}>{error}</p>
-                ) : propertiesCount === 0 ? (
-                  <p>Bạn chưa có tin đăng nào.</p>
-                ) : (
-                  <ul className={styles.userdashboardPropertyList}>
-                    {mockProperties
-                      .filter((p) => p.posted_by === user_id && p.is_active)
-                      .map((property) => (
-                        <li key={property.property_id} className={styles.userdashboardPropertyItem}>
-                          <h3>{property.title}</h3>
-                          <span className={styles.userdashboardPropertyDate}>
-                            {format(new Date(property.created_at), 'dd/MM/yyyy')}
-                          </span>
-                        </li>
-                      ))}
-                  </ul>
-                )} */}
                 <PropertyManagement/>
               </div>
             </Tab.Panel>
             {/* Đăng Tin Tab */}
             <Tab.Panel className={styles.userdashboardPanel}>
-              <PostCreate />
+              <div className={styles.adminlogoBox}><Logo width={500}/></div>
+                <h2 className={styles.userdashboardTabName}>Quản Lý Tin Đăng</h2>
+                <hr></hr>
+              <AdminPropertyList />
+            </Tab.Panel>
+            <Tab.Panel className={styles.userdashboardPanel}>
+            <div className={styles.adminlogoBox}><Logo width={500}/></div>
+            <h2 className={styles.userdashboardTabName}>Quản Lý Tài Khoản</h2>
+            <hr></hr>
+              <AdminUserManagement />
+            </Tab.Panel>
+            <Tab.Panel className={styles.userdashboardPanel}>
+            <div className={styles.adminlogoBox}><Logo width={500}/></div>
+            <h2 className={styles.userdashboardTabName}>Quản Lý Báo Cáo</h2>
+            <hr></hr>
+              <AdminReportManagement />
             </Tab.Panel>
             {/* Tài khoản Tab */}
             <Tab.Panel className={styles.userdashboardPanel}>

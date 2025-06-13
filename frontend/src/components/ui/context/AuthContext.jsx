@@ -25,20 +25,17 @@ export const AuthProvider = ({ children }) => {
               Authorization: `Bearer ${token}`,
             },
           });
-  
           setUser(res.data); // or res.data.user depending on your backend
           setIsAuthenticated(true);
           console.log('User:', res.data);
-  
         } catch (err) {
-          console.error('Auth check failed:', err.response?.data || err.message);
+          console.error('Auth check failed:', err.response?.data || err.message || err);
           localStorage.removeItem('token');
           localStorage.removeItem('user');
           setIsAuthenticated(false);
           setUser(null);
         }
       }
-  
       setIsLoading(false);
     };
     checkAuth();

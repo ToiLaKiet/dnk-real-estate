@@ -1,3 +1,4 @@
+/* Cập nhật trong file AdminPropertyManagement.module.css */
 .pmFlexbox {
   display: flex;
   flex-direction: column;
@@ -57,7 +58,7 @@
 }
 
 .pmSearchInput:focus {
-  color: #22079E;
+  border-color: #990000;
 }
 
 .pmDateInput {
@@ -72,7 +73,7 @@
 }
 
 .pmDateInput:focus {
-  color: linear-gradient(270deg, #C067D7 0%, #22079E 100%)
+  border-color: #990000;
 }
 
 .pmClearButton {
@@ -109,13 +110,13 @@
 }
 
 .pmSubTab:hover {
-  color: linear-gradient(270deg, #C067D7 0%, #22079E 100%);
+  color: #990000;
 }
 
 .pmSubTabSelected {
-  color:  #22079E;
+  color: #990000;
   font-weight: 700;
-  border-bottom: 3px solid  #22079E;
+  border-bottom: 3px solid #990000;
 }
 
 .pmSubTabPanel {
@@ -133,13 +134,15 @@
 }
 
 .pmPropertyCard {
-  display:flex;
+  display: flex;
   border: 1px solid #ddd;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   max-width: 100%;
   transition: transform 0.3s;
+
+  max-height:250px;
 }
 
 .pmPropertyCard:hover {
@@ -151,11 +154,14 @@
   height: 100%;
   object-fit: cover;
   border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
+  border-bottom-left-radius: 8px;
 }
 
 .pmPropertyContent {
   padding: 15px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .pmPropertyTitle {
@@ -167,7 +173,7 @@
 
 .pmPropertyPrice {
   font-size: 16px;
-  color: #22079E;
+  color: #990000;
   font-weight: 500;
   margin-bottom: 8px;
 }
@@ -186,12 +192,376 @@
   color: #fff;
   border-radius: 4px;
   margin-bottom: 10px;
+  width: fit-content;
+}
+
+/* Action Buttons */
+.pmActionButtons {
+  display: flex;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.pmApproveButton {
+  flex: 1;
+  padding: 8px 12px;
+  font-size: 14px;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.pmApproveButton:hover {
+  background-color: #218838;
+}
+
+.pmRejectButton {
+  flex: 1;
+  padding: 8px 12px;
+  font-size: 14px;
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.pmRejectButton:hover {
+  background-color: #c82333;
+}
+
+/* Detail Button */
+.pmDetailButton {
+  flex: 1;
+  padding: 8px 12px;
+  font-size: 14px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.pmDetailButton:hover {
+  background-color: #0056b3;
+}
+
+/* Delete Button */
+.pmDeleteButton {
+  flex: 1;
+  padding: 8px 12px;
+  font-size: 14px;
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.pmDeleteButton:hover {
+  background-color: #c82333;
+}
+
+/* Pagination Styles */
+.pmPagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  margin-top: 30px;
+  padding: 20px 0;
+}
+
+.pmPaginationButton {
+  padding: 8px 12px;
+  font-size: 14px;
+  background-color: #fff;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  min-width: 40px;
+}
+
+.pmPaginationButton:hover:not(:disabled) {
+  background-color: #f8f9fa;
+  border-color: #990000;
+  color: #990000;
+}
+
+.pmPaginationButton:disabled {
+  background-color: #f8f9fa;
+  color: #6c757d;
+  cursor: not-allowed;
+  border-color: #dee2e6;
+}
+
+.pmPaginationActive {
+  background-color: #990000 !important;
+  color: #fff !important;
+  border-color: #990000 !important;
+}
+
+.pmPaginationActive:hover {
+  background-color: #7a0000 !important;
+  border-color: #7a0000 !important;
+}
+
+/* Detail Modal Styles */
+.pmDetailModalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+  animation: slide-in 0.3s ease-in;
+}
+
+.pmDetailModalContent {
+  background: white;
+  border-radius: 10px;
+  max-width: 1000px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  animation: slide-in 0.3s ease-in;
+}
+
+.pmDetailCloseButton {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 10;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pmDetailCloseButton:hover {
+  background-color: #f0f0f0;
+}
+
+.pmDetailHeader {
+  padding: 20px 20px 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.pmDetailTitle {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10px;
+  margin-right: 40px;
+}
+
+.pmDetailPrice {
+  font-size: 20px;
+  color: #990000;
+  font-weight: 600;
+}
+
+.pmDetailBody {
+  padding: 20px;
+}
+
+/* Image Gallery Styles */
+.pmImageGallery {
+  margin-bottom: 30px;
+}
+
+.pmImageContainer {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.pmDetailImage {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.pmImageNavPrev,
+.pmImageNavNext {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.pmImageNavPrev {
+  left: 10px;
+}
+
+.pmImageNavNext {
+  right: 10px;
+}
+
+.pmImageNavPrev:hover,
+.pmImageNavNext:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.pmImageThumbnails {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 10px 0;
+}
+
+.pmThumbnail {
+  width: 80px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 5px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color 0.3s;
+  flex-shrink: 0;
+}
+
+.pmThumbnailActive {
+  border-color: #990000;
+}
+
+/* Detail Information Styles */
+.pmDetailInfo {
+  max-width: 100%;
+}
+
+.pmInfoSection {
+  margin-bottom: 25px;
+}
+
+.pmInfoSection h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #990000;
+  padding-bottom: 5px;
+}
+
+.pmInfoGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+.pmInfoItem {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.pmInfoItem strong {
+  color: #555;
+  font-weight: 600;
+}
+
+.pmInfoItem span {
+  color: #333;
+}
+
+.pmDescription {
+  line-height: 1.6;
+  color: #555;
+  font-size: 16px;
+}
+
+/* Video Styles */
+.pmVideoContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.pmDetailVideo {
+  width: 100%;
+  max-width: 500px;
+  height: 300px;
+  border-radius: 8px;
+}
+
+/* Detail Modal Action Buttons */
+.pmDetailActions {
+  padding: 20px;
+  border-top: 1px solid #eee;
+  display: flex;
+  gap: 15px;
+  justify-content: flex-end;
+}
+
+.pmDetailApproveButton {
+  padding: 12px 24px;
+  font-size: 16px;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.pmDetailApproveButton:hover {
+  background-color: #218838;
+}
+
+.pmDetailRejectButton {
+  padding: 12px 24px;
+  font-size: 16px;
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.pmDetailRejectButton:hover {
+  background-color: #c82333;
 }
 
 .pmEditButton {
   padding: 10px;
   font-size: 16px;
-  background-color:  #22079E;
+  background-color: #990000;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -207,7 +577,7 @@
 .pmCreateButton {
   padding: 12px 20px;
   font-size: 16px;
-  background-color: #22079E;
+  background-color: #990000;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -221,13 +591,32 @@
   background-color: #7a0000;
 }
 
+/* Loading and Error Messages */
+.pmLoadingMessage,
+.pmNoPropertiesMessage {
+  text-align: center;
+  padding: 40px 20px;
+  font-size: 16px;
+  color: #666;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.pmLoadingMessage {
+  color: #990000;
+}
+
 .pmErrorMessage {
   font-size: 16px;
   color: #d32f2f;
   text-align: center;
-  margin-top: 20px;
+  margin: 20px 0;
+  padding: 10px;
+  background-color: #ffebee;
+  border: 1px solid #ffcdd2;
+  border-radius: 5px;
 }
 
+/* Responsive Design */
 @media (max-width: 768px) {
   .pmFilterRow {
     flex-direction: column;
@@ -244,13 +633,86 @@
     flex-wrap: wrap;
   }
 
-  .pmPropertyList {
+  .pmPropertyCard {
+    flex-direction: column;
+    max-height: 1000px;
+  }
+
+  .pmPropertyImage {
+    width: 100%;
+    height: 200px;
+    border-radius: 8px 8px 0 0;
+  }
+
+  .pmActionButtons {
+    flex-direction: column;
+  }
+
+  .pmApproveButton,
+  .pmRejectButton,
+  .pmDetailButton,
+  .pmDeleteButton {
+    width: 100%;
+  }
+
+  .pmPagination {
+    flex-wrap: wrap;
+    gap: 3px;
+  }
+
+  .pmPaginationButton {
+    padding: 6px 10px;
+    font-size: 12px;
+    min-width: 35px;
+  }
+
+  /* Detail Modal Responsive */
+  .pmDetailModalContent {
+    margin: 10px;
+    max-height: 95vh;
+  }
+
+  .pmDetailImage {
+    height: 250px;
+  }
+
+  .pmInfoGrid {
     grid-template-columns: 1fr;
+  }
+
+  .pmDetailActions {
+    flex-direction: column;
+  }
+
+  .pmDetailApproveButton,
+  .pmDetailRejectButton {
+    width: 100%;
+  }
+
+  .pmImageThumbnails {
+    justify-content: center;
+  }
+
+  .pmDetailVideo {
+    height: 200px;
   }
 }
 
 @media (max-width: 1024px) and (min-width: 769px) {
   .pmPropertyList {
-    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
   }
+}
+
+/* Additional utility classes */
+.pmTextCenter {
+  text-align: center;
+}
+
+.pmMb20 {
+  margin-bottom: 20px;
+}
+
+.pmMt20 {
+  margin-top: 20px;
 }
