@@ -7,7 +7,7 @@ import userDashboardStyles from '../../styles/UserDashboard.module.css'; // Reus
 import Otp from '../../components/ui/modal-otp';
 import SettingsTab from './SettingTabs';
 const AccountTab = () => {
-  const API_URL ='http://172.16.2.34:8080'; // Use environment variable for API URL
+  const API_URL ='http://172.16.1.219:8080'; // Use environment variable for API URL
   const { user, isLoading } = useAuth();
   const [formData, setFormData] = useState(null);
   const [errors, setErrors] = useState({});
@@ -110,10 +110,9 @@ const AccountTab = () => {
     try {
       console.log(formData);
       const token = localStorage.getItem('token'); // or however you store the token
-      console.log('token',token);
       const cpayload = {
         full_name: formData.full_name,
-        email: formData.email,
+        ...(formData.email?.length > 0 && { email: formData.email }),
         tax_number: formData.tax_number,
         company_name: formData.company_name,
         address: formData.address,
@@ -234,25 +233,26 @@ const AccountTab = () => {
                 <div className={styles.atFormGroup}>
                   <label htmlFor="email">Email</label>
                   <div className={styles.atEmailGroup}>
-                    <input
-                      type="text"
-                      id="email"
-                      name="email"
-                      value={formData.email ?? ""}
-                      onChange={handleInputChange}
-                      className={styles.atInput}
-                    />
-                    {!formData.is_email_verified && formData.email && (
-                      <button className={styles.atVerifyButton} onClick={handleVerifyEmail}>
-                        Verify
-                      </button>
-                    )}
+                  <input
+                    type="text"
+                    id="email"
+                    name="email"
+                    value={formData.email ?? ""}
+                    onChange={handleInputChange}
+                    className={styles.atInput}
+                    disabled={formData.is_email_verified}
+                  />
+                  {!formData.is_email_verified && formData.email && (
+                    <button className={styles.atVerifyButton} onClick={handleVerifyEmail}>
+                    Verify
+                    </button>
+                  )}
                   </div>
                   {(errors.email || emailAnnouncement) && (
-                    <span className={styles.atError}>{errors.email || emailAnnouncement}</span>
+                  <span className={styles.atError}>{errors.email || emailAnnouncement}</span>
                   )}
                 </div>
-                {/* Company Name */}
+                        {/* Company Name */}
                 <div className={styles.atFormGroup}>
                   <label htmlFor="company_name">Tên công ty</label>
                   <input

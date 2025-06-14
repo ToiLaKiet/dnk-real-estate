@@ -18,13 +18,14 @@
     color: #333;
     font-size: 1.5rem;
     text-align: center;
-    
+    font-weight: 600;
+    margin-bottom: 30px;
   }
   
   .report-checklist {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 1rem;
   }
   
   .report-checklist h3 {
@@ -51,6 +52,8 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    margin-top:10px;
+    margin-bottom: 10px;
   }
   
   .report-feedback h3 {

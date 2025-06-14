@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from '../../styles/AdminPropertyManagement.module.css';
 
+const API_URL = 'http://172.16.1.141:8080'
+
 const PropertyCard = ({ property, onDelete, onDetail }) => {
   const formatPrice = (price) => {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
@@ -18,8 +20,8 @@ const PropertyCard = ({ property, onDelete, onDetail }) => {
       case 'sold':
       case 'rented':
         return '#d32f2f';
-      case 'approved':
-        return '#28a745';
+      case 'inactive':
+        return '#a56347';
       case 'rejected':
         return '#dc3545';
       default:
@@ -37,8 +39,8 @@ const PropertyCard = ({ property, onDelete, onDetail }) => {
         return 'Đã bán';
       case 'rented':
         return 'Đã thuê';
-      case 'approved':
-        return 'Đã duyệt';
+      case 'inactive':
+        return 'Đã ẩn';
       case 'rejected':
         return 'Đã từ chối';
       default:
@@ -47,7 +49,7 @@ const PropertyCard = ({ property, onDelete, onDetail }) => {
   };
 
   const handleDelete = () => {
-    if (window.confirm('Bạn có chắc chắn muốn xóa bất động sản này?')) {
+    if (window.confirm('Bạn có chắc chắn muốn tạm ẩn bất động sản này?')) {
       onDelete(property.property_id);
     }
   };
@@ -79,12 +81,16 @@ const PropertyCard = ({ property, onDelete, onDetail }) => {
           >
             Chi tiết
           </button>
-          <button
-            className={styles.pmDeleteButton}
-            onClick={handleDelete}
-          >
-            Xóa
-          </button>
+          
+          {/* Only show delete button if property is not inactive */}
+          {property.status !== 'inactive' && (
+            <button
+              className={styles.pmDeleteButton}
+              onClick={handleDelete}
+            >
+              Ẩn tin đăng
+            </button>
+          )}
         </div>
       </div>
     </div>
@@ -101,8 +107,12 @@ const AdminPropertyList = () => {
   const fetchProperties = async () => {
     try {
       setLoading(true);
-      // TODO: Replace with your actual API endpoint
-      const response = await axios.get('/api/admin/all-properties');
+      const response = await axios.get(`${API_URL}/properties/`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        }
+      });
       setProperties(response.data);
       setError('');
     } catch (error) {
@@ -117,28 +127,42 @@ const AdminPropertyList = () => {
     fetchProperties();
   }, []);
 
-  // Handle property deletion
+  // Handle property hiding (set to inactive)
   const handleDelete = async (propertyId) => {
     try {
-      // API call to delete property
-      await axios.delete(`/api/admin/properties/${propertyId}`);
+      const response = await axios.put(
+        `${API_URL}/properties/${propertyId}/status?new_status=inactive`, 
+        {},
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          },
+        }
+      );
+
+      console.log(response);
       
-      // Update local state by removing the deleted property
-      setProperties(prev => prev.filter(property => property.property_id !== propertyId));
+      // Update local state to reflect the status change
+      setProperties(prev => 
+        prev.map(property => 
+          property.property_id === propertyId 
+            ? { ...property, status: 'inactive' }
+            : property
+        )
+      );
       
-      // Optional: Show success message
-      alert('Xóa bất động sản thành công!');
+      alert('Ẩn bất động sản thành công!');
     } catch (error) {
-      console.error('Error deleting property:', error);
-      setError('Không thể xóa bất động sản');
-      alert('Có lỗi xảy ra khi xóa bất động sản!');
+      console.error('Error hiding property:', error);
+      setError('Không thể ẩn bất động sản');
+      alert('Có lỗi xảy ra khi ẩn bất động sản!');
     }
   };
 
   // Handle view property details
   const handleDetail = (propertyId) => {
-    // Navigate to property detail page
-    navigate(`/postpage/${propertyId}`);
+    navigate(`/postspage/${propertyId}`);
   };
 
   if (loading) {

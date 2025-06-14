@@ -8,7 +8,7 @@ export const AuthContext = createContext();
 
 // 2. Tạo Provider
 export const AuthProvider = ({ children }) => {
-  const API_URL ='http://172.16.2.34:8080'
+  const API_URL ='http://172.16.1.219:8080'
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -26,12 +26,14 @@ export const AuthProvider = ({ children }) => {
             },
           });
           setUser(res.data); // or res.data.user depending on your backend
+          localStorage.setItem('user', JSON.stringify(res.data));
           setIsAuthenticated(true);
           console.log('User:', res.data);
         } catch (err) {
           console.error('Auth check failed:', err.response?.data || err.message || err);
           localStorage.removeItem('token');
           localStorage.removeItem('user');
+          alert('Phiên đăng nhập đã hết hạn hoặc không hợp lệ. Vui lòng đăng nhập lại.');
           setIsAuthenticated(false);
           setUser(null);
         }

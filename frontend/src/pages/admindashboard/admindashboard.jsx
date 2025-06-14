@@ -9,14 +9,9 @@ import PropertyManagement from './AdminPropertyManangement.jsx';
 import AdminPropertyList from './AdminPropertyList.jsx';
 import AdminUserManagement from './AdminUserManagement.jsx';
 import AdminReportManagement from './AdminReportManagement.jsx';
+import axios from 'axios';
 // Mock data (replace with real API calls)
-const mockProperties = [
-  { property_id: 1, title: 'Căn hộ Quận 7', posted_by: 100, is_active: true, created_at: '2025-06-04T12:00:00Z' },
-  { property_id: 2, title: 'Nhà phố Quận 1', posted_by: 101, is_active: true, created_at: '2025-06-03T12:00:00Z' },
-  { property_id: 3, title: 'Biệt thự Phú Mỹ Hưng', posted_by: 100, is_active: true, created_at: '2025-06-02T12:00:00Z' },
-  { property_id: 4, title: 'Đất nền Hà Nội', posted_by: 102, is_active: false, created_at: '2025-06-01T12:00:00Z' },
-  { property_id: 5, title: 'Căn hộ Cầu Giấy', posted_by: 100, is_active: true, created_at: '2025-05-31T12:00:00Z' },
-];
+const API_URL = 'http://172.16.1.219:8080'
 
 
 function AdminDashboard() {
@@ -24,20 +19,21 @@ function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  // Mock user_id (replace with useAuth hook)
-  const user_id = 100;
+  const [chartsData, setChartsData] = useState(); // For future chart data
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
         // Mock API: Fetch properties
-        const properties = mockProperties;
-        const userProperties = properties.filter(
-          (p) => p.posted_by === user_id && p.is_active
-        );
-        setPropertiesCount(userProperties.length);
+        const response = await axios.get(`${API_URL}/properties`);
+        console.log('Properties response:', response);
+        const properties = response.data;
+        setPropertiesCount(properties.length);
+        //Get charts from backend
+        const chartResponse = await axios.get(`${API_URL}/stats/chart`);
+        console.log('Charts response:', chartResponse);
+        setChartsData(chartResponse.data.chart);
       } catch (err) {
         console.error('Lỗi khi tải dữ liệu:', err);
         setError('Không thể tải dữ liệu. Vui lòng thử lại.');
@@ -114,36 +110,62 @@ function AdminDashboard() {
                 <div className={styles.userdashboardSection}>
                   <h2 className={styles.userdashboardSectionTitle}>Tổng quan trang web</h2>
                   <div className={styles.userdashboardSectioncontent}>
-                  <div className={styles.userdashboardInfoBox}>
-                    {loading ? (
-                      <p>Đang tải...</p>
-                    ) : error ? (
-                      <p className={styles.userdashboardError}>{error}</p>
-                    ) : (
-                      <p>
-                        Tổng số tin đăng
-                        <br></br>
-                        <div className={styles.adminstrongbox}><strong className={styles.big}>{propertiesCount}</strong></div>
-                      </p>
-                    )}
-                  </div>
-                  <div className={styles.userdashboardInfoBox}>
-                    {loading ? (
-                      <p>Đang tải...</p>
-                    ) : error ? (
-                      <p className={styles.userdashboardError}>{error}</p>
-                    ) : (
-                      <p>
-                        Tổng số người dùng 
-                        <br></br>
-                        <div className={styles.adminstrongbox}><strong className={styles.big}>{propertiesCount}</strong></div>
-                      </p>
-                    )}
-                  </div>
+                    <div className={styles.userdashboardInfoBox}>
+                      {loading ? (
+                        <p>Đang tải...</p>
+                      ) : error ? (
+                        <p className={styles.userdashboardError}>{error}</p>
+                      ) : (
+                        <p>
+                          Tổng số tin đăng
+                          <br></br>
+                          <div className={styles.adminstrongbox}><strong className={styles.big}>{propertiesCount}</strong></div>
+                        </p>
+                      )}
+                    </div>
+                    <div className={styles.userdashboardInfoBox}>
+                      {loading ? (
+                        <p>Đang tải...</p>
+                      ) : error ? (
+                        <p className={styles.userdashboardError}>{error}</p>
+                      ) : (
+                        <p>
+                          Tổng số người dùng 
+                          <br></br>
+                          <div className={styles.adminstrongbox}><strong className={styles.big}>{propertiesCount}</strong></div>
+                        </p>
+                      )}
+                      
+                    </div>
                   </div>
                 </div>
                </div>
+               {/* Charts Section */}
+              <h2 className={styles.userdashboardSectionTitle}>Biểu đồ thống kê</h2>
+              <div className={styles.userdashboardSectioncontent}>
+              {loading ? (
+                <p>Đang tải biểu đồ...</p>
+              ) : error ? (
+                <p className={styles.userdashboardError}>{error}</p>
+              ) : chartsData ? (
+                <div className={styles.chartsContainer}>
+                <div className={styles.chartBox}>
+                  <h3>Thống kê bất động sản</h3>
+                  <div className={styles.chartContent}>
+                  <img 
+                    src={chartsData.startsWith('data:') ? chartsData : `data:image/png;base64,${chartsData}`}
+                    alt="Property Statistics Chart"
+                    style={{ maxWidth: '100%', height: 'auto' }}
+                  />
+                  </div>
+                </div>
+                </div>
+              ) : (
+                <p>Không có dữ liệu biểu đồ</p>
+              )}
+              </div>
             </Tab.Panel>
+            
             {/* Tin Đăng Tab */}
             <Tab.Panel className={styles.userdashboardPanel}>
               <div className={styles.userdashboardPanelContent}>

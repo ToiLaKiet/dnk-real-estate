@@ -11,19 +11,19 @@ import axios from 'axios';
 import { useAuth } from '../context/AuthContext'
 
 const ImageUploadModal = () => {  
-  const API_URL = 'http://172.16.2.34:8080/';
-  const { user } = useAuth();
+  const API_URL = 'http://172.16.1.219:8080/';
+  const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation(); // Sửa typo: locate -> location
+  const location = useLocation();
   
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [formData, setFormData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   
-  // Sửa lỗi editMode
+  // Fix editMode logic
   const [editMode] = useState(location?.state?.mode ?? false);
   
-  // Khởi tạo images với structure nhất quán
+  // Initialize images with consistent structure
   const [images, setImages] = useState(() => {
     const stateImages = location?.state?.images;
     if (stateImages && Array.isArray(stateImages)) {
@@ -47,75 +47,91 @@ const ImageUploadModal = () => {
         }
       });
     };
-  }, []);
+  }, [images]); // Add images dependency
 
+  // FIX: Add missing dependencies and proper authentication check
   useEffect(() => {
-    console.log(location.state);
-    if (location.state === null) {
+    console.log('Location state:', location.state);
+    console.log('Is authenticated:', isAuthenticated);
+    
+    // Check authentication first
+    if (!isAuthenticated) {
+      navigate('/login'); // Redirect to login instead of post-create
+      return;
+    }
+    
+    // Check if location state exists
+    if (!location.state || !location.state.formData) {
       navigate('/post-create');
+      return;
     }
-    else{
-      setFormData(location.state.formData);
-    }
-  }, [location, navigate]);
+    
+    // Set form data if everything is valid
+    setFormData(location.state.formData);
+  }, [location, navigate, isAuthenticated]); // Add missing dependencies
 
   // Validate video URL
   const isValidVideoUrl = (url) => {
-    if (!url) return true; // Optional field
+    if (!url) return true;
     const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+/;
     const tiktokRegex = /^(https?:\/\/)?(www\.)?tiktok\.com\/.+/;
     return youtubeRegex.test(url) || tiktokRegex.test(url);
   };
 
-  // Xử lý upload hình ảnh với validation tốt hơn
+  // Handle image upload with better validation
   const handleImageUpload = useCallback((e) => {
     const files = Array.from(e.target.files);
-    const newImages = [...images];
     const maxFileSize = 5 * 1024 * 1024; // 5MB
 
-    files.forEach(file => {
-      // Validation
-      if (newImages.length >= 10) {
-        alert('Chỉ được upload tối đa 10 ảnh');
-        return;
-      }
+    setImages(prevImages => {
+      const newImages = [...prevImages];
       
-      if (!file.type.startsWith('image/')) {
-        alert(`File ${file.name} không phải là hình ảnh`);
-        return;
-      }
-      
-      if (file.size > maxFileSize) {
-        alert(`File ${file.name} quá lớn. Kích thước tối đa là 5MB`);
-        return;
-      }
+      files.forEach(file => {
+        // Validation
+        if (newImages.length >= 10) {
+          alert('Chỉ được upload tối đa 10 ảnh');
+          return;
+        }
+        
+        if (!file.type.startsWith('image/')) {
+          alert(`File ${file.name} không phải là hình ảnh`);
+          return;
+        }
+        
+        if (file.size > maxFileSize) {
+          alert(`File ${file.name} quá lớn. Kích thước tối đa là 5MB`);
+          return;
+        }
 
-      newImages.push({
-        id: `new-${Date.now()}-${Math.random()}`,
-        file,
-        preview: URL.createObjectURL(file),
-        isExisting: false
+        newImages.push({
+          id: `new-${Date.now()}-${Math.random()}`,
+          file,
+          preview: URL.createObjectURL(file),
+          isExisting: false
+        });
       });
+      
+      return newImages;
     });
-    
-    setImages(newImages);
-  }, [images]);
+  }, []); // Remove images dependency to prevent infinite re-renders
 
-  // Sửa lỗi xóa hình ảnh
+  // Fix remove image function
   const handleRemoveImage = useCallback((index) => {
-    const newImages = [...images];
-    const imageToRemove = newImages[index];
-    
-    // Cleanup object URL nếu không phải existing image
-    if (imageToRemove && imageToRemove.preview && !imageToRemove.isExisting) {
-      URL.revokeObjectURL(imageToRemove.preview);
-    }
-    
-    newImages.splice(index, 1);
-    setImages(newImages);
-  }, [images]);
+    setImages(prevImages => {
+      const newImages = [...prevImages];
+      const imageToRemove = newImages[index];
+      
+      // Cleanup object URL if not existing image
+      if (imageToRemove && imageToRemove.preview && !imageToRemove.isExisting) {
+        URL.revokeObjectURL(imageToRemove.preview);
+      }
+      
+      newImages.splice(index, 1);
+      return newImages;
+    });
+  }, []);
 
-  // Xử lý thay đổi URL video với validation
+  // Handle video URL change with validation
   const handleVideoUrlChange = (e) => {
     const url = e.target.value;
     setVideoUrl(url);
@@ -135,7 +151,7 @@ const ImageUploadModal = () => {
     navigate('/post-create');
   };
 
-  // Sửa lỗi async logic
+  // FIX: Main API call function - prevent duplicate calls
   const letspostCreate = async (payload, updatedData) => {
     try {
       setIsLoading(true);
@@ -145,7 +161,6 @@ const ImageUploadModal = () => {
         throw new Error('Không tìm thấy token xác thực');
       }
 
-      let response;
       const config = {
         headers: {
           "Content-Type": 'application/json',
@@ -153,10 +168,11 @@ const ImageUploadModal = () => {
         }
       };
 
-      if (editMode) {
-        payload['property_id'] = updatedData.property_id;
+      let response;
+      
+      // FIX: Proper conditional logic - only one API call
+      if (editMode && updatedData.property_id) {
         console.log("Data payload gửi về backend (edit):", payload);
-        // Cần thay đổi endpoint cho edit
         response = await axios.put(`${API_URL}properties/${updatedData.property_id}`, payload, config);
       } else {
         console.log("Data payload gửi về backend (create):", payload);
@@ -170,13 +186,10 @@ const ImageUploadModal = () => {
       console.error("Lỗi khi gửi dữ liệu:", error);
       
       if (error.response) {
-        // Server responded with error status
         alert(`Lỗi từ server: ${error.response.data?.message || 'Có lỗi xảy ra'}`);
       } else if (error.request) {
-        // Request was made but no response received
         alert('Không thể kết nối tới server. Vui lòng thử lại.');
       } else {
-        // Something else happened
         alert(`Lỗi: ${error.message}`);
       }
     } finally {
@@ -184,76 +197,102 @@ const ImageUploadModal = () => {
     }
   };
 
-  const handleDataSubmit = (newData, options = {}) => {
+  // FIX: Simplified handleDataSubmit
+  const handleDataSubmit = (mediaData) => {
     try {
-      if (!newData || typeof newData !== 'object' || Object.keys(newData).length === 0) {
-        console.error("Dữ liệu không hợp lệ hoặc rỗng:", newData);
+      if (!mediaData || !mediaData.media) {
+        console.error("Dữ liệu media không hợp lệ:", mediaData);
         return;
       }
       
-      setFormData((prev) => {
-        const updatedData = { ...prev };
-        console.log("Dữ liệu đầu vào:", newData);
-
-        const validKeys = options.validKeys || ['media', 'address', 'contact', 'user'];
-
-        Object.keys(newData).forEach((key) => {
-          if (!validKeys.includes(key)) {
-            console.warn(`Key không hợp lệ: ${key}`);
-            return;
-          }
-
-          if (key === 'media') {
-            if (newData.media && typeof newData.media === 'object' && !Array.isArray(newData.media)) {
-              updatedData['media'] = {
-                images: newData.media.images || (prev.media?.images || []),
-                videoUrl: newData.media.videoUrl || (prev.media?.videoUrl || '')
-              };
-            } else {
-              console.warn("Dữ liệu media không hợp lệ:", newData.media);
-            }
-          }
-        });
-        updatedData.user_id = user?.id;
-        console.log("✅ Form data sau khi hoàn tất ImageUploadModal:", updatedData);
+      // Merge media data with existing form data
+      const updatedFormData = {
+        ...formData,
+        media: mediaData.media,
+        user_id: user?.id
+      };
       
-        // Tạo payload
-        const data_payload = {
-          title: updatedData?.title || '',
-          description: updatedData?.description || '',
-          address: updatedData?.address?.displayAddress || '',
-          property_type: updatedData?.type || '',
-          lat: updatedData.address?.coordinates?.lat || 0,
-          lng: updatedData.address?.coordinates?.lng || 0,
-          location_id: updatedData.address?.ward || '', 
-          area: updatedData.area || 0,
-          price: updatedData.price || 0,
-          category: updatedData.propertyType || '',
-          features: [
-            { feature_name: "legalDocuments", feature_value: updatedData.legalDocuments || '' },
-            { feature_name: "furniture", feature_value: updatedData.furniture || '' },
-            { feature_name: "bedrooms", feature_value: updatedData.bedrooms || 0 },
-            { feature_name: "bathrooms", feature_value: updatedData.bathrooms || 0 },
-            { feature_name: "houseDirection", feature_value: updatedData.houseDirection || '' },
-            { feature_name: "balconyDirection", feature_value: updatedData.balconyDirection || '' },
-          ],
-          images: updatedData.media?.images ?? [],
-          videos: [{
-            video_url: updatedData.media?.videoUrl ?? ''
-          }],
-          contact_name: updatedData.contact?.name || '',
-          contact_email: updatedData.contact?.email || '',
-          contact_phone: updatedData.contact?.phone || '',
-          expire_at: new Date().toISOString() // Sửa lỗi date
-        };
-        console.log('data_payload',data_payload);
-        letspostCreate(data_payload, updatedData);
-        return data_payload;
-      });
+      console.log("✅ Form data sau khi hoàn tất ImageUploadModal:", updatedFormData);
+      
+      // Create payload
+      const data_payload = {
+        title: updatedFormData?.title || '',
+        description: updatedFormData?.description || '',
+        address: updatedFormData?.address?.displayAddress || '',
+        property_type: updatedFormData?.type || '',
+        lat: updatedFormData.address?.coordinates?.lat || 0,
+        lng: updatedFormData.address?.coordinates?.lng || 0,
+        location_id: updatedFormData.address?.ward || '', 
+        area: updatedFormData.area || 0,
+        price: updatedFormData.price || 0,
+        category: updatedFormData.propertyType || '',
+        features: [
+          { feature_name: "legalDocuments", feature_value: updatedFormData.legalDocuments || '' },
+          { feature_name: "furniture", feature_value: updatedFormData.furniture || '' },
+          { feature_name: "bedrooms", feature_value: updatedFormData.bedrooms || 0 },
+          { feature_name: "bathrooms", feature_value: updatedFormData.bathrooms || 0 },
+          { feature_name: "houseDirection", feature_value: updatedFormData.houseDirection || '' },
+          { feature_name: "balconyDirection", feature_value: updatedFormData.balconyDirection || '' },
+        ],
+        images: updatedFormData.media?.images ?? [],
+        videos: updatedFormData.media?.videoUrl ? [{
+          video_url: updatedFormData.media.videoUrl
+        }] : [],
+        contact_name: updatedFormData.contact?.name || '',
+        contact_email: updatedFormData.contact?.email || '',
+        contact_phone: updatedFormData.contact?.phone || '',
+        expire_at: new Date().toISOString()
+      };
+      
+      console.log('data_payload:', data_payload);
+      
+      // Update form data state and call API
+      setFormData(updatedFormData);
+      letspostCreate(data_payload, updatedFormData);
+      
     } catch (error) {
       console.error("Lỗi trong handleDataSubmit:", error);
       alert('Có lỗi xảy ra khi xử lý dữ liệu');
     }
+  };
+
+  // FIX: Simplified handleBack
+  const handleBack = () => {
+    const data_payload = {
+      title: formData?.title || '',
+      description: formData?.description || '',
+      address: formData?.address?.displayAddress || '',
+      property_type: formData?.type || '',
+      lat: formData.address?.coordinates?.lat || 0,
+      lng: formData.address?.coordinates?.lng || 0,
+      location_id: formData.address?.ward || '', 
+      area: formData.area || 0,
+      price: formData.price || 0,
+      category: formData.propertyType || '',
+      features: [
+      { feature_name: "legalDocuments", feature_value: formData.legalDocuments || '' },
+      { feature_name: "furniture", feature_value: formData.furniture || '' },
+      { feature_name: "bedrooms", feature_value: formData.bedrooms || 0 },
+      { feature_name: "bathrooms", feature_value: formData.bathrooms || 0 },
+      { feature_name: "houseDirection", feature_value: formData.houseDirection || '' },
+      { feature_name: "balconyDirection", feature_value: formData.balconyDirection || '' },
+      ],
+      images: formData.media?.images ?? [],
+      videos: formData.media?.videoUrl ? [{
+      video_url: formData.media.videoUrl
+      }] : [],
+      contact_name: formData.contact?.name || '',
+      contact_email: formData.contact?.email || '',
+      contact_phone: formData.contact?.phone || '',
+      expire_at: ''
+    };
+    console.log('Data payload for back navigation:', data_payload);
+    navigate('/post-create', {
+      state: { 
+        postToEdit: data_payload, 
+        mode: editMode 
+      }
+    });
   };
 
   const handleSubmit = (e) => {
@@ -366,9 +405,7 @@ const ImageUploadModal = () => {
       <div className={styles.actionButtons}>
         <button 
           className={styles.backButton} 
-          onClick={() => navigate('/post-create', {
-            state: { formData, mode: editMode }
-          })}
+          onClick={handleBack}
           disabled={isLoading}
         >
           Quay lại

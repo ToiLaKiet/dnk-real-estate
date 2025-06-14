@@ -70,18 +70,19 @@ const PostCreate = () => {
     }
     //to check whether there is any passed data from previous component
     if (locate.state!=null) {
+        console.log(locate.state.postToEdit);
         const data = locate.state.postToEdit;
         const features = {};
         data.features.forEach((f) => {
           features[f.feature_name] = f.feature_value;
         });
         setFormData({
-          type: data.type || '',
+          type: data.property_type || '',
           property_id: data.property_id,
           address: {
             province: '',  
             district: '',
-            ward: '',
+            ward: data.location_id,
             street: '',
             displayAddress: data.address || '',
             coordinates: {
@@ -89,7 +90,7 @@ const PostCreate = () => {
               lng: data.lng || 0
             }
           },
-          propertyType: features.category|| '',
+          propertyType: data.category|| '',
           area: data.area || 0,
           price: data.price || 0,
           legalDocuments: features.legalDocuments || '',
@@ -99,14 +100,14 @@ const PostCreate = () => {
           houseDirection: features.houseDirection || '',
           balconyDirection: features.balconyDirection || '',
           contact: {
-            name: data.contact?.name || '',
-            email: data.contact?.email || '',
-            phone: data.contact?.phone || ''
+            name: data.contact_name || data.contact.name || '',
+            email: data.contact_email || data.contact.email || '',
+            phone: data.contact_phone || data.contact.phone || ''
           },
           title: data.title || '',
           description: data.description || '',
           media: {
-            images: (data.images || []).map((img) => img.image_url),
+            images: (data.images || [])?.map((img) => img?.image_url || ''),
             videoUrl: (data.videos && data.videos[0]?.video_url) || ''
           }
         });

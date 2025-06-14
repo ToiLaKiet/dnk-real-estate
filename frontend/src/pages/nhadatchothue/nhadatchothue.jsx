@@ -5,419 +5,11 @@ import Header from '../../components/ui/parts/header';
 import Footer from '../../components/ui/parts/footer';
 import { FaSearch, FaBed, FaBath, FaPhone, FaHeart } from 'react-icons/fa';
 import '../../styles/NhaDatBan.css';
-import { AuthContext } from '../../components/ui/context/AuthContext';
+import { AuthContext } from '../../components/ui/context/AuthContext'; // Assumed context
 import Login from '../../pages/login/Dangnhap1';
 import Modal from '../../components/ui/modal-reg-log.jsx';
+const API_URL = 'http://172.16.1.219:8080/';
 
-// Mock data
-const mockPosts = [
-  {
-    property_id: 21,
-    type: 'nhadatchothue',
-    address: {
-      province: 'Hà Nội',
-      district: 'Đống Đa',
-      ward: 'Láng Hạ',
-      street: 'Láng',
-      displayAddress: 'Láng, Láng Hạ, Đống Đa, Hà Nội',
-      coordinates: { lat: 21.015, lng: 105.816 }
-    },
-    property_type: 'apartment',
-    title: 'Căn hộ cho thuê Đống Đa',
-    description: 'Căn hộ 2 phòng ngủ, nội thất đầy đủ.',
-    price: 15,
-    area: 80,
-    status: 'available',
-    created_at: '2025-01-20T10:00:00Z',
-    updated_at: '2025-01-20T10:00:00Z',
-    contact: {
-      name: 'Nguyễn Văn T',
-      email: 'nguyenvant@example.com',
-      phone: '0911234567'
-    },
-    features: {
-      bedrooms: '2',
-      bathrooms: '2',
-      furniture: 'Full nội thất',
-      legalDocuments: 'Hợp đồng thuê'
-    },
-    media: {
-      images: [
-        { url: "https://via.placeholder.com/600x400?text=Rent1", caption: 'Ảnh chính', is_primary: true },
-        { url: "https://via.placeholder.com/600x400?text=Rent1-2", caption: null, is_primary: false }
-      ],
-      videoUrl: null
-    }
-  },
-  {
-    property_id: 22,
-    type: 'nhadatchothue',
-    address: {
-      province: 'TP.HCM',
-      district: 'Quận 3',
-      ward: 'Phường 7',
-      street: 'Nguyễn Đình Chiểu',
-      complex: '',
-      displayAddress: 'Nguyễn Đình Chiểu, Phường 7, Quận 3, TP.HCM',
-      coordinates: { lat: 10.775, lng: 106.689 }
-    },
-    property_type: 'house',
-    title: 'Nhà riêng cho thuê Quận 3',
-    description: 'Nhà 3 tầng, phù hợp gia đình.',
-    price: 25,
-    area: 100,
-    status: 'available',
-    created_at: '2025-02-20T10:00:00Z',
-    updated_at: '2025-02-20T10:00:00Z',
-    contact: {
-      name: 'Trần Thị U',
-      email: 'tranthiu@example.com',
-      phone: '0912345678'
-    },
-    features: {
-      bedrooms: '3',
-      bathrooms: '2',
-      furniture: 'Không nội thất'
-    },
-    media: {
-      images: [
-        { url: "https://via.placeholder.com/600x400?text=Rent2", caption: 'Ảnh chính', is_primary: true }
-      ],
-      videoUrl: null
-    }
-  },
-  {
-    property_id: 23,
-    type: 'nhadatchothue',
-    address: {
-      province: 'Đà Nẵng',
-      district: 'Sơn Trà',
-      ward: 'An Hải Bắc',
-      street: 'Võ Văn Kiệt',
-      complex: '',
-      displayAddress: 'Võ Văn Kiệt, An Hải Bắc, Sơn Trà, Đà Nẵng',
-      coordinates: { lat: 16.071, lng: 108.234 }
-    },
-    property_type: 'apartment',
-    title: 'Căn hộ cho thuê ven biển Đà Nẵng',
-    description: 'Căn hộ view biển, nội thất cao cấp.',
-    price: 20,
-    area: 90,
-    status: 'available',
-    created_at: '2025-03-20T10:00:00Z',
-    updated_at: '2025-03-20T10:00:00Z',
-    contact: {
-      name: 'Lê Văn V',
-      email: 'levanv@example.com',
-      phone: '0913456789'
-    },
-    features: {
-      bedrooms: '2',
-      bathrooms: '2',
-      furniture: 'Full nội thất'
-    },
-    media: {
-      images: [
-        { url: "https://via.placeholder.com/600x400?text=Rent3", caption: 'Ảnh chính', is_primary: true }
-      ],
-      videoUrl: null
-    }
-  },
-  {
-    property_id: 24,
-    type: 'nhadatchothue',
-    address: {
-      province: 'Hải Phòng',
-      district: 'Lê Chân',
-      ward: 'Kênh Dương',
-      street: 'Võ Nguyên Giáp',
-      complex: '',
-      displayAddress: 'Võ Nguyên Giáp, Kênh Dương, Lê Chân, Hải Phòng',
-      coordinates: { lat: 20.847, lng: 106.672 }
-    },
-    property_type: 'villa',
-    title: 'Biệt thự cho thuê Hải Phòng',
-    description: 'Biệt thự 3 phòng ngủ, sân vườn.',
-    price: 50,
-    area: 200,
-    status: 'available',
-    created_at: '2025-04-20T10:00:00Z',
-    updated_at: '2025-04-20T10:00:00Z',
-    contact: {
-      name: 'Phạm Thị W',
-      email: 'phamthiw@example.com',
-      phone: '0914567890'
-    },
-    features: {
-      bedrooms: '3',
-      bathrooms: '3',
-      furniture: 'Full nội thất'
-    },
-    media: {
-      images: [
-        { url: "https://via.placeholder.com/600x400?text=Rent4", caption: 'Ảnh chính', is_primary: true }
-      ],
-      videoUrl: null
-    }
-  },
-  {
-    property_id: 25,
-    type: 'nhadatchothue',
-    address: {
-      province: 'Cần Thơ',
-      district: 'Ninh Kiều',
-      ward: 'Cái Khế',
-      street: 'Nguyễn Trãi',
-      complex: '',
-      displayAddress: 'Nguyễn Trãi, Cái Khế, Ninh Kiều, Cần Thơ',
-      coordinates: { lat: 10.038, lng: 105.781 }
-    },
-    property_type: 'townhouse',
-    title: 'Nhà phố cho thuê Cần Thơ',
-    description: 'Nhà phố 3 tầng, gần trung tâm.',
-    price: 18,
-    area: 120,
-    status: 'available',
-    created_at: '2025-05-20T10:00:00Z',
-    updated_at: '2025-05-20T10:00:00Z',
-    contact: {
-      name: 'Hoàng Văn X',
-      email: 'hoangvanx@example.com',
-      phone: '0915678901'
-    },
-    features: {
-      bedrooms: '3',
-      bathrooms: '2',
-      furniture: 'Không nội thất'
-    },
-    media: {
-      images: [
-        { url: "https://via.placeholder.com/600x400?text=Rent5", caption: 'Ảnh chính', is_primary: true }
-      ],
-      videoUrl: null
-    }
-  },
-  {
-    property_id: 26,
-    type: 'nhadatchothue',
-    address: {
-      province: 'Hà Nội',
-      district: 'Hai Bà Trưng',
-      ward: 'Bạch Đằng',
-      street: 'Trần Hưng Đạo',
-      complex: '',
-      displayAddress: 'Trần Hưng Đạo, Bạch Đằng, Hai Bà Trưng, Hà Nội',
-      coordinates: { lat: 21.021, lng: 105.853 }
-    },
-    property_type: 'apartment',
-    title: 'Căn hộ cao cấp Hai Bà Trưng',
-    description: 'Căn hộ 3 phòng ngủ, gần trung tâm.',
-    price: 22,
-    area: 100,
-    status: 'available',
-    created_at: '2025-06-20T10:00:00Z',
-    updated_at: '2025-06-20T10:00:00Z',
-    contact: {
-      name: 'Nguyễn Thị Y',
-      email: 'nguyenthiy@example.com',
-      phone: '0916789012'
-    },
-    features: {
-      bedrooms: '3',
-      bathrooms: '2',
-      furniture: 'Full nội thất'
-    },
-    media: {
-      images: [
-        { url: "https://via.placeholder.com/600x400?text=Rent6", caption: 'Ảnh chính', is_primary: true }
-      ],
-      videoUrl: null
-    }
-  },
-  {
-    property_id: 27,
-    type: 'nhadatchothue',
-    address: {
-      province: 'TP.HCM',
-      district: 'Bình Thạnh',
-      ward: 'Phường 25',
-      street: 'Điện Biên Phủ',
-      complex: '',
-      displayAddress: 'Điện Biên Phủ, Phường 25, Bình Thạnh, TP.HCM',
-      coordinates: { lat: 10.799, lng: 106.715 }
-    },
-    property_type: 'villa',
-    title: 'Biệt thự cho thuê Bình Thạnh',
-    description: 'Biệt thự 4 phòng ngủ, hồ bơi riêng.',
-    price: 60,
-    area: 300,
-    status: 'available',
-    created_at: '2025-07-20T10:00:00Z',
-    updated_at: '2025-07-20T10:00:00Z',
-    contact: {
-      name: 'Trần Văn Z',
-      email: 'tranvanz@example.com',
-      phone: '0917890123'
-    },
-    features: {
-      bedrooms: '4',
-      bathrooms: '4',
-      furniture: 'Full nội thất'
-    },
-    media: {
-      images: [
-        { url: "https://via.placeholder.com/600x400?text=Rent7", caption: 'Ảnh chính', is_primary: true }
-      ],
-      videoUrl: null
-    }
-  },
-  {
-    property_id: 28,
-    type: 'nhadatchothue',
-    address: {
-      province: 'Đà Nẵng',
-      district: 'Hải Châu',
-      ward: 'Hòa Thuận Đông',
-      street: 'Nguyễn Văn Linh',
-      complex: '',
-      displayAddress: 'Nguyễn Văn Linh, Hòa Thuận Đông, Hải Châu, Đà Nẵng',
-      coordinates: { lat: 16.059, lng: 108.209 }
-    },
-    property_type: 'house',
-    title: 'Nhà riêng cho thuê Hải Châu',
-    description: 'Nhà 2 tầng, gần trung tâm.',
-    price: 12,
-    area: 70,
-    status: 'available',
-    created_at: '2025-08-20T10:00:00Z',
-    updated_at: '2025-08-20T10:00:00Z',
-    contact: {
-      name: 'Lê Thị AA',
-      email: 'lethiaa@example.com',
-      phone: '0918901234'
-    },
-    features: {
-      bedrooms: '2',
-      bathrooms: '1',
-      furniture: 'Không nội thất'
-    },
-    media: {
-      images: [
-        { url: "https://via.placeholder.com/600x400?text=Rent8", caption: 'Ảnh chính', is_primary: true }
-      ],
-      videoUrl: null
-    }
-  },
-  {
-    property_id: 29,
-    type: 'nhadatchothue',
-    address: {
-      province: 'Hải Phòng',
-      district: 'Ngô Quyền',
-      ward: 'Máy Chai',
-      street: 'Nguyễn Tri Phương',
-      complex: '',
-      displayAddress: 'Nguyễn Tri Phương, Máy Chai, Ngô Quyền, Hải Phòng',
-      coordinates: { lat: 20.860, lng: 106.688 }
-    },
-    property_type: 'townhouse',
-    title: 'Nhà phố cho thuê Ngô Quyền',
-    description: 'Nhà phố 3 tầng, phù hợp kinh doanh.',
-    price: 30,
-    area: 150,
-    status: 'available',
-    created_at: '2025-09-20T10:00:00Z',
-    updated_at: '2025-09-20T10:00:00Z',
-    contact: {
-      name: 'Phạm Văn BB',
-      email: 'phamvanbb@example.com',
-      phone: '0919012345'
-    },
-    features: {
-      bedrooms: '3',
-      bathrooms: '2',
-      furniture: 'Không nội thất'
-    },
-    media: {
-      images: [
-        { url: "https://via.placeholder.com/600x400?text=Rent9", caption: 'Ảnh chính', is_primary: true }
-      ],
-      videoUrl: null
-    }
-  },
-  {
-    property_id: 30,
-    type: 'nhadatchothue',
-    address: {
-      province: 'Cần Thơ',
-      district: 'Bình Thủy',
-      ward: 'Bùi Hữu Nghĩa',
-      street: 'Bùi Hữu Nghĩa',
-      complex: '',
-      displayAddress: 'Bùi Hữu Nghĩa, Bùi Hữu Nghĩa, Bình Thủy, Cần Thơ',
-      coordinates: { lat: 10.069, lng: 105.755 }
-    },
-    property_type: 'apartment',
-    title: 'Căn hộ cho thuê Bình Thủy',
-    description: 'Căn hộ 1 phòng ngủ, giá rẻ.',
-    price: 8,
-    area: 50,
-    status: 'available',
-    created_at: '2025-10-20T10:00:00Z',
-    updated_at: '2025-10-20T10:00:00Z',
-    contact: {
-      name: 'Hoàng Thị CC',
-      email: 'hoangthicc@example.com',
-      phone: '0910123456'
-    },
-    features: {
-      bedrooms: '1',
-      bathrooms: '1',
-      furniture: 'Full nội thất'
-    },
-    media: {
-      images: [
-        { url: "https://via.placeholder.com/600x400?text=Rent10", caption: 'Ảnh chính', is_primary: true }
-      ],
-      videoUrl: null
-    }
-  }
-];
-
-// Dropdown options
-const dropdownOptions = {
-  propertyTypes: [
-    { value: '', label: 'Tất cả loại nhà đất' },
-    { value: 'apartment', label: 'Chung cư' },
-    { value: 'house', label: 'Nhà riêng' },
-    { value: 'villa', label: 'Villa' },
-    { value: 'townhouse', label: 'Nhà phố' }
-  ],
-  provinces: [
-    { value: '', label: 'Tất cả khu vực' },
-    { value: 'Hà Nội', label: 'Hà Nội' },
-    { value: 'TP.HCM', label: 'TP. Hồ Chí Minh' },
-    { value: 'Đà Nẵng', label: 'Đà Nẵng' },
-    { value: 'Hải Phòng', label: 'Hải Phòng' },
-    { value: 'Cần Thơ', label: 'Cần Thơ' }
-  ],
-  areas: [
-    { value: '', label: 'Tất cả diện tích' },
-    { value: '0-30', label: 'Dưới 30m²' },
-    { value: '30-50', label: '30 - 50m²' },
-    { value: '50-100', label: '50 - 100m²' },
-    { value: '100-200', label: '100 - 200m²' },
-    { value: '200+', label: 'Trên 200m²' }
-  ],
-  prices: [
-    { value: '', label: 'Tất cả mức giá' },
-    { value: '0-5', label: 'Dưới 5 triệu/tháng' },
-    { value: '5-10', label: '5 - 10 triệu/tháng' },
-    { value: '10-20', label: '10 - 20 triệu/tháng' },
-    { value: '20-50', label: '20 - 50 triệu/tháng' },
-    { value: '50+', label: 'Trên 50 triệu/tháng' }
-  ]
-};
 
 const NhaDatChoThue = () => {
   const navigate = useNavigate();
@@ -429,19 +21,61 @@ const NhaDatChoThue = () => {
     propertyType: '',
     province: '',
     area: '',
-    price: ''
+    price: '',
+    ward: [],
   });
 
-  const [posts, setPosts] = useState(mockPosts);
+  const [posts, setPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [favorites, setFavorites] = useState({});
   const [lengthOfdata, setLengthOfdata] = useState(0);
+  const [userNames, setUserNames] = useState({});
   const postsPerPage = 8;
+  // Add these additional state variables
+  const [wardIds, setWardIds] = useState([]);
+  const [isLoadingProvinces, setIsLoadingProvinces] = useState(false);
+  const [isLoadingWards, setIsLoadingWards] = useState(false);
+  // Dropdown options
+const [dropdownOptions, setDropdownOptions] = useState({
+  propertyTypes: [
+    { value: '', label: 'Tất cả loại nhà đất' },
+    { value: 'shophouse', label: 'Shophouse' },
+    { value: 'apartment', label: 'Căn hộ' },
+    { value: 'land', label: 'Đất nền' },
+    { value: 'villa', label: 'Villa' },
+    { value: 'townhouse', label: 'Nhà phố' }
+  ],
+  provinces: [
+    { value: '', label: 'Tất cả khu vực' },
+  ],
+  areas: [
+    { value: '', label: 'Tất cả diện tích' },
+    { value: '0-50', label: 'Dưới 50m²' },
+    { value: '50-100', label: '50 - 100m²' },
+    { value: '100-200', label: '100 - 200m²' },
+    { value: '200-500', label: '200 - 500m²' },
+    { value: '500+', label: 'Trên 500m²' }
+  ],
+  prices: [
+    { value: '', label: 'Tất cả mức giá' },
+    { value: '0-5', label: 'Dưới 1 triệu / tháng' },
+    { value: '1-3', label: '1 - 3 triệu / tháng' },
+    { value: '3-5', label: '3 - 5 triệu / tháng' },
+    { value: '5-10', label: '5 - 10 triệu / tháng' },
+    { value: '10+', label: 'Trên 10 triệu / tháng' }
+  ]
+});
 
   // Fetch initial favorites
   useEffect(() => {
+    const token = localStorage.getItem('token');
     if (user?.user_id) {
-      axios.get(`/favorites?user_id=${user.user_id}`)
+      axios.get(API_URL+`favorites`,{
+        headers:{
+          'Content-Type': 'application/json',
+          Authorization : `Bearer ${token}`
+        }
+      })
         .then((response) => {
           const favoriteMap = {};
           response.data.forEach((fav) => {
@@ -474,34 +108,139 @@ const NhaDatChoThue = () => {
     setCurrentPage(1);
   }, [location.search]);
 
+  // Add this useEffect to fetch provinces on component mount
+  useEffect(() => {
+    const fetchProvinces = async () => {
+      setIsLoadingProvinces(true);
+      try {
+        console.log('Fetching provinces...');
+        const response = await axios.get(`${API_URL}locations/?type=province`);
+         // Update the provinces in dropdownOptions
+        console.log('Provinces fetched:', response);
+        setDropdownOptions(prev => ({
+          ...prev,
+          provinces: [
+            { value: '', label: 'Tất cả khu vực' },
+            ...response.data.map(province => ({
+              value: province.location_id,
+              label: province.name
+            }))
+          ]
+        }));
+
+      } catch (error) {
+        console.error('Error fetching provinces:', error);
+      } finally {
+        setIsLoadingProvinces(false);
+      }
+    };
+
+    fetchProvinces();
+  }, []);
+  // Add this useEffect to fetch ward IDs when province changes
+  // Add useEffect to fetch ward IDs when province changes
+  useEffect(() => {
+    const fetchWardIds = async () => {
+      if (!searchFilters.province) {
+        setWardIds([]);
+        setSearchFilters(prev => ({ ...prev, ward: [] }));
+        return;
+      }
+
+      setIsLoadingWards(true);
+      try {
+        // Then get all wards in those districts
+        const wardPromises = await axios.get(`${API_URL}locations/wards-by-province/${searchFilters.province}`);
+        console.log(`Fetching wards for province:${searchFilters.province}`, wardPromises);
+        // const wardsResponses = await Promise.all(wardPromises.data); //Promise is an array of promises which is an array of wards
+        // const allWards = wardsResponses.flatMap(response => response.data);
+        setWardIds(wardPromises.data);
+        setSearchFilters(prev => ({ ...prev, ward: wardPromises.data }));
+      } catch (error) {
+        console.error('Error fetching wards:', error);
+        setWardIds([]);
+        setSearchFilters(prev => ({ ...prev, ward: [] }));
+      } finally {
+        setIsLoadingWards(false);
+      }
+    };
+    fetchWardIds();
+  }, [searchFilters.province]);
+  // Fetch user names based on user_id in posts
+
+  const fetchUserName = async (userId) => {
+    if (userNames[userId]) return; // Already fetched
+    
+    try {
+      const response = await axios.get(API_URL+`users/${userId}`); // Adjust endpoint as needed
+      console.log(`Fetching user with ID: ${userId}`, response);
+      const userData = await response.data;
+      setUserNames(prev => ({
+        ...prev,
+        [userId]: userData.full_name || userId
+      }));
+    } catch (error) {
+      console.error('Error fetching user:', error);
+      setUserNames(prev => ({
+        ...prev,
+        [userId]: 'Unknown User'
+      }));
+    }
+  };
+    // Add useEffect to fetch user names when posts change
+  useEffect(() => {
+    if (posts && posts.length > 0) {
+      posts.forEach(post => {
+        if (post.user_id && !userNames[post.user_id]) {
+          fetchUserName(post.user_id);
+        }
+      });
+    }
+  }, [posts]);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await axios.get(`${API_URL}properties`);
+        console.log('Posts fetched:', response.data);
+        setPosts(response.data);
+      } catch (error) {
+        console.error('Error fetching posts:', error);
+      }
+    };
+    fetchPosts();
+  }, []);
   // Xử lý filter và phân trang
   const { displayPosts, totalPages } = useMemo(() => {
-    let filtered = posts.filter(post => post.type === 'nhadatchothue');
+    let filtered = posts.filter(post => post.property_type ==='rent'); // doi thang nay thanh 'sell'
 
     if (searchFilters.text.trim()) {
       filtered = filtered.filter(post =>
-        post.title.toLowerCase().includes(searchFilters.text.toLowerCase()) ||
-        post.description.toLowerCase().includes(searchFilters.text.toLowerCase())
+        (post.title.toLowerCase()).normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes((searchFilters.text.toLowerCase()).normalize("NFD").replace(/[\u0300-\u036f]/g, "")) ||
+        (post.description.toLowerCase()).normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes((searchFilters.text.toLowerCase()).normalize("NFD").replace(/[\u0300-\u036f]/g, ""))
       );
     }
 
     if (searchFilters.propertyType) {
-      filtered = filtered.filter(post => post.property_type === searchFilters.propertyType);
+      filtered = filtered.filter(post => post.property_type === searchFilters.propertyType); // đổi property_type thành 
     }
 
-    if (searchFilters.province) {
-      filtered = filtered.filter(post => post.address.province === searchFilters.province);
+    if (searchFilters.province && searchFilters.ward.length > 0) {
+      filtered = filtered.filter(post => 
+        post.location_id != null && 
+        (searchFilters.ward).includes(String(post.location_id))
+      ); 
     }
 
     if (searchFilters.area) {
       filtered = filtered.filter(post => {
         const postArea = parseFloat(post.area);
         switch (searchFilters.area) {
-          case '0-30': return postArea < 30;
-          case '30-50': return postArea >= 30 && postArea <= 50;
+          case '0-50': return postArea < 50;
           case '50-100': return postArea >= 50 && postArea <= 100;
           case '100-200': return postArea >= 100 && postArea <= 200;
-          case '200+': return postArea > 200;
+          case '200-500': return postArea >= 200 && postArea <= 500;
+          case '500+': return postArea > 500;
           default: return true;
         }
       });
@@ -511,11 +250,11 @@ const NhaDatChoThue = () => {
       filtered = filtered.filter(post => {
         const postPrice = parseFloat(post.price);
         switch (searchFilters.price) {
-          case '0-5': return postPrice < 5;
+          case '0-1': return postPrice < 1;
+          case '1-3': return postPrice >= 1 && postPrice <= 3;
+          case '3-5': return postPrice >= 3 && postPrice <= 5;
           case '5-10': return postPrice >= 5 && postPrice <= 10;
-          case '10-20': return postPrice >= 10 && postPrice <= 20;
-          case '20-50': return postPrice >= 20 && postPrice <= 50;
-          case '50+': return postPrice > 50;
+          case '10+': return postPrice > 10;
           default: return true;
         }
       });
@@ -560,25 +299,29 @@ const NhaDatChoThue = () => {
     }
 
     const isCurrentlyFavorited = favorites[propertyId];
+
     setFavorites((prev) => ({
       ...prev,
       [propertyId]: !isCurrentlyFavorited
     }));
 
-    // Update favorite status in the backend
     try {
       if (isCurrentlyFavorited) {
-        await axios.delete('/favorites', {
-          // Assuming your API supports DELETE for removing favorites
-          data: { user_id: user.user_id, property_id: propertyId }
-        });
+        await axios.delete(API_URL+'favorites/'+propertyId,{
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+        }});
+        console.log(`Removed property ${propertyId} from favorites`);
       } else {
-        // Assuming your API supports POST for adding favorites
-        await axios.post('/favorites', {
+        await axios.post(API_URL+'favorites', {
           property_id: propertyId,
-          user_id: user.user_id,
-          created: new Date().toISOString()
-        });
+        },{
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+        }});
+        console.log(`Added property ${propertyId} to favorites`);
       }
     } catch (error) {
       console.error('Error updating favorite:', error);
@@ -617,18 +360,14 @@ const NhaDatChoThue = () => {
     <div className="page-container">
       <Header />
       <div className="ndb-content">
-        {/* <div className="ndb-title-box">
-          <h1 className="ndb-title">TRANG TỔNG HỢP CÁC BẤT ĐỘNG SẢN CHO THUÊ</h1>
-          <h2 className="ndb-des">Trên hệ thống đang có {lengthOfdata} bất động sản cho thuê.</h2>
-        </div> */}
         <div className="nhadatban-search-engine-container">
           <div className="nhadatban-search-engine">
-            <div className="search-bar">
-              <div className="input-wrapper">
+            <div className="ndb-search-bar">
+              <div className="ndb-input-wrapper">
                 <FaSearch className="search-logo" />
                 <input
                   type="text"
-                  placeholder="Tìm kiếm bài đăng cho thuê..."
+                  placeholder="Tìm kiếm bài đăng..."
                   className="ndb-search-input"
                   value={searchFilters.text}
                   onChange={(e) => handleFilterChange('text', e.target.value)}
@@ -697,8 +436,8 @@ const NhaDatChoThue = () => {
                 onClick={() => handlePostClick(post.property_id)}
               >
                 <div className="post-media">
-                  <div className={`media-collage media-collage-${getCollageImages(post.media.images).length}`}>
-                    {getCollageImages(post.media.images).map((img, index) => (
+                  <div className={`media-collage media-collage-${getCollageImages(post.images).length}`}>
+                    {getCollageImages(post.images).map((img, index) => (
                       <img
                         key={index}
                         src={img.url}
@@ -713,24 +452,24 @@ const NhaDatChoThue = () => {
                   <h3>{post.title}</h3>
                   <div className="post-details-row">
                     <div className="post-details">
-                      <span>Giá: {post.price} triệu/tháng</span>
+                      <span>Giá: {post.price} tỷ</span>
                       <span>Diện tích: {post.area}m²</span>
                     </div>
                     <div className="post-features">
                       <span>
-                        <FaBed className="icon" /> Phòng ngủ: {post.features.bedrooms || 0}
+                        <FaBed className="icon" /> Phòng ngủ: {post.features?.find(f => f.feature_name === 'bedrooms')?.feature_value || 0}
                       </span>
                       <span>
-                        <FaBath className="icon" /> Phòng tắm: {post.features.bathrooms || 0}
+                        <FaBath className="icon" /> Phòng tắm: {post.features?.find(f => f.feature_name === 'bathrooms')?.feature_value || 0}
                       </span>
                     </div>
                   </div>
                   <p className="post-description">{truncateDescription(post.description, 100)}</p>
                 </div>
                 <hr style={{ border: '1px solid gray' }} />
-
                 <div className="card-bottom">
-                  {post.user_id && <span className="user-info">Đăng bởi: {post.user_id}</span>}
+                  {post.user_id && <span className="user-info">Đăng bởi: {userNames[post.user_id]}</span>}
+                  <div className='card-bottom-group'>
                   <a href={`tel:${post.contact.phone}`} className="phone-button">
                     <FaPhone className="phone-calling-icon" /> Gọi {post.contact.phone}
                   </a>
@@ -741,6 +480,7 @@ const NhaDatChoThue = () => {
                       handleFavoriteClick(post.property_id);
                     }}
                   />
+                  </div>
                 </div>
               </div>
             ))

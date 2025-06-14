@@ -3,7 +3,7 @@ import Modal from '../modal-reg-log';
 import axios from 'axios';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import styles from '../../../styles/addressmodal.module.css';
-const API_URL = 'http://172.16.2.34:8080'
+const API_URL = 'http://172.16.1.219:8080'
 const GOOGLE_MAPS_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 const CACHE_KEY = 'provinces_cache';
 

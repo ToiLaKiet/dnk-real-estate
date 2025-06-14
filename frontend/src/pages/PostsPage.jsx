@@ -174,11 +174,11 @@ function PostPage() {
     if (!price || typeof price !== 'number' || price <= 0 || isNaN(price)) {
       return 'Liên hệ để biết giá';
     }
-    if (type === 'nhadatban') {
+    if (type === 'sell') {
       if (price >= 1e9) {
         return `${(price / 1e9).toFixed(1)} tỷ VND`;
       }
-      return `${(price / 1e6).toFixed(1)} triệu VND`;
+      return `${(price).toFixed(1)} triệu VND`;
     } else {
       return `${(price / 1e6).toFixed(1)} triệu/tháng`;
     }
@@ -314,8 +314,15 @@ function PostPage() {
         )}
       </div>
       <Modal isOpen={reportsPostsModal} onClose={() => setReportsPostsModal(false)}>
-        <ReportPosts propertyId={id} user_id={user?.user_id} isOpen={reportsPostsModal} onClose={() => setReportsPostsModal(false)} />
-      </Modal>
+      <div style={{ padding: '30px' }}> {/* Wrapper với padding */}
+        <ReportPosts 
+          propertyId={id} 
+          user_id={user?.user_id} 
+          isOpen={reportsPostsModal} 
+          onClose={() => setReportsPostsModal(false)} 
+        />
+      </div>
+    </Modal>
       <Modal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)}>
         <Login />
       </Modal>

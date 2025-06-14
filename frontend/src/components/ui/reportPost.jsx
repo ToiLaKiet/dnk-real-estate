@@ -2,15 +2,14 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import '../../styles/Report.css';
 import ErrorAlert  from './stuff/errorAlert'; // Adjust path if needed
-
+const API_URL = 'http://172.16.1.141:8080'
 function ReportPosts ({ propertyId, user_id }) {
   const [selectedReason, setSelectedReason] = useState('');
   const [description, setDescription] = useState('');
   const reasons = [
     'Địa chỉ bất động sản',
     'Các thông tin về giá, diện tích, mô tả',
-    'Ảnh',
-    'Trùng với tin đăng khác',
+    'Ảnh trùng với tin đăng khác',
     'Không liên lạc được',
     'Tin không có thật',
     'Bất động sản đã bán',
@@ -19,7 +18,6 @@ function ReportPosts ({ propertyId, user_id }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('debug');
     if (!user_id) {
       alert('Vui lòng đăng nhập để gửi báo cáo!');
       console.log(user_id)
@@ -31,25 +29,32 @@ function ReportPosts ({ propertyId, user_id }) {
       return;
     }
 
+    const property_id = parseInt(propertyId, 10);
     const reportData = {
-      propertyId,
-      user_id: user_id,
+      property_id: property_id,
       reason: selectedReason,
       description: description.trim(),
     };
-
+    console.log('Report submitted:', reportData);
     try {
-      // await axios.post('/reports', reportData);
+      const response = await axios.post(API_URL+'/reports', reportData, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`, // Assuming user_id is a token or session ID
+        },
+      });
+      console.log(response.data);
       alert('Báo cáo đã được gửi thành công!');
       setSelectedReason('');
       setDescription('');
     } catch (error) {
-      ErrorAlert('Đã xảy ra lỗi khi gửi báo cáo. Vui lòng thử lại sau.');
+      alert('Đã xảy ra lỗi khi gửi báo cáo. Vui lòng thử lại sau.');
+      console.log('Error submitting report:', error);
     }
   };
 
   return (
-    <div className="report-modal-content">
+    <div>
         <h2 className="report-title">Báo cáo tin đăng</h2>
         <form onSubmit={handleSubmit}>
             <div className="report-checklist">

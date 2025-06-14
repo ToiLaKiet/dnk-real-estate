@@ -6,7 +6,7 @@ import styles from '../../styles/SettingTabs.module.css';
 
 const SettingsTab = () => {
   const { user } = useAuth();
-  const API_URL = 'http://172.16.2.34:8080';
+  const API_URL = 'http://172.16.1.219:8080';
   const [activeDropdown, setActiveDropdown] = useState(null);
   const navigate = useNavigate();
   const [passwordData, setPasswordData] = useState({

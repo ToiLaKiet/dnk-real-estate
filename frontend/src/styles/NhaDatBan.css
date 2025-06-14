@@ -25,6 +25,104 @@
   font-weight: bold;
 }
 
+/* Update the input wrapper to position the button inside */
+.ndb-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.ndb-search-input {
+  flex: 1;
+  padding: 12px 120px 12px 45px; /* Add right padding for button space */
+  border: 1px solid #ddd;
+  border-radius: 25px;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.ndb-search-input:focus {
+  border-color: #990000;
+}
+
+.search-logo {
+  position: absolute;
+  left: 15px;
+  color: #999;
+  z-index: 1;
+}
+
+/* Search button inside input */
+.ndb-search-button-inside {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #990000;
+  color: white;
+  border: none;
+  padding: 7px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  transition: background-color 0.3s;
+  z-index: 2;
+}
+
+.ndb-search-button-inside:hover {
+  background: #7a0000;
+}
+
+.ndb-search-button-inside:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* Update clear button styling */
+.ndb-clear-button {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.ndb-clear-button:hover {
+  background: #5a6268;
+}
+
+.ndb-clear-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .ndb-search-input {
+    padding: 10px 100px 10px 40px;
+  }
+  
+  .ndb-search-button-inside {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}
+
+.loading-container {
+  text-align: center;
+  padding: 40px;
+  font-size: 16px;
+  color: #666;
+}
+
 .ndb-des{
   font-size: 1rem;
   font-weight: 500;
@@ -245,10 +343,16 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
   gap: 1rem;
   padding: 1rem 1.2rem;
 }
-
+.card-bottom-group{
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 1rem;
+}
 .user-info {
   color: #666;
   font-size: 0.9rem;

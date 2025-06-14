@@ -6,6 +6,7 @@ import Header from '../../components/ui/parts/header';
 import Footer from '../../components/ui/parts/footer';
 import styles from '../../styles/FavoritePage.module.css';
 import '../../styles/App.css';
+const API_URL = 'http://172.16.1.219:8080/';
 
 const FavoriteCard = ({ post, index }) => {
   const navigate = useNavigate();
@@ -62,7 +63,6 @@ const FavoritePosts = () => {
   const navigate = useNavigate();
   const [favorites, setFavorites] = useState([]);
   const [error, setError] = useState(null);
-  const API_URL = 'http://172.16.2.34:8080';
 
   useEffect(() => {
     const fetchData = async () => {
@@ -74,7 +74,7 @@ const FavoritePosts = () => {
       // Placeholder API call
       const token = localStorage.getItem('token');
       console.log(token);
-      const response = await axios.get(API_URL+`/favorites/`,{
+      const response = await axios.get(API_URL+`favorites/`,{
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -86,7 +86,7 @@ const FavoritePosts = () => {
         for (const item of response.data) {
           // Your logic here
           const iter = item.property_id;
-          const res = await axios.get(API_URL+`/properties/${iter}`);
+          const res = await axios.get(API_URL+`properties/${iter}`);
           data.push(res.data);
         }
       }

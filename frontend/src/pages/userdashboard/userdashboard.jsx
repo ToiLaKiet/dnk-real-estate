@@ -6,19 +6,13 @@ import styles from '../../styles/UserDashboard.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquarePollVertical, faNewspaper, faCirclePlus, faUser, faLandmark, faFire, faBars } from '@fortawesome/free-solid-svg-icons';
 import Logo from '../../components/logo.js';
-import { useAuth } from '../../components/ui/context/AuthContext.jsx';
 import AccountTab from './AccountTab.jsx';
 import PostCreate from '../../components/ui/postcreate/postcreate.jsx';
 import PropertyManagement from './PropertyManangement.jsx';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+const API_URL = 'http://172.16.1.219:8080'
 // Mock data (replace with real API calls)
-const mockProperties = [
-  { property_id: 1, title: 'Căn hộ Quận 7', posted_by: 100, is_active: true, created_at: '2025-06-04T12:00:00Z' },
-  { property_id: 2, title: 'Nhà phố Quận 1', posted_by: 101, is_active: true, created_at: '2025-06-03T12:00:00Z' },
-  { property_id: 3, title: 'Biệt thự Phú Mỹ Hưng', posted_by: 100, is_active: true, created_at: '2025-06-02T12:00:00Z' },
-  { property_id: 4, title: 'Đất nền Hà Nội', posted_by: 102, is_active: false, created_at: '2025-06-01T12:00:00Z' },
-  { property_id: 5, title: 'Căn hộ Cầu Giấy', posted_by: 100, is_active: true, created_at: '2025-05-31T12:00:00Z' },
-];
 
 const mockNotifications = [
   { notification_id: 1, message: 'Hệ thống bảo trì 01/07/2025', created_at: '2025-06-04T10:00:00Z' },
@@ -32,12 +26,9 @@ function UserDashboard() {
   const [error, setError] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
-  // Mock user_id (replace with useAuth hook)
-  const user_id = 100;
-
   useEffect(() => {
-    const {user} = localStorage.getItem('token') ? JSON.parse(localStorage.getItem('token')) : {};
-    if (!user || !user.user_id) {
+    const user = localStorage.getItem('user');
+    if (!user) {
       console.error('User not found in localStorage');
       // Redirect to home if user is not logged in
       alert('Bạn cần đăng nhập để truy cập trang này.');
@@ -48,12 +39,12 @@ function UserDashboard() {
       setLoading(true);
       try {
         // Mock API: Fetch properties
-        const properties = mockProperties;
-        const userProperties = properties.filter(
-          (p) => p.posted_by === user_id && p.is_active
-        );
-        setPropertiesCount(userProperties.length);
-
+        const user = localStorage.getItem('user');
+        const parsedUser = JSON.parse(user);
+        const response = await axios.get(`${API_URL}/properties/user/${parseInt(parsedUser.user_id)}`);
+        const properties = response.data;
+        console.log('Fetched properties:', properties);
+        setPropertiesCount(properties.length);
         // Mock API: Fetch notifications
         setNotifications(mockNotifications);
       } catch (err) {
