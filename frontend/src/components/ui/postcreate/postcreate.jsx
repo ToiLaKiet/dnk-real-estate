@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import AddressModal from './AddressModal';
 import Login from '../../../pages/login/Dangnhap1.jsx';
 import Modal from '../modal-reg-log'
+import { useAuth } from '../context/AuthContext.jsx';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import styles from '../../../styles/postcreate.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -25,7 +26,8 @@ import {
   faPhone,
   faHeading,
   faFileAlt,
-  faPencil
+  faPencil,
+  faBuilding
 } from '@fortawesome/free-solid-svg-icons';
 
 // Component chính để tạo bài đăng bất động sản
@@ -61,6 +63,7 @@ const PostCreate = () => {
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [postEdit, setPostEdit] = useState(locate?.state?.mode ?? false);
+  const { user } = useAuth(); // Lấy thông tin người dùng từ context
   // Kiểm tra xem người dùng đã đăng nhập hay chưa
   useEffect(() => {
     const user = localStorage.getItem('user');
@@ -236,7 +239,7 @@ const PostCreate = () => {
           {/* Box 1: Loại bài đăng */}
           <div className={styles.box}>
             <div className={styles.ncaubox}>
-              <h3>Nhu cầu</h3>
+              <h3 style={{paddingTop: 10}}>Nhu cầu</h3>
               <div className={styles.buttonGroup}>
                 <button
                   type="button"
@@ -254,6 +257,16 @@ const PostCreate = () => {
                   <FontAwesomeIcon icon={faKey} className={styles.buttonIcon} />
                   Cho thuê
                 </button>
+                {user && user.role === 'admin' && (
+                  <button
+                  type="button"
+                  className={`${styles.typeButton} ${formData.type === 'project' ? styles.active : ''}`}
+                  onClick={() => handleTypeChange('project')}
+                >
+                  <FontAwesomeIcon icon={faBuilding} className={styles.buttonIcon} />
+                  Dự án
+                </button>
+                )}
               </div>
             </div>
           </div>

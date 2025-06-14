@@ -49,7 +49,7 @@ function Header({ logoWidth = 180, logoHeight = 72 }) {
   const handleLogout = () => {
     logout();
     setIsDropdownOpen(false);
-    navigate('/');
+    navigate('/home');
   };
 
   const toggleMobileMenu = () => {
@@ -119,6 +119,13 @@ function Header({ logoWidth = 180, logoHeight = 72 }) {
                       Quản lý tài khoản
                     </Link>
                   </li>
+                  {user?.role === 'admin' && (
+                    <li>
+                      <Link to="/admin" onClick={() => setIsDropdownOpen(false)}>
+                        Admin
+                      </Link>
+                    </li>
+                  )}
                   <li>
                     <button onClick={handleLogout}>Đăng xuất</button>
                   </li>

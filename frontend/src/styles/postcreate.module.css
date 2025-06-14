@@ -73,6 +73,10 @@
 
 .buttonGroup {
   display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width:inherit;
+  justify-content: start;
   gap: 12px;
 }
 

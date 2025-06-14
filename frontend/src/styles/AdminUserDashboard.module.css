@@ -93,7 +93,7 @@
   color:white;
   width: 100%;
   text-align: left;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
   padding:10px;
   cursor: pointer;
@@ -171,7 +171,6 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   border: 1px solid #e1e5e9;
 }
-
 .chartBox h3 {
   margin: 0 0 16px 0;
   font-size: 18px;
@@ -389,8 +388,8 @@
   }
 
   .userdashboardTab {
-    font-size: 14px;
-    padding: 12px 15px;
+    font-size: 15px;
+    padding: 12px 11px;
     gap: 8px;
   }
 

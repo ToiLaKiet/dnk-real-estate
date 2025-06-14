@@ -1,98 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from '../../styles/AdminUserManagement.module.css';
-
-// Mock data for testing
-const mockUsers = [
-  {
-    user_id: '1',
-    full_name: 'Nguyễn Văn An',
-    email: 'nguyen.van.an@example.com',
-    phone: '0987654321',
-    role: 'buyer',
-    status: 'active',
-    created_at: '2024-01-15T10:30:00',
-    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100',
-    address: '123 Nguyễn Huệ, Quận 1, TP.HCM'
-  },
-  {
-    user_id: '2',
-    full_name: 'Trần Thị Bích',
-    email: 'tran.thi.bich@example.com',
-    phone: '0987654322',
-    role: 'seller',
-    status: 'inactive',
-    created_at: '2024-02-20T14:15:00',
-    avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100',
-    address: '456 Lê Lợi, Quận 3, TP.HCM'
-  },
-  {
-    user_id: '3',
-    full_name: 'Lê Văn Cường',
-    email: 'le.van.cuong@example.com',
-    phone: '0987654323',
-    role: 'admin',
-    status: 'active',
-    created_at: '2024-03-10T09:45:00',
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100',
-    address: '789 Trần Hưng Đạo, Quận 5, TP.HCM'
-  },
-  {
-    user_id: '4',
-    full_name: 'Phạm Thị Diệu',
-    email: 'pham.thi.dieu@example.com',
-    phone: '0987654324',
-    role: 'buyer',
-    status: 'banned',
-    created_at: '2024-04-05T16:20:00',
-    avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100',
-    address: '321 Nguyễn Thái Học, Quận 1, TP.HCM'
-  }
-];
-
-const mockUserProperties = {
-  '1': [
-    {
-      property_id: '101',
-      title: 'Căn hộ cao cấp Quận 7',
-      description: 'Căn hộ 2 phòng ngủ, view sông, nội thất cao cấp, gần trung tâm thương mại và siêu thị',
-      status: 'pending',
-      created_at: '2024-06-01T10:00:00'
-    },
-    {
-      property_id: '102',
-      title: 'Nhà phố Thủ Đức',
-      description: 'Nhà phố 3 tầng, khu vực yên tĩnh, gần trường học và bệnh viện',
-      status: 'approved',
-      created_at: '2024-05-15T14:30:00'
-    }
-  ],
-  '2': [
-    {
-      property_id: '201',
-      title: 'Biệt thự Đà Lạt',
-      description: 'Biệt thự nghỉ dưỡng view núi, không gian thoáng mát, phù hợp cho gia đình',
-      status: 'approved',
-      created_at: '2024-04-20T11:15:00'
-    }
-  ],
-  '3': [],
-  '4': [
-    {
-      property_id: '301',
-      title: 'Studio Quận 1',
-      description: 'Studio mini tiện nghi, trung tâm thành phố, gần công viên và khu mua sắm',
-      status: 'rejected',
-      created_at: '2024-03-25T13:45:00'
-    }
-  ]
-};
-
+const API_URL = 'http://172.16.1.219:8080';
 // User Detail Modal Component
 const UserDetailModal = ({ user, isOpen, onClose, onDelete }) => {
   const [userProperties, setUserProperties] = useState([]);
   const [loadingProperties, setLoadingProperties] = useState(false);
-
+  const navigate = useNavigate();
   useEffect(() => {
     if (isOpen && user) {
       fetchUserProperties(user.user_id);
@@ -102,14 +17,9 @@ const UserDetailModal = ({ user, isOpen, onClose, onDelete }) => {
   const fetchUserProperties = async (userId) => {
     try {
       setLoadingProperties(true);
-      
-      // TODO: Replace with actual API call
-      // const response = await axios.get(`/api/admin/users/${userId}/properties`);
-      // setUserProperties(response.data);
-      
-      // Using mock data
-      const properties = mockUserProperties[userId] || [];
-      setUserProperties(properties);
+      const response = await axios.get(API_URL+`/properties/user/${userId}`);
+      setUserProperties(response.data);
+      setLoadingProperties(false);
     } catch (error) {
       console.error('Error fetching user properties:', error);
     } finally {
@@ -127,31 +37,31 @@ const UserDetailModal = ({ user, isOpen, onClose, onDelete }) => {
     });
   };
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'active':
-        return '#28a745';
-      case 'inactive':
-        return '#ffc107';
-      case 'banned':
-        return '#dc3545';
-      default:
-        return '#6c757d';
-    }
-  };
+  // const getStatusColor = (status) => {
+  //   switch (status) {
+  //     case 'active':
+  //       return '#28a745';
+  //     case 'inactive':
+  //       return '#ffc107';
+  //     case 'banned':
+  //       return '#dc3545';
+  //     default:
+  //       return '#6c757d';
+  //   }
+  // };
 
-  const getStatusText = (status) => {
-    switch (status) {
-      case 'active':
-        return 'Hoạt động';
-      case 'inactive':
-        return 'Không hoạt động';
-      case 'banned':
-        return 'Bị cấm';
-      default:
-        return status;
-    }
-  };
+  // const getStatusText = (status) => {
+  //   switch (status) {
+  //     case 'active':
+  //       return 'Hoạt động';
+  //     case 'inactive':
+  //       return 'Không hoạt động';
+  //     case 'banned':
+  //       return 'Bị cấm';
+  //     default:
+  //       return status;
+  //   }
+  // };
 
   const getRoleText = (role) => {
     switch (role) {
@@ -174,6 +84,10 @@ const UserDetailModal = ({ user, isOpen, onClose, onDelete }) => {
         return '#28a745';
       case 'rejected':
         return '#dc3545';
+      case 'rented':
+        return '#17a2b8';
+      case 'sold':
+        return '#6f42c1';
       default:
         return '#6c757d';
     }
@@ -187,6 +101,10 @@ const UserDetailModal = ({ user, isOpen, onClose, onDelete }) => {
         return 'Đã duyệt';
       case 'rejected':
         return 'Đã từ chối';
+      case 'rented':
+        return 'Đã cho thuê';
+      case 'sold':
+        return 'Đã bán';
       default:
         return status;
     }
@@ -215,12 +133,12 @@ const UserDetailModal = ({ user, isOpen, onClose, onDelete }) => {
             />
             <div>
               <h2 className={styles.umDetailName}>{user.full_name}</h2>
-              <span 
+              {/* <span 
                 className={styles.umDetailStatus}
                 style={{ backgroundColor: getStatusColor(user.status) }}
               >
                 {getStatusText(user.status)}
-              </span>
+              </span> */}
             </div>
           </div>
         </div>
@@ -236,7 +154,7 @@ const UserDetailModal = ({ user, isOpen, onClose, onDelete }) => {
               </div>
               <div className={styles.umInfoItem}>
                 <strong>Số điện thoại:</strong>
-                <span>{user.phone}</span>
+                <span>{user.phone_number}</span>
               </div>
               <div className={styles.umInfoItem}>
                 <strong>Vai trò:</strong>
@@ -265,7 +183,7 @@ const UserDetailModal = ({ user, isOpen, onClose, onDelete }) => {
             ) : (
               <div className={styles.umPropertiesList}>
                 {userProperties.map((property) => (
-                  <div key={property.property_id} className={styles.umPropertyCard}>
+                  <div key={property.property_id} className={styles.umPropertyCard} onClick={()=>navigate(`/postspage/${property.property_id}`)}>
                     <div className={styles.umPropertyInfo}>
                       <h4 className={styles.umPropertyTitle}>{property.title}</h4>
                       <p className={styles.umPropertyDescription}>
@@ -295,7 +213,7 @@ const UserDetailModal = ({ user, isOpen, onClose, onDelete }) => {
           <button
             className={styles.umDetailDeleteButton}
             onClick={() => {
-              if (window.confirm(`Bạn có chắc chắn muốn xóa người dùng "${user.full_name}"?`)) {
+              if (window.confirm(`Bạn có chắc chắn muốn xóa người dùng "${user.user_id}"?`)) {
                 onDelete(user.user_id);
                 onClose();
               }
@@ -311,31 +229,31 @@ const UserDetailModal = ({ user, isOpen, onClose, onDelete }) => {
 
 // User Card Component
 const UserCard = ({ user, onViewDetails, onDelete }) => {
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'active':
-        return '#28a745';
-      case 'inactive':
-        return '#ffc107';
-      case 'banned':
-        return '#dc3545';
-      default:
-        return '#6c757d';
-    }
-  };
+  // const getStatusColor = (status) => {
+  //   switch (status) {
+  //     case 'active':
+  //       return '#28a745';
+  //     case 'inactive':
+  //       return '#ffc107';
+  //     case 'banned':
+  //       return '#dc3545';
+  //     default:
+  //       return '#6c757d';
+  //   }
+  // };
 
-  const getStatusText = (status) => {
-    switch (status) {
-      case 'active':
-        return 'Hoạt động';
-      case 'inactive':
-        return 'Không hoạt động';
-      case 'banned':
-        return 'Bị cấm';
-      default:
-        return status;
-    }
-  };
+  // const getStatusText = (status) => {
+  //   switch (status) {
+  //     case 'active':
+  //       return 'Hoạt động';
+  //     case 'inactive':
+  //       return 'Không hoạt động';
+  //     case 'banned':
+  //       return 'Bị cấm';
+  //     default:
+  //       return status;
+  //   }
+  // };
 
   const getRoleText = (role) => {
     switch (role) {
@@ -350,8 +268,8 @@ const UserCard = ({ user, onViewDetails, onDelete }) => {
     }
   };
 
-  const handleDelete = () => {
-    if (window.confirm(`Bạn có chắc chắn muốn xóa người dùng "${user.full_name}"?`)) {
+  const handleDelete = (user) => {
+    if (window.confirm(`Bạn có chắc chắn muốn xóa người dùng "${user.user_id}"?`)) {
       onDelete(user.user_id);
     }
   };
@@ -370,17 +288,17 @@ const UserCard = ({ user, onViewDetails, onDelete }) => {
         </div>
       </div>
       
-      <div className={styles.umUserPhone}>{user.phone}</div>
+      <div className={styles.umUserPhone}>{user.phone_number}</div>
       <div className={styles.umUserRole}>{getRoleText(user.role)}</div>
       
-      <div className={styles.umUserStatus}>
+      {/* <div className={styles.umUserStatus}>
         <span
           className={styles.umStatusBadge}
           style={{ backgroundColor: getStatusColor(user.status) }}
         >
           {getStatusText(user.status)}
         </span>
-      </div>
+      </div> */}
       
       <div className={styles.umUserActions}>
         <button
@@ -391,7 +309,7 @@ const UserCard = ({ user, onViewDetails, onDelete }) => {
         </button>
         <button
           className={styles.umDeleteButton}
-          onClick={handleDelete}
+          onClick={()=>handleDelete(user)}
         >
           Xóa
         </button>
@@ -473,17 +391,12 @@ const AdminUserManagement = () => {
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      
       // TODO: Replace with actual API call
-      // const response = await axios.get('/api/admin/users');
-      // setUsers(response.data);
-      
-      // Using mock data
-      setTimeout(() => {
-        setUsers(mockUsers);
-        setLoading(false);
-      }, 500);
-      
+      console.log('Fetching users from API...');
+      const response = await axios.get(API_URL+'/users/list');
+      console.log('Users response:', response);
+      setUsers(response.data);
+      setLoading(false);
       setError('');
     } catch (error) {
       console.error('Error fetching users:', error);
@@ -499,13 +412,12 @@ const AdminUserManagement = () => {
   // Filter users based on search term, role, and status
   useEffect(() => {
     let filtered = users;
-
     // Filter by search term
     if (searchTerm) {
       filtered = filtered.filter(user =>
-        user.full_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.phone.includes(searchTerm)
+        user.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.phone_number.includes(searchTerm)
       );
     }
 
@@ -514,10 +426,10 @@ const AdminUserManagement = () => {
       filtered = filtered.filter(user => user.role === roleFilter);
     }
 
-    // Filter by status
-    if (statusFilter) {
-      filtered = filtered.filter(user => user.status === statusFilter);
-    }
+    // // Filter by status
+    // if (statusFilter) {
+    //   filtered = filtered.filter(user => user.status === statusFilter);
+    // }
 
     setFilteredUsers(filtered);
     setCurrentPage(1); // Reset to first page when filters change
@@ -533,8 +445,15 @@ const AdminUserManagement = () => {
   const handleDelete = async (userId) => {
     try {
       // TODO: Replace with actual API call
-      // await axios.delete(`/api/admin/users/${userId}`);
-      
+      const user_phone = await axios.get(API_URL+`/users/${userId}`);
+      console.log('Deleting user:', user_phone.data.phone_number);
+      await axios.delete(API_URL+`/users/delete?identifier=${user_phone.data.phone_number}`,{
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
       // Update local state
       setUsers(prev => prev.filter(user => user.user_id !== userId));
       console.log('Deleted user:', userId);
@@ -598,7 +517,7 @@ const AdminUserManagement = () => {
             <option value="buyer">Người mua</option>
           </select>
           
-          <select
+          {/* <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
             className={styles.umFilterSelect}
@@ -607,7 +526,7 @@ const AdminUserManagement = () => {
             <option value="active">Hoạt động</option>
             <option value="inactive">Không hoạt động</option>
             <option value="banned">Bị cấm</option>
-          </select>
+          </select> */}
           
           <button onClick={clearFilters} className={styles.umClearButton}>
             Xóa bộ lọc
@@ -621,7 +540,7 @@ const AdminUserManagement = () => {
           <div className={styles.umHeaderInfo}>Thông tin</div>
           <div className={styles.umHeaderPhone}>Số điện thoại</div>
           <div className={styles.umHeaderRole}>Vai trò</div>
-          <div className={styles.umHeaderStatus}>Trạng thái</div>
+          {/* <div className={styles.umHeaderStatus}>Trạng thái</div> */}
           <div className={styles.umHeaderActions}>Hành động</div>
         </div>
         
@@ -659,7 +578,7 @@ const AdminUserManagement = () => {
         user={selectedUser}
         isOpen={isDetailModalOpen}
         onClose={closeDetailModal}
-        onDelete={handleDelete}
+        onDelete={()=>handleDelete}
       />
     </div>
   );

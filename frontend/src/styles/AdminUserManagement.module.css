@@ -96,8 +96,7 @@
   /* Users List Header */
   .umUsersHeader {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr;
-    gap: 15px;
+    grid-template-columns: 2fr 1fr 1fr 1.5fr;
     padding: 15px 20px;
     background-color: #f8f9fa;
     border-radius: 8px 8px 0 0;
@@ -105,7 +104,6 @@
     color: #333;
     border: 1px solid #ddd;
   }
-  
   .umHeaderInfo,
   .umHeaderPhone,
   .umHeaderRole,
@@ -127,7 +125,7 @@
   
   .umUserCard {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr;
+    grid-template-columns: 2fr 1fr 1fr 1.5fr;
     gap: 15px;
     padding: 20px;
     border: 1px solid #ddd;

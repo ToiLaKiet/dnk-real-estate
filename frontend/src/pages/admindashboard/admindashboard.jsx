@@ -22,10 +22,14 @@ function AdminDashboard() {
   const [chartsData, setChartsData] = useState(); // For future chart data
 
   useEffect(() => {
+    // const user = localStorage.getItem('user');
+    // if (!user || JSON.parse(user).role !== 'admin') {
+    //   window.location.href = '/*'; // Redirect if not admin
+    //   return;
+    // }
     const fetchData = async () => {
       setLoading(true);
       try {
-        // Mock API: Fetch properties
         const response = await axios.get(`${API_URL}/properties`);
         console.log('Properties response:', response);
         const properties = response.data;
@@ -50,8 +54,8 @@ function AdminDashboard() {
     { name: 'Quản Lý Tin Đăng', icon: faCirclePlus },
     { name: 'Quản Lý Tài Khoản', icon: faUsers },
     { name: 'Quản Lý Báo Cáo', icon: faTriangleExclamation },
-    { name: 'Tài Khoản', icon: faUser },
-    { name: 'Thanh Toán', icon: faLandmark },
+    // { name: 'Tài Khoản', icon: faUser },
+    { name: 'Quản Lý Thanh Toán', icon: faLandmark },
   ];
 
   const toggleMenu = () => {
@@ -112,28 +116,30 @@ function AdminDashboard() {
                   <div className={styles.userdashboardSectioncontent}>
                     <div className={styles.userdashboardInfoBox}>
                       {loading ? (
-                        <p>Đang tải...</p>
+                        <div>Đang tải...</div>
                       ) : error ? (
                         <p className={styles.userdashboardError}>{error}</p>
                       ) : (
-                        <p>
-                          Tổng số tin đăng
-                          <br></br>
-                          <div className={styles.adminstrongbox}><strong className={styles.big}>{propertiesCount}</strong></div>
-                        </p>
+                        // ✅ Even better structure
+                          <div className={styles.statItem}>
+                            <div className={styles.statLabel}>Tổng số tin đăng</div>
+                            <div className={styles.adminstrongbox}>
+                              <strong className={styles.big}>{propertiesCount}</strong>
+                            </div>
+                          </div>
                       )}
                     </div>
                     <div className={styles.userdashboardInfoBox}>
                       {loading ? (
-                        <p>Đang tải...</p>
+                        <div>Đang tải...</div>
                       ) : error ? (
                         <p className={styles.userdashboardError}>{error}</p>
                       ) : (
-                        <p>
+                        <div>
                           Tổng số người dùng 
                           <br></br>
                           <div className={styles.adminstrongbox}><strong className={styles.big}>{propertiesCount}</strong></div>
-                        </p>
+                        </div>
                       )}
                       
                     </div>
@@ -144,7 +150,7 @@ function AdminDashboard() {
               <h2 className={styles.userdashboardSectionTitle}>Biểu đồ thống kê</h2>
               <div className={styles.userdashboardSectioncontent}>
               {loading ? (
-                <p>Đang tải biểu đồ...</p>
+                <div>Đang tải biểu đồ...</div>
               ) : error ? (
                 <p className={styles.userdashboardError}>{error}</p>
               ) : chartsData ? (
@@ -155,7 +161,7 @@ function AdminDashboard() {
                   <img 
                     src={chartsData.startsWith('data:') ? chartsData : `data:image/png;base64,${chartsData}`}
                     alt="Property Statistics Chart"
-                    style={{ maxWidth: '100%', height: 'auto' }}
+                    style={{ maxWidth: '100%', height: '100%' }}
                   />
                   </div>
                 </div>
@@ -165,7 +171,6 @@ function AdminDashboard() {
               )}
               </div>
             </Tab.Panel>
-            
             {/* Tin Đăng Tab */}
             <Tab.Panel className={styles.userdashboardPanel}>
               <div className={styles.userdashboardPanelContent}>
@@ -194,10 +199,10 @@ function AdminDashboard() {
             <hr></hr>
               <AdminReportManagement />
             </Tab.Panel>
-            {/* Tài khoản Tab */}
+            {/* Tài khoản Tab
             <Tab.Panel className={styles.userdashboardPanel}>
               <AccountTab />
-            </Tab.Panel>
+            </Tab.Panel> */}
             {/* Thanh Toán Tab */}
             <Tab.Panel className={styles.userdashboardPanel}>
               <div className={styles.userdashboardPanelContent}>

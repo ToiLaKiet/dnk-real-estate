@@ -1,92 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from '../../styles/AdminReportManagement.module.css';
-
-// Mock data for reports
-const mockReports = [
-  {
-    report_id: '1',
-    user_id: '2',
-    property_id: '101',
-    reason: 'Spam',
-    detail: 'Bài đăng này là spam, thông tin không chính xác và lừa đảo',
-    status: 'pending',
-    created_at: '2024-06-15T10:30:00'
-  },
-  {
-    report_id: '2',
-    user_id: '1',
-    property_id: '102',
-    reason: 'Inappropriate Content',
-    detail: 'Nội dung không phù hợp, có hình ảnh không phù hợp với quy định',
-    status: 'reviewed',
-    created_at: '2024-06-14T14:20:00'
-  },
-  {
-    report_id: '3',
-    user_id: '5',
-    property_id: '103',
-    reason: 'False Information',
-    detail: 'Thông tin sai lệch về giá cả và vị trí bất động sản',
-    status: 'pending',
-    created_at: '2024-06-13T09:15:00'
-  },
-  {
-    report_id: '4',
-    user_id: '3',
-    property_id: '104',
-    reason: 'Duplicate Post',
-    detail: 'Bài đăng trùng lặp, đã được đăng nhiều lần',
-    status: 'resolved',
-    created_at: '2024-06-12T16:45:00'
-  }
-];
-
-// Mock user data
-const mockUsers = {
-  '1': { full_name: 'Nguyễn Văn An', email: 'nguyen.van.an@example.com', phone: '0987654321' },
-  '2': { full_name: 'Trần Thị Bích', email: 'tran.thi.bich@example.com', phone: '0987654322' },
-  '3': { full_name: 'Lê Văn Cường', email: 'le.van.cuong@example.com', phone: '0987654323' },
-  '5': { full_name: 'Hoàng Minh Tuấn', email: 'hoang.minh.tuan@example.com', phone: '0987654325' }
-};
-
-// Mock property data
-const mockProperties = {
-  '101': {
-    property_id: '101',
-    title: 'Căn hộ cao cấp Quận 7',
-    description: 'Căn hộ 2 phòng ngủ, view sông, nội thất cao cấp, gần trung tâm thương mại',
-    price: 2500000000,
-    address: '123 Nguyễn Hữu Thọ, Quận 7, TP.HCM',
-    images: ['https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=500']
-  },
-  '102': {
-    property_id: '102',
-    title: 'Nhà phố Thủ Đức',
-    description: 'Nhà phố 3 tầng, khu vực yên tĩnh, gần trường học và bệnh viện',
-    price: 3500000000,
-    address: '456 Đường ABC, Thủ Đức, TP.HCM',
-    images: ['https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=500']
-  },
-  '103': {
-    property_id: '103',
-    title: 'Biệt thự Đà Lạt',
-    description: 'Biệt thự nghỉ dưỡng view núi, không gian thoáng mát',
-    price: 7000000000,
-    address: '789 Trương Công Định, Đà Lạt',
-    images: ['https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=500']
-  },
-  '104': {
-    property_id: '104',
-    title: 'Studio Quận 1',
-    description: 'Studio mini tiện nghi, trung tâm thành phố',
-    price: 1200000000,
-    address: '321 Lê Lợi, Quận 1, TP.HCM',
-    images: ['https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=500']
-  }
-};
-
+const API_URL = 'http://172.16.1.219:8080'
 // Report Detail Modal Component
+
 const ReportDetailModal = ({ report, isOpen, onClose, onDeleteProperty }) => {
   const [reportUser, setReportUser] = useState(null);
   const [reportedProperty, setReportedProperty] = useState(null);
@@ -101,18 +18,11 @@ const ReportDetailModal = ({ report, isOpen, onClose, onDeleteProperty }) => {
   const fetchReportDetails = async (reportData) => {
     try {
       setLoading(true);
-      
       // TODO: Replace with actual API calls
-      // const userResponse = await axios.get(`/api/admin/users/${reportData.user_id}`);
-      // const propertyResponse = await axios.get(`/api/admin/properties/${reportData.property_id}`);
-      // setReportUser(userResponse.data);
-      // setReportedProperty(propertyResponse.data);
-      
-      // Using mock data
-      const user = mockUsers[reportData.user_id];
-      const property = mockProperties[reportData.property_id];
-      setReportUser(user);
-      setReportedProperty(property);
+      const userResponse = await axios.get(API_URL+`/users/${reportData.user_id}`);
+      const propertyResponse = await axios.get(`/properties/${reportData.property_id}`);
+      setReportUser(userResponse.data);
+      setReportedProperty(propertyResponse.data);
     } catch (error) {
       console.error('Error fetching report details:', error);
     } finally {
@@ -138,8 +48,6 @@ const ReportDetailModal = ({ report, isOpen, onClose, onDeleteProperty }) => {
     switch (status) {
       case 'pending':
         return '#ffc107';
-      case 'reviewed':
-        return '#17a2b8';
       case 'resolved':
         return '#28a745';
       default:
@@ -162,14 +70,20 @@ const ReportDetailModal = ({ report, isOpen, onClose, onDeleteProperty }) => {
 
   const getReason = (reason) => {
     switch (reason) {
-      case 'Spam':
-        return 'Spam';
-      case 'Inappropriate Content':
-        return 'Nội dung không phù hợp';
-      case 'False Information':
-        return 'Thông tin sai lệch';
-      case 'Duplicate Post':
-        return 'Bài đăng trùng lặp';
+      case 'Địa chỉ bất động sản':
+        return 'Địa chỉ bất động sản';
+      case 'Các thông tin về giá, diện tích, mô tả':
+        return 'Các thông tin về giá, diện tích, mô tả';
+      case 'Ảnh trùng với tin đăng khác':
+        return 'Ảnh trùng với tin đăng khác';
+      case 'Không liên lạc được':
+        return 'Không liên lạc được';
+      case 'Tin không có thật':
+        return 'Tin không có thật';
+      case 'Bất động sản đã bán':
+        return 'Bất động sản đã bán';
+      case 'Khác':
+        return 'Khác';
       default:
         return reason;
     }
@@ -282,13 +196,11 @@ const ReportDetailModal = ({ report, isOpen, onClose, onDeleteProperty }) => {
 };
 
 // Report Card Component
-const ReportCard = ({ report, onViewDetails, onDeleteProperty }) => {
+const ReportCard = ({ report, onViewDetails, onDeleteProperty, users }) => {
   const getStatusColor = (status) => {
     switch (status) {
       case 'pending':
         return '#ffc107';
-      case 'reviewed':
-        return '#17a2b8';
       case 'resolved':
         return '#28a745';
       default:
@@ -300,8 +212,6 @@ const ReportCard = ({ report, onViewDetails, onDeleteProperty }) => {
     switch (status) {
       case 'pending':
         return 'Chờ xử lý';
-      case 'reviewed':
-        return 'Đã xem xét';
       case 'resolved':
         return 'Đã giải quyết';
       default:
@@ -311,14 +221,20 @@ const ReportCard = ({ report, onViewDetails, onDeleteProperty }) => {
 
   const getReason = (reason) => {
     switch (reason) {
-      case 'Spam':
-        return 'Spam';
-      case 'Inappropriate Content':
-        return 'Nội dung không phù hợp';
-      case 'False Information':
-        return 'Thông tin sai lệch';
-      case 'Duplicate Post':
-        return 'Bài đăng trùng lặp';
+      case 'Địa chỉ bất động sản':
+        return 'Địa chỉ bất động sản';
+      case 'Các thông tin về giá, diện tích, mô tả':
+        return 'Các thông tin về giá, diện tích, mô tả';
+      case 'Ảnh trùng với tin đăng khác':
+        return 'Ảnh trùng với tin đăng khác';
+      case 'Không liên lạc được':
+        return 'Không liên lạc được';
+      case 'Tin không có thật':
+        return 'Tin không có thật';
+      case 'Bất động sản đã bán':
+        return 'Bất động sản đã bán';
+      case 'Khác':
+        return 'Khác';
       default:
         return reason;
     }
@@ -330,7 +246,7 @@ const ReportCard = ({ report, onViewDetails, onDeleteProperty }) => {
   };
 
   const getUserName = (userId) => {
-    const user = mockUsers[userId];
+    const user = users[userId];
     return user ? user.full_name : `User #${userId}`;
   };
 
@@ -446,7 +362,7 @@ const AdminReportManagement = () => {
   const [reasonFilter, setReasonFilter] = useState('');
   const [selectedReport, setSelectedReport] = useState(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
-  
+  const [users, setUsers] = useState({});
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
@@ -457,15 +373,15 @@ const AdminReportManagement = () => {
       setLoading(true);
       
       // TODO: Replace with actual API call
-      // const response = await axios.get('/api/admin/reports');
-      // setReports(response.data);
-      
-      // Using mock data
-      setTimeout(() => {
-        setReports(mockReports);
-        setLoading(false);
-      }, 500);
-      
+      const response = await axios.get(API_URL+'/reports',{
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      console.log('Reports response:', response);
+      setReports(response.data);
+      setLoading(false);
       setError('');
     } catch (error) {
       console.error('Error fetching reports:', error);
@@ -473,9 +389,29 @@ const AdminReportManagement = () => {
       setLoading(false);
     }
   };
-
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get(API_URL+'/users/list', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+      
+      // Convert to object for easy lookup
+      const usersMap = {};
+      response.data.forEach(user => {
+        usersMap[user.user_id] = user;
+      });
+      setUsers(usersMap);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  };
+  
+  // Update useEffect
   useEffect(() => {
     fetchReports();
+    fetchUsers();
   }, []);
 
   // Filter reports based on search term, status, and reason
@@ -485,7 +421,7 @@ const AdminReportManagement = () => {
     // Filter by search term (user name or detail)
     if (searchTerm) {
       filtered = filtered.filter(report => {
-        const userName = mockUsers[report.user_id]?.full_name || '';
+        const userName = users[report.user_id]?.full_name || '';
         return userName.toLowerCase().includes(searchTerm.toLowerCase()) ||
                report.detail.toLowerCase().includes(searchTerm.toLowerCase());
       });
@@ -626,6 +562,7 @@ const AdminReportManagement = () => {
                   report={report}
                   onViewDetails={handleViewDetails}
                   onDeleteProperty={handleDeleteProperty}
+                  users={users}
                 />
               ))}
             </div>

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from '../../styles/AdminPropertyManagement.module.css';
 
-const API_URL = 'http://172.16.1.141:8080'
+const API_URL = 'http://172.16.1.219:8080'
 
 const PropertyCard = ({ property, onDelete, onDetail }) => {
   const formatPrice = (price) => {
