@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from datetime import datetime
+from app.models.report_model import ReportStatusEnum
 
 class ReportBase(BaseModel):
     property_id: int
@@ -12,4 +13,5 @@ class ReportCreate(ReportBase):
 class ReportRead(ReportBase):
     report_id: int
     user_id: int
+    status: ReportStatusEnum
     created_at: datetime

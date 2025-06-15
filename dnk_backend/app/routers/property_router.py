@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.orm import Session
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from typing import List
+from typing import List, Optional
 
 from app.schemas.property_schema import PropertyCreate, PropertyRead, PropertyUpdate
 from app.crud import property_crud
@@ -10,6 +10,7 @@ from app.database import get_db
 from app.utils.auth import get_current_admin_user, get_current_user
 from app.models.user_model import User
 from app.models.property_model import PropertyStatusEnum
+from app.models.search_history_model import SearchHistory
 
 router = APIRouter(prefix="/properties", tags=["Properties"])
 
@@ -71,7 +72,7 @@ def delete_property_endpoint(property_id: int, db: Session = Depends(get_db), cu
 
 
 
-@router.get("/search/", response_model=List[PropertyRead])
+@router.get("/search/", response_model=List[int])
 def search_properties(
     min_price: float = Query(None, ge=0),
     max_price: float = Query(None, ge=0),
@@ -81,8 +82,17 @@ def search_properties(
     location_id: str = Query(None),
     category: str = Query(None),
     status: str = Query(None),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: Optional[User] = Depends(get_current_user)  
 ):
+    # Nếu đăng nhập, lưu lịch sử tìm kiếm
+    if current_user:
+        query_text = f"Tìm {category} tại {location_id}, giá {min_price}-{max_price}, diện tích {min_area}-{max_area}, loại {property_type}"
+        search_record = SearchHistory(user_id=current_user.user_id, query_text=query_text)
+        db.add(search_record)
+        db.commit()
+
+    # Trả về kết quả tìm kiếm
     return property_crud.search_properties(
         db=db,
         min_price=min_price,
@@ -95,11 +105,28 @@ def search_properties(
         status=status
     )
 
-@router.post("/recommend", status_code=200)
-def recommend_property(property_in: PropertyCreate, db: Session = Depends(get_db), current_user=Depends(get_current_user)):
-    results = property_crud.recommend_properties(db, property_in.dict())
+@router.get("/search_not_auth/", response_model=List[int])
+def search_properties(
+    min_price: float = Query(None, ge=0),
+    max_price: float = Query(None, ge=0),
+    min_area: float = Query(None, ge=0),
+    max_area: float = Query(None, ge=0),
+    property_type: str = Query(None),
+    location_id: str = Query(None),
+    category: str = Query(None),
+    status: str = Query(None),
+    db: Session = Depends(get_db) 
+):
+    # Trả về kết quả tìm kiếm
+    return property_crud.search_properties(
+        db=db,
+        min_price=min_price,
+        max_price=max_price,
+        min_area=min_area,
+        max_area=max_area,
+        property_type=property_type,
+        location_id=location_id,
+        category=category,
+        status=status
+    )
 
-    if not results:
-        raise HTTPException(status_code=404, detail="No recommendations found")
-
-    return {"input": property_in, "recommendations": results}

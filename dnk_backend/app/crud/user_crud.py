@@ -6,9 +6,10 @@ from app.models.user_model import User
 from app.schemas.user_schema import UserCreate, UserLogin, UserUpdate, TokenResponse
 from app.utils.hash import get_password_hash, verify_password
 from app.utils.token import create_access_token
+from app.models.stats_model import WebsiteStats
 from typing import Optional, List
 from sqlalchemy import or_
-
+from datetime import datetime, UTC
 # -------------------------------
 # ✅ Đăng ký user mới
 def create_user(db: Session, user_data: UserCreate) -> User:
@@ -24,6 +25,16 @@ def create_user(db: Session, user_data: UserCreate) -> User:
         db.add(new_user)
         db.commit()
         db.refresh(new_user)
+        
+        today = datetime.now(UTC).date()
+        stat_record = db.query(WebsiteStats).filter(WebsiteStats.date == today).first()
+        if stat_record:
+            stat_record.new_users += 1
+        else:
+            stat_record = WebsiteStats(date=today, views=0, new_users=1, new_properties=0)
+            db.add(stat_record)
+
+        db.commit()
         return new_user
     except IntegrityError:
         db.rollback()
@@ -70,9 +81,20 @@ def get_user_by_phone_or_email(db: Session, target_type: str, target: str) -> Op
         return db.query(User).filter(User.email == target).first()
     else:
         return None
-    
 
-def change_password_by_phone(db: Session, phone_number: str, new_password: str) -> User:
+def change_password(db: Session, phone_number: str, old_password: str, new_password: str):
+    user = get_user_by_phone_or_email(db, "phone", phone_number)
+
+    if not user or not verify_password(old_password, user.password_hash):
+        return None
+
+    user.password_hash = get_password_hash(new_password)
+    db.commit()
+    db.refresh(user)
+
+    return user
+
+def forget_password_by_phone(db: Session, phone_number: str, new_password: str) -> User:
     user = db.query(User).filter(User.phone_number == phone_number).first()
     if not user:
         raise HTTPException(status_code=404, detail="Không tìm thấy người dùng với số điện thoại này")
@@ -89,3 +111,4 @@ def get_user_by_email_or_phone(db: Session, identifier: str) -> Optional[User]:
 
 def get_all_users(db: Session) -> List[User]:
     return db.query(User).all()
+

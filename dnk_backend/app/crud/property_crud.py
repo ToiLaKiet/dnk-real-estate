@@ -13,9 +13,10 @@ from app.schemas.property_video_schema import PropertyVideoCreate
 from app.crud import property_feature_crud, property_image_crud, property_video_crud
 from app.schemas import property_feature_schema, property_image_schema, property_video_schema
 from app.models.property_model import PropertyStatusEnum
-
+from app.models.stats_model import WebsiteStats
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+from app.models.location_model import Location, LocationTypeEnum
 
 
 def create_property(db: Session, property_in: PropertyCreate, user_id: int):
@@ -75,6 +76,17 @@ def create_property(db: Session, property_in: PropertyCreate, user_id: int):
             video_url=video.video_url
         )
         property_video_crud.create_property_video(db, db_video)
+
+    # Cập nhật số lượng tin đăng mới
+    today = datetime.now(UTC).date()
+    stat_record = db.query(WebsiteStats).filter(WebsiteStats.date == today).first()
+    if stat_record:
+        stat_record.new_properties += 1
+    else:
+        stat_record = WebsiteStats(date=today, views=0, new_users=0, new_properties=1)
+        db.add(stat_record)
+
+    db.commit()
 
     return db_property
 
@@ -159,7 +171,20 @@ def search_properties(
         query = query.filter(Property.property_type == property_type)
 
     if location_id:
-        query = query.filter(Property.location_id == location_id)
+        # Lấy danh sách các quận thuộc tỉnh
+        district_ids = db.query(Location.location_id).filter(
+            Location.parent_id == location_id,
+            Location.type == LocationTypeEnum.district
+        ).all()
+
+        # Lấy danh sách các phường thuộc các quận đó
+        ward_ids = db.query(Location.location_id).filter(
+            Location.parent_id.in_([d[0] for d in district_ids]),
+            Location.type == LocationTypeEnum.ward
+        ).all()
+
+        # Lọc các property theo danh sách ward_id
+        query = query.filter(Property.location_id.in_([w[0] for w in ward_ids]))  # Chuyển từ tuple thành list
 
     if category is not None:
         query = query.filter(Property.category == category)
@@ -168,30 +193,8 @@ def search_properties(
         query = query.filter(Property.status == status)
 
 
-    return query.all()
+    return [p.property_id for p in query.all()]  
 
 def get_all_properties_no_limit(db: Session):
     return db.query(Property).all()
 
-# Gợi ý bất động sản dựa trên TF-IDF + Cosine Similarity
-def recommend_properties(db: Session, input_property: dict, top_n: 5):
-    properties = get_all_properties_no_limit(db)
-    
-    if not properties:
-        return []
-
-    # Chuyển đổi dữ liệu thành danh sách văn bản
-    docs = [" ".join([prop.title, prop.description, prop.category]) for prop in properties]
-    
-    vectorizer = TfidfVectorizer()
-    tfidf_matrix = vectorizer.fit_transform(docs)
-
-    # Xử lý property đầu vào
-    input_text = " ".join([input_property.get("title", ""), input_property.get("description", ""), input_property.get("category", "")])
-    input_vec = vectorizer.transform([input_text])
-
-    # Tính độ tương đồng
-    similarities = cosine_similarity(input_vec, tfidf_matrix).flatten()
-    recommended_indices = similarities.argsort()[::-1][:top_n]
-
-    return [properties[i] for i in recommended_indices]

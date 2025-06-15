@@ -9,3 +9,5 @@ from . import contact_router
 from . import favorite_router
 from . import report_router
 from . import news_router
+from . import stats_router
+from . import recommend_router

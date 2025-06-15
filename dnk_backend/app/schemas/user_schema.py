@@ -46,9 +46,15 @@ class UserUpdate(BaseModel):
     tax_number: Optional[str] = None
     company_name: Optional[str] = None
     address: Optional[str] = None
+    avatar: Optional[str] = None
 
 
 class ChangePasswordRequest(BaseModel):
+    phone_number: str
+    old_password: str = Field(..., min_length=6)
+    new_password: str = Field(..., min_length=6)
+
+class ForgetPasswordRequest(BaseModel):
     phone_number: str
     new_password: str = Field(..., min_length=6)
 

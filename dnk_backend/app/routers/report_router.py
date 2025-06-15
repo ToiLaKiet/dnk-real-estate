@@ -1,9 +1,11 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app.schemas.report_schema import ReportCreate, ReportRead
-from app.crud.report_crud import create_report, get_reports_by_property, delete_report, get_all_reports
+from app.crud.report_crud import create_report, get_reports_by_property, delete_report, get_all_reports, update_report_status, search_reports
 from app.utils.auth import get_current_user, get_current_admin_user
+from app.models.report_model import ReportStatusEnum
+from typing import Optional, List 
 
 router = APIRouter(prefix="/reports", tags=["Reports"])
 
@@ -34,3 +36,26 @@ def remove_report(report_id: int, db: Session = Depends(get_db), admin_user = De
     if not deleted:
         raise HTTPException(status_code=404, detail="Report not found")
     return deleted
+
+@router.get("/reports", response_model=List[ReportRead], summary="Tìm báo cáo theo property_id hoặc status")
+def get_reports(
+    property_id: Optional[int] = Query(None),
+    status: Optional[ReportStatusEnum] = Query(None),
+    db: Session = Depends(get_db)
+):
+    reports = search_reports(db, property_id, status)
+
+    if not reports:
+        raise HTTPException(status_code=404, detail="No reports found")
+
+    return reports
+
+
+@router.put("/reports/{report_id}/status", summary="Admin cập nhật trạng thái report")
+def change_report_status(report_id: int, new_status: ReportStatusEnum, db: Session = Depends(get_db), admin_user=Depends(get_current_admin_user)):
+    updated_report = update_report_status(db, report_id, new_status)
+
+    if not updated_report:
+        raise HTTPException(status_code=404, detail="Report not found")
+
+    return {"message": "Report status updated successfully", "report_id": report_id, "new_status": new_status}

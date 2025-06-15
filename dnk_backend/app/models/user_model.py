@@ -24,6 +24,7 @@ class User(Base):
     tax_number = Column(String(13), unique=True, nullable=True)
     company_name = Column(String(100), nullable=True)
     address = Column(Text, nullable=True)
+    avatar = Column(String(255), nullable=True)
     role = Column(Enum(UserRoleEnum), default=UserRoleEnum.buyer)
     created_at = Column(TIMESTAMP, server_default=func.now())
     updated_at = Column(TIMESTAMP, server_default=func.now(), onupdate=func.now())

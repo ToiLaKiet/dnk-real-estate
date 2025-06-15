@@ -8,3 +8,5 @@ from .favorite_model import Favorite
 from .news_model import News
 from .contact_model import Contact
 from .report_model import Report
+from .stats_model import WebsiteStats
+from .search_history_model import SearchHistory

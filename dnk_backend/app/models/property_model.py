@@ -15,7 +15,8 @@ class PropertyStatusEnum(str, enum.Enum):
     rented = "rented"           # Đã cho thuê
     pending = "pending"         # Đang chờ xử lý
     inactive = "inactive"       # Đã ẩn hoặc bị khóa
-
+    rejected = "rejected"       # Đã bị từ chối
+    
 class Property(Base):
     __tablename__ = "properties"
 

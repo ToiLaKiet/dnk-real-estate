@@ -5,6 +5,7 @@ from app.crud import location_crud
 from app.database import get_db
 from typing import List
 
+
 router = APIRouter(prefix="/locations", tags=["Locations"])
 
 @router.get("/{location_id}", response_model=LocationRead)
@@ -46,3 +47,12 @@ def get_locations_by_type(type: str, parent_id: str = None, db: Session = Depend
     except ValueError:
         raise HTTPException(status_code=400, detail="Invalid location type")
     return location_crud.get_locations_by_type(db, type_enum, parent_id)
+
+
+@router.get("/wards-by-province/{province_id}", response_model=List[str])
+def get_wards_by_province(province_id: str, db: Session = Depends(get_db)):
+    """API lấy danh sách các location_id của tất cả các ward thuộc một province."""
+    ward_ids = location_crud.get_wards_by_province(db, province_id)
+    if not ward_ids:
+        raise HTTPException(status_code=404, detail="No wards found for this province")
+    return ward_ids

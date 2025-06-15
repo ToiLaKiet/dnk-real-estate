@@ -46,6 +46,7 @@ class PropertyRead(PropertyBase):
     user_id: int
     created_at: datetime
     updated_at: datetime
+    status: PropertyStatusEnum
 
     images: List[PropertyImageRead] = []
     videos: List[PropertyVideoRead] = []
