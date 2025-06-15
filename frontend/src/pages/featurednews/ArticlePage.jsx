@@ -8,7 +8,8 @@ import Footer from '../../components/ui/parts/footer.jsx';
 import styles from '../../styles/ArticlePage.module.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-
+import { API_URL } from '../../config.js';
+import axios from 'axios';
 function ArticlePage() {
   const { id } = useParams();
   const [article, setArticle] = useState(null);
@@ -17,21 +18,13 @@ function ArticlePage() {
 
   // Mock author mapping for user_id
   const authorMap = {
-    100: 'Nguyễn Văn A',
-    101: 'Trần Thị B',
-    102: 'Lê Văn C',
-    103: 'Phạm Thị D',
-    104: 'Hoàng Văn E',
-    105: 'Ngô Thị F',
-    106: 'Đinh Văn G',
-    107: 'Bùi Thị H',
-    108: 'Vũ Văn I',
-    109: 'Đặng Thị K'
   };
 
   useEffect(() => {
     const fetchArticle = async () => {
       try {
+        // const response = await axios.get(`${API_URL}/news/${id}`);
+        // Simulating API call with mock data
         const foundArticle = mockNews.find((item) => item.news_id === parseInt(id));
         if (!foundArticle) throw new Error('Không tìm thấy bài báo');
         // Enhance article with mocked fields
@@ -78,18 +71,18 @@ function ArticlePage() {
       <Header />
       <main className={styles.container}>
         <h1 className={styles.title}>{article.title}</h1>
-        <p className={styles.meta}>Tác giả: {article.author}</p>
+        <p className={styles.meta}>Tác giả: Quản trị viên</p>
         <p className={styles.meta}>
           Ngày đăng: {format(new Date(article.created_at), 'dd/MM/yyyy')}
         </p>
-        <div className={styles.tags}>
+        {/* <div className={styles.tags}>
           {article.tags.map((tag) => (
             <span key={tag} className={styles.tag}>
               {tag}
             </span>
           ))}
-        </div>
-        <p className={styles.summary}>{article.summary}</p>
+        </div> */}
+        {/* <p className={styles.summary}>{article.summary}</p> */}
         <Slider {...sliderSettings} className={styles.carousel}>
           <div>
             <img src={article.thumbnail_url} alt={article.title} className={styles.image} />

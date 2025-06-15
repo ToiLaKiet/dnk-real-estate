@@ -6,7 +6,7 @@ import Header from '../../components/ui/parts/header';
 import Footer from '../../components/ui/parts/footer';
 import styles from '../../styles/FavoritePage.module.css';
 import '../../styles/App.css';
-const API_URL = 'http://172.16.1.219:8080/';
+import { API_URL } from '../../config.js';
 
 const FavoriteCard = ({ post, index }) => {
   const navigate = useNavigate();

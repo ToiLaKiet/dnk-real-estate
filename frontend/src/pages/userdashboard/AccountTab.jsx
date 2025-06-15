@@ -6,8 +6,8 @@ import styles from '../../styles/AccountTab.module.css'
 import userDashboardStyles from '../../styles/UserDashboard.module.css'; // Reuse UserDashboard styles
 import Otp from '../../components/ui/modal-otp';
 import SettingsTab from './SettingTabs';
+import { API_URL } from '../../config.js'; // Import API URL from config
 const AccountTab = () => {
-  const API_URL ='http://172.16.1.219:8080'; // Use environment variable for API URL
   const { user, isLoading } = useAuth();
   const [formData, setFormData] = useState(null);
   const [errors, setErrors] = useState({});

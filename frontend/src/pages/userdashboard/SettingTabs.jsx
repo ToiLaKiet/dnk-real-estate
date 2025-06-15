@@ -3,10 +3,9 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../components/ui/context/AuthContext';
 import styles from '../../styles/SettingTabs.module.css';
-
+import { API_URL } from '../../config.js';
 const SettingsTab = () => {
   const { user } = useAuth();
-  const API_URL = 'http://172.16.1.219:8080';
   const [activeDropdown, setActiveDropdown] = useState(null);
   const navigate = useNavigate();
   const [passwordData, setPasswordData] = useState({

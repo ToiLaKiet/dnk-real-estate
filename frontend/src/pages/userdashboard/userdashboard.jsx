@@ -11,7 +11,7 @@ import PostCreate from '../../components/ui/postcreate/postcreate.jsx';
 import PropertyManagement from './PropertyManangement.jsx';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-const API_URL = 'http://172.16.1.219:8080'
+import { API_URL } from '../../config.js';
 // Mock data (replace with real API calls)
 
 const mockNotifications = [

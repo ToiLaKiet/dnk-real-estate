@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from '../../styles/AdminUserManagement.module.css';
-const API_URL = 'http://172.16.1.219:8080';
+import { API_URL } from '../../config.js';
 // User Detail Modal Component
 const UserDetailModal = ({ user, isOpen, onClose, onDelete }) => {
   const [userProperties, setUserProperties] = useState([]);

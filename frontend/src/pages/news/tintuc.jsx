@@ -5,7 +5,7 @@ import Header from '../../components/ui/parts/header.jsx';
 import Footer from '../../components/ui/parts/footer.jsx';
 import { mockNews } from './newsData.jsx';
 import '../../styles/TinTuc.css'; // Assuming you have a CSS file for styling   
-
+import { API_URL } from '../../config.js';
 function TinTuc() {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -16,7 +16,7 @@ function TinTuc() {
   const limit = 8;
 
   const provinceAliases = {
-    'TP.HCM': ['TP.HCM', 'Thành phố Hồ Chí Minh', 'Saigon'],
+    'TP.HCM': ['TP.HCM', 'Thành phố Hồ Chí Minh', 'Saigon', 'Sài Gòn', 'Ho Chi Minh City', 'HCM', 'Hồ Chí Minh','HCM City'],
     'Hà Nội': ['Hà Nội', 'Hanoi'],
     'Đà Nẵng': ['Đà Nẵng'],
     'Hải Phòng': ['Hải Phòng'],
@@ -41,6 +41,9 @@ function TinTuc() {
       setLoading(true);
       try {
         // Mock API call
+        // const response = await axios.get(`${API_URL}/news`);
+        // const news_data = response.data; // Use real API data in production
+        // For now, we use mock data
         let publishedNews = mockNews.filter(n => n.status === 'published');
         console.log('Published news count:', publishedNews.length); // Debug
         if (filterProvince) {

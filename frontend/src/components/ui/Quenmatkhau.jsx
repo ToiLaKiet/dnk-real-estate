@@ -8,7 +8,7 @@ import CongratsModal from '../../pages/login/Chucmungchoquenmk.jsx';
 import PasswordModal from '../../pages/register/PasswordCreationModal.jsx';
 import axios from 'axios';
 import Modal from '../../components/ui/modal-reg-log.jsx';
-
+import { API_URL } from '../../config.js';
 function Quenmatkhau({ onClose }) {
   const [formData, setFormData] = useState({ phone: '' });
   const [isOtpModalOpen, setIsOtpModalOpen] = useState(false);
@@ -16,7 +16,6 @@ function Quenmatkhau({ onClose }) {
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const API_URL = 'http://172.16.2.34:8080';
   // Chỉ xử lý số điện thoại
   const handleChange = (e) => {
     const { value } = e.target;

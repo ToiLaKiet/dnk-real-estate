@@ -3,8 +3,7 @@ import { Tab } from '@headlessui/react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from '../../styles/AdminPropertyManagement.module.css';
-
-const API_URL = 'http://172.16.1.219:8080'
+import { API_URL } from '../../config.js';
 
 const PropertyCard = ({ property, onDelete, onDetail }) => {
   const formatPrice = (price) => {

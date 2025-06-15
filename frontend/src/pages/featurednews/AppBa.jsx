@@ -31,7 +31,7 @@ function AppBa() {
             Bạn có thể tìm thấy ngôi nhà mơ ước hoặc cơ hội đầu tư hấp dẫn thông qua lượng tin rao lớn, uy tín về các loại hình bất động sản bán tại Việt Nam, bao gồm bán nhà riêng, bán biệt thự mặt tiền, bán căn hộ chung cư, bán biệt thự, bán đất, bán Shophouse hình BĐS khác.
             </p>
             <button className="appba-card-button" onClick={()=>navigate('/nha-dat-ban')}>
-              Xem chi tiết
+              Tìm hiểu thêm
               <svg className="appba-button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
@@ -51,8 +51,8 @@ function AppBa() {
             <p className="appba-card-description">
             Cập nhật thường xuyên và đầy đủ các loại hình bất động sản cho thuê như: thuê phòng trọ, nhà riêng, thuê biệt thự , văn phòng, kho xưởng hay thuê mặt bằng kinh doanh giúp bạn nhanh chóng tìm được bất động sản ưng ý.
             </p>
-            <button className="appba-card-button">
-              Khám phá ngay
+            <button className="appba-card-button"  onClick={()=>navigate('/nha-dat-cho-thue')}>
+              Tìm hiểu thêm
               <svg className="appba-button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
@@ -72,8 +72,8 @@ function AppBa() {
             <p className="appba-card-description">
             Các dự án cung cấp góc nhìn khách quan của các chuyên gia về những dự án nổi bật tại Việt Nam, giúp bạn đưa ra quyết định đúng đắn cho nơi an cư lý tưởng hoặc cơ hội đầu tư sinh lời.
             </p>
-            <button className="appba-card-button">
-              Liên hệ ngay
+            <button className="appba-card-button" onClick={()=>navigate('/du-an')} >
+              Tìm hiểu thêm
               <svg className="appba-button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
@@ -93,8 +93,8 @@ function AppBa() {
             <p className="appba-card-description">
             Ngoài cập nhật những biến động thị trường, chúng tôi còn cung cấp kiến ​​thức, kinh nghiệm về mua bán, cho thuê, đầu tư, vay mua nhà, phong thủy, thiết kế nhà, mọi thông tin cần thiết để dẫn lối người tìm nhà tìm thấy căn nhà mơ ước.
             </p>
-            <button className="appba-card-button">
-              Liên hệ ngay
+            <button className="appba-card-button" onClick={()=>navigate('/tin-tuc')}>
+              Tìm hiểu thêm
               <svg className="appba-button-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>

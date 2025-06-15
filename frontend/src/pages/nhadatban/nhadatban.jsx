@@ -8,8 +8,7 @@ import '../../styles/NhaDatBan.css';
 import { AuthContext } from '../../components/ui/context/AuthContext'; // Assumed context
 import Login from '../../pages/login/Dangnhap1';
 import Modal from '../../components/ui/modal-reg-log.jsx';
-const API_URL = 'http://172.16.1.219:8080/';
-
+import { API_URL } from '../../config'; // Adjust the import path as necessary
 
 const NhaDatBan = () => {
   const navigate = useNavigate();
@@ -68,7 +67,7 @@ const [dropdownOptions, setDropdownOptions] = useState({
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (user?.user_id) {
-      axios.get(API_URL+`favorites`,{
+      axios.get(API_URL+`/favorites`,{
         headers:{
           Authorization : `Bearer ${token}`
         }
@@ -110,7 +109,7 @@ const [dropdownOptions, setDropdownOptions] = useState({
     if (userNames[userId]) return; // Already fetched
     
     try {
-      const response = await axios.get(API_URL+`users/${userId}`); // Adjust endpoint as needed
+      const response = await axios.get(API_URL+`/users/${userId}`); // Adjust endpoint as needed
       console.log(`Fetching user with ID: ${userId}`, response);
       const userData = await response.data;
       setUserNames(prev => ({
@@ -142,7 +141,7 @@ const [dropdownOptions, setDropdownOptions] = useState({
       setIsLoadingProvinces(true);
       try {
         console.log('Fetching provinces...');
-        const response = await axios.get(`${API_URL}locations/?type=province`);
+        const response = await axios.get(`${API_URL}/locations/?type=province`);
          // Update the provinces in dropdownOptions
         console.log('Provinces fetched:', response);
         setDropdownOptions(prev => ({
@@ -178,7 +177,7 @@ const [dropdownOptions, setDropdownOptions] = useState({
       setIsLoadingWards(true);
       try {
         // Then get all wards in those districts
-        const wardPromises = await axios.get(`${API_URL}locations/wards-by-province/${searchFilters.province}`);
+        const wardPromises = await axios.get(`${API_URL}/locations/wards-by-province/${searchFilters.province}`);
         console.log(`Fetching wards for province:${searchFilters.province}`, wardPromises);
         // const wardsResponses = await Promise.all(wardPromises.data); //Promise is an array of promises which is an array of wards
         // const allWards = wardsResponses.flatMap(response => response.data);
@@ -199,7 +198,7 @@ const [dropdownOptions, setDropdownOptions] = useState({
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await axios.get(`${API_URL}properties`);
+        const response = await axios.get(`${API_URL}/properties`);
         console.log('Posts fetched:', response.data);
         setPosts(response.data);
       } catch (error) {
@@ -305,14 +304,14 @@ const [dropdownOptions, setDropdownOptions] = useState({
 
     try {
       if (isCurrentlyFavorited) {
-        await axios.delete(API_URL+'favorites/'+propertyId,{
+        await axios.delete(API_URL+'/favorites/'+propertyId,{
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
             'Content-Type': 'application/json'
         }});
         console.log(`Removed property ${propertyId} from favorites`);
       } else {
-        await axios.post(API_URL+'favorites', {
+        await axios.post(API_URL+'/favorites', {
           property_id: propertyId,
         },{
           headers: {

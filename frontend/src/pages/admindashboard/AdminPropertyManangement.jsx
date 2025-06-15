@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Tab } from '@headlessui/react';
 import axios from 'axios';
 import styles from '../../styles/AdminPropertyManagement.module.css';
-const API_URL = 'http://172.16.1.219:8080'
+import { API_URL } from '../../config.js';
 // Property Detail Modal Component
 const PropertyDetailModal = ({ property, isOpen, onClose, onApprove, onReject }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);

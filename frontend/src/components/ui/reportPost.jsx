@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import '../../styles/Report.css';
 import ErrorAlert  from './stuff/errorAlert'; // Adjust path if needed
-const API_URL = 'http://172.16.1.219:8080'
+import { API_URL } from '../../config';
 function ReportPosts ({ propertyId, user_id }) {
   const [selectedReason, setSelectedReason] = useState('');
   const [description, setDescription] = useState('');

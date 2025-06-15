@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from '../../styles/AdminReportManagement.module.css';
-const API_URL = 'http://172.16.1.219:8080'
+import { API_URL } from '../../config.js';
 // Report Detail Modal Component
 
 const ReportDetailModal = ({ report, isOpen, onClose, onDeleteProperty }) => {

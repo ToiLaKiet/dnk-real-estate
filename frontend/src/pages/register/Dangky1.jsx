@@ -10,12 +10,12 @@ import PasswordModal from './PasswordCreationModal.jsx'; // Component modal nh�
 import AccountTypeModal from './AccountTypeModal.jsx'; // Component modal chọn loại tài khoản
 import CongratsModal from './Chucmung.jsx'; // Component modal chúc mừng
 import axios from 'axios'; // Thư viện axios để gửi yêu cầu HTTP
+import { API_URL } from '../../config.js'; // Địa chỉ API của ứng dụng
 // Đăng ký tài khoản mới
 function Register() {
   const [formData, setFormData] = useState({
     phone: '',
   });
-  const API_URL = 'http://172.16.1.219:8080'
   const [isOtpModalOpen, setIsOtpModalOpen] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [isAccountTypeModalOpen, setIsAccountTypeModalOpen] = useState(false);

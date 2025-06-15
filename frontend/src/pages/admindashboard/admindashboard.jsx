@@ -10,8 +10,7 @@ import AdminPropertyList from './AdminPropertyList.jsx';
 import AdminUserManagement from './AdminUserManagement.jsx';
 import AdminReportManagement from './AdminReportManagement.jsx';
 import axios from 'axios';
-// Mock data (replace with real API calls)
-const API_URL = 'http://172.16.1.219:8080'
+import { API_URL } from '../../config.js';
 
 
 function AdminDashboard() {

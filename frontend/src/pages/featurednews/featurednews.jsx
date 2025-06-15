@@ -17,13 +17,14 @@ function FeaturedNews() {
   ];
 
   const provinceAliases = {
-    'TP.HCM': ['TP.HCM', 'Thành phố Hồ Chí Minh', 'Saigon'],
+    'TP.HCM': ['TP.HCM', 'Thành phố Hồ Chí Minh', 'Saigon', 'Sài Gòn', 'HCM', 'Binh duong'],
     'Hà Nội': ['Hà Nội', 'Hanoi']
   };
 
   // Cache regex for provinces
   const provinceRegex = {
-    'hcm': new RegExp(`\\b(${provinceAliases['TP.HCM'].map(a => a.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})\\b`, 'i'),
+    //regex là để tìm kiếm các từ khóa liên quan đến tỉnh thành. ví dụ như 'TP.HCM' sẽ tìm kiếm các từ khóa như 'TP.HCM', 'Thành phố Hồ Chí Minh', 'Saigon'
+    'hcm': new RegExp(`\\b(${provinceAliases['TP.HCM'].map(a => a.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})\\b`, 'i'), 
     'hanoi': new RegExp(`\\b(${provinceAliases['Hà Nội'].map(a => a.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})\\b`, 'i')
   };
 
@@ -31,6 +32,9 @@ function FeaturedNews() {
     const fetchArticles = async () => {
       setLoading(true);
       try {
+        // Simulating API call with mock data
+        // const response = await axios.get(`${API_URL}/news`);
+        // For demonstration, we use mockNews directly
         let filteredArticles = mockNews
           .filter(n => n.status === 'published')
           .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));

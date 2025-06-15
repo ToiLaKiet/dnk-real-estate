@@ -9,9 +9,8 @@ import styles from '../../../styles/imageuploadmodal.module.css';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext'
-
+import { API_URL } from '../../../config';
 const ImageUploadModal = () => {  
-  const API_URL = 'http://172.16.1.219:8080/';
   const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -173,10 +172,10 @@ const ImageUploadModal = () => {
       // FIX: Proper conditional logic - only one API call
       if (editMode && updatedData.property_id) {
         console.log("Data payload gửi về backend (edit):", payload);
-        response = await axios.put(`${API_URL}properties/${updatedData.property_id}`, payload, config);
+        response = await axios.put(`${API_URL}/properties/${updatedData.property_id}`, payload, config);
       } else {
         console.log("Data payload gửi về backend (create):", payload);
-        response = await axios.post(`${API_URL}properties/`, payload, config);
+        response = await axios.post(`${API_URL}/properties/`, payload, config);
       }
 
       console.log("Response từ backend:", response.data);
