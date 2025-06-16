@@ -28,6 +28,8 @@ import {
   faExclamationTriangle,
   faHeart
 } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
+import { API_URL } from '../config.js';
 
 function PostPage() {
   const { id } = useParams();
@@ -39,32 +41,42 @@ function PostPage() {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [reportsPostsModal, setReportsPostsModal] = useState(false);
 
-  let postData = require('./postData.jsx').mockPosts;
-
   useEffect(() => {
-    const loadPost = () => {
+    const loadPost = async () => {
       try {
         if (!id || typeof id !== 'string' || id.trim() === '') {
           throw new Error('ID tin đăng không hợp lệ');
         }
-
         const postId = parseInt(id, 10);
-        
         if (isNaN(postId) || postId <= 0) {
           throw new Error(`ID tin đăng phải là số nguyên dương, nhận được: "${id}"`);
         }
-
-        if (!postData || !Array.isArray(postData) || postData.length === 0) {
-          throw new Error('Dữ liệu tin đăng không khả dụng');
+        const res = await axios.get(`${API_URL}/properties/${postId}`);
+        const foundPost = res.data;
+        console.log('Post data:', foundPost);
+        
+        if(foundPost.status !== 'available') {
+          throw new Error(`Tin đăng "${id}" đã không còn khả dụng`);
         }
-
-        const foundPost = postData.find(post => post && post.property_id === postId);
-
         if (!foundPost) {
           throw new Error(`Không tìm thấy tin đăng với ID ${postId}`);
         }
-
+        
+        // Assuming the response looks like: { data: [ { property_id: 1 }, { property_id: 2 }, ... ] }
+        if(user) {
+          const favorite = await axios.get(`${API_URL}/favorites/`, {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+          });
+          const favoritePropertyIds = favorite.data.map(item => item.property_id);
+          setIsFavorite(favoritePropertyIds.includes(foundPost.property_id));
+        }
+        
+                
         setPost(foundPost);
+
       } catch (err) {
         console.error('Lỗi khi tải tin đăng:', err);
         setError(err.message);
@@ -87,10 +99,33 @@ function PostPage() {
   };
 
   // Handle favorite and report actions
-  const handleFavorite = () => {
+  const handleFavorite = async () => {
     if (user) {
-      console.log(`User ${user.user_id} ${isFavorite ? 'removed' : 'added'} post ${post.property_id} to favorites`);
-      setIsFavorite(!isFavorite);
+      try{
+        if(!isFavorite){
+        await axios.post(`${API_URL}/favorites`,{
+          property_id:id
+        },{
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`, // Assuming user has a token
+          },
+        });
+      } else {
+        await axios.delete(`${API_URL}/favorites/${id}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`, // Assuming user has a token
+          },
+        });
+      }
+        console.log(`User ${user.user_id} ${isFavorite ? 'removed' : 'added'} post ${post.property_id} to favorites`);
+        // Here you would typically make an API call to update the favorite status
+        setIsFavorite(!isFavorite);
+      }
+      catch(err){
+        console.error('Error updating favorite status:', err);
+      }
     } else {
       console.log('User not authenticated, show login modal');
       setShowLoginModal(true);
@@ -114,7 +149,7 @@ function PostPage() {
 
   // Render media content
   const renderMedia = () => {
-    if (!post?.media || !Array.isArray(post.media.images) || post.media.images.length === 0) {
+    if (!post?.media || !Array.isArray(post.images) || post.media.images.length === 0) {
       return (
         <div className={styles.noMedia}>
           Không có hình ảnh
@@ -122,16 +157,16 @@ function PostPage() {
       );
     }
 
-    const validImages = post.media.images.filter(img => img && img.url);
-    const videoCount = post.media.videoUrl ? 1 : 0;
+    const validImages = post.images.filter(img => img && img.image_url);
+    const videoCount = post.videos.videoUrl ? 1 : 0;
 
     return (
       <div>
         <Slider {...sliderSettings}>
           {validImages.map((img, index) => (
-            <div key={img.url || `image-${index}`} className={styles.mediaItem}>
+            <div key={img.image_url || `image-${index}`} className={styles.mediaItem}>
               <img
-                src={img.url}
+                src={img.image_url || img.url }
                 alt={img.caption || `Hình ảnh ${index + 1}`}
                 className={styles.mediaImage}
                 onError={(e) => {
@@ -145,7 +180,7 @@ function PostPage() {
           {post.media.videoUrl && (
             <div key="video" className={styles.mediaItem}>
               <video
-                src={post.media.videoUrl}
+                src={post.videos.videoUrl}
                 controls
                 className={styles.mediaVideo}
                 title="Video bất động sản"

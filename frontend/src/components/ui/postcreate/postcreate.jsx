@@ -257,16 +257,14 @@ const PostCreate = () => {
                   <FontAwesomeIcon icon={faKey} className={styles.buttonIcon} />
                   Cho thuê
                 </button>
-                {user && user.role === 'admin' && (
-                  <button
-                  type="button"
-                  className={`${styles.typeButton} ${formData.type === 'project' ? styles.active : ''}`}
-                  onClick={() => handleTypeChange('project')}
+                <button
+                type="button"
+                className={`${styles.typeButton} ${formData.type === 'project' ? styles.active : ''}`}
+                onClick={() => handleTypeChange('project')}
                 >
                   <FontAwesomeIcon icon={faBuilding} className={styles.buttonIcon} />
                   Dự án
                 </button>
-                )}
               </div>
             </div>
           </div>

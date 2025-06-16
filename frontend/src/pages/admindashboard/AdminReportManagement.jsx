@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from '../../styles/AdminReportManagement.module.css';
 import { API_URL } from '../../config.js';
+import { useNavigate } from 'react-router-dom';
 // Report Detail Modal Component
 
 const ReportDetailModal = ({ report, isOpen, onClose, onDeleteProperty }) => {
   const [reportUser, setReportUser] = useState(null);
   const [reportedProperty, setReportedProperty] = useState(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isOpen && report) {
@@ -20,7 +22,7 @@ const ReportDetailModal = ({ report, isOpen, onClose, onDeleteProperty }) => {
       setLoading(true);
       // TODO: Replace with actual API calls
       const userResponse = await axios.get(API_URL+`/users/${reportData.user_id}`);
-      const propertyResponse = await axios.get(`/properties/${reportData.property_id}`);
+      const propertyResponse = await axios.get(API_URL+`/properties/${reportData.property_id}`);
       setReportUser(userResponse.data);
       setReportedProperty(propertyResponse.data);
     } catch (error) {
@@ -147,7 +149,7 @@ const ReportDetailModal = ({ report, isOpen, onClose, onDeleteProperty }) => {
                     </div>
                     <div className={styles.rmInfoItem}>
                       <strong>Số điện thoại:</strong>
-                      <span>{reportUser.phone}</span>
+                      <span>{reportUser.phone_number}</span>
                     </div>
                   </div>
                 </div>
@@ -155,7 +157,7 @@ const ReportDetailModal = ({ report, isOpen, onClose, onDeleteProperty }) => {
 
               {/* Property Information */}
               {reportedProperty && (
-                <div className={styles.rmInfoSection}>
+                <div className={styles.rmInfoSection} onClick={()=>navigate('/postspage/'+reportedProperty.property_id)}>
                   <h3>Bất động sản bị báo cáo</h3>
                   <div className={styles.rmPropertyCard}>
                     <img 

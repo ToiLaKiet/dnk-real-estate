@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Slider from 'react-slick';
 import { format } from 'date-fns';
-import { mockNews } from '../news/newsData.jsx';
 import Header from '../../components/ui/parts/header.jsx';
 import Footer from '../../components/ui/parts/footer.jsx';
 import styles from '../../styles/ArticlePage.module.css';
@@ -15,7 +14,6 @@ function ArticlePage() {
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
   // Mock author mapping for user_id
   const authorMap = {
   };
@@ -23,18 +21,9 @@ function ArticlePage() {
   useEffect(() => {
     const fetchArticle = async () => {
       try {
-        // const response = await axios.get(`${API_URL}/news/${id}`);
-        // Simulating API call with mock data
-        const foundArticle = mockNews.find((item) => item.news_id === parseInt(id));
-        if (!foundArticle) throw new Error('Không tìm thấy bài báo');
-        // Enhance article with mocked fields
-        const enhancedArticle = {
-          ...foundArticle,
-          author: authorMap[foundArticle.user_id] || 'Tác giả ẩn danh',
-          tags: [foundArticle.province],
-          summary: truncate(foundArticle.content, 50)
-        };
-        setArticle(enhancedArticle);
+        const response = await axios.get(`${API_URL}/news/${id}`);
+        console.log(response);
+        setArticle(response.data);
       } catch (err) {
         setError(err.message);
       } finally {

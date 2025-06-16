@@ -275,6 +275,22 @@ const PropertyCard = ({ property, onApprove, onReject, onViewDetails }) => {
               </button>
             </>
           )}
+          {property.status !== 'pending' && property.status !== 'available' && (
+            <>
+              <button
+                className={styles.pmApproveButton}
+                onClick={() => onApprove(property.property_id)}
+              >
+                Mở khoá tin đăng 
+              </button>
+              <button
+                className={styles.pmRejectButton}
+                onClick={() => onReject(property.property_id)}
+              >
+                Từ chối
+              </button>
+            </>
+          )}
         </div>
       </div>
     </div>

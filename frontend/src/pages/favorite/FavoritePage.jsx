@@ -50,7 +50,7 @@ const FavoriteCard = ({ post, index }) => {
         </span>
         <button
           className={styles.fpViewButton}
-          onClick={() => navigate(`/postspage/${post.id}`)}
+          onClick={() => navigate(`/postspage/${post.property_id}`)}
         >
           View
         </button>
@@ -72,26 +72,28 @@ const FavoritePosts = () => {
         return;
       }
       // Placeholder API call
-      const token = localStorage.getItem('token');
-      console.log(token);
-      const response = await axios.get(API_URL+`favorites/`,{
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-          // Add other headers if needed
+      try{
+        const token = localStorage.getItem('token');
+        const response = await axios.get(API_URL+`/favorites/`,{
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          }
+        });
+        const data =[];
+        if(response.data.length > 0){
+          for (const item of response.data) {
+            const res = await axios.get(API_URL+`/properties/${item.property_id}`);
+            data.push(res.data);
+          }
         }
-      });
-      const data =[];
-      if(response.data.length > 0){
-        for (const item of response.data) {
-          // Your logic here
-          const iter = item.property_id;
-          const res = await axios.get(API_URL+`properties/${iter}`);
-          data.push(res.data);
-        }
+        setFavorites(data);
       }
-      console.log(data);
-      setFavorites(data);
+      catch (err) {
+        console.error('Error fetching favorite posts:', err);
+        setError('Đã xảy ra lỗi khi tải bài đăng yêu thích. Vui lòng thử lại sau.');
+        return;
+      }
     }
     fetchData();
   }, []);
@@ -116,7 +118,7 @@ const FavoritePosts = () => {
           {favorites.length > 0 ? (
             <div className={styles.fpFavoriteList}>
               {favorites.map((post, index) => (
-                <FavoriteCard key={post.id} post={post} index={index} />
+                <FavoriteCard key={post.property_id} post={post} index={index} />
               ))}
             </div>
           ) : (

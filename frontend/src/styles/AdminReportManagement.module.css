@@ -363,7 +363,15 @@
   .rmInfoSection {
     margin-bottom: 30px;
   }
+  .rmPropertyCard{
+    display: flex;
+    width:100%;
+    flex-direction: column;
+  }
   
+  .rmPropertyCard:hover{
+    cursor: pointer;
+  }
   .rmInfoSection h3 {
     font-size: 18px;
     font-weight: 600;
@@ -491,7 +499,7 @@
   }
   
   .rmPropertyImage {
-    width: 120px;
+    width: 100%;
     height: 80px;
     object-fit: cover;
     border-radius: 8px;

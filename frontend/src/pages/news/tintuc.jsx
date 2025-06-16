@@ -3,71 +3,86 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Header from '../../components/ui/parts/header.jsx';
 import Footer from '../../components/ui/parts/footer.jsx';
-import { mockNews } from './newsData.jsx';
-import '../../styles/TinTuc.css'; // Assuming you have a CSS file for styling   
+import '../../styles/TinTuc.css';
 import { API_URL } from '../../config.js';
+
 function TinTuc() {
+  const [allNews, setAllNews] = useState([]);
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [filterProvince, setFilterProvince] = useState(null);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
   const limit = 8;
 
   const provinceAliases = {
-    'TP.HCM': ['TP.HCM', 'Thành phố Hồ Chí Minh', 'Saigon', 'Sài Gòn', 'Ho Chi Minh City', 'HCM', 'Hồ Chí Minh','HCM City'],
-    'Hà Nội': ['Hà Nội', 'Hanoi'],
-    'Đà Nẵng': ['Đà Nẵng'],
-    'Hải Phòng': ['Hải Phòng'],
-    'Cần Thơ': ['Cần Thơ'],
-    'Bình Dương': ['Bình Dương'],
-    'Đồng Nai': ['Đồng Nai'],
-    'Khánh Hòa': ['Khánh Hòa'],
-    'Nghệ An': ['Nghệ An'],
-    'Quảng Ninh': ['Quảng Ninh']
+    'TP.HCM': ['TP.HCM', 'Thành phố Hồ Chí Minh', 'Saigon', 'Sài Gòn', 'Ho Chi Minh City', 'HCM', 'Hồ Chí Minh', 'HCM City'],
+    'Hà Nội': ['Hà Nội', 'Hanoi', 'Hà Nội City', 'Hanoi City', 'Thủ đô Hà Nội', 'Thủ đô Hanoi', 'Hà Nội Thủ đô'],
+    'Đà Nẵng': ['Đà Nẵng', 'Da Nang', 'ĐN', 'Đà Nẵng City', 'Da Nang City'],
+    'Hải Phòng': ['Hải Phòng', 'Hai Phong', 'HP', 'Hải Phòng City', 'Hai Phong City'],
+    'Cần Thơ': ['Cần Thơ', 'Can Tho', 'CT', 'Cần Thơ City', 'Can Tho City'],
+    'Bình Dương': ['Bình Dương', 'Binh Duong', 'BD', 'Bình Dương City', 'Binh Duong City'],
+    'Đồng Nai': ['Đồng Nai', 'Dong Nai', 'DN', 'Đồng Nai City', 'Dong Nai City'],
+    'Khánh Hòa': ['Khánh Hòa', 'Khanh Hoa', 'KH', 'Khánh Hòa City', 'Khanh Hoa City'],
+    'Nghệ An': ['Nghệ An', 'Nghe An', 'NA', 'Nghệ An City', 'Nghe An City'],
+    'Quảng Ninh': ['Quảng Ninh', 'Quang Ninh', 'QN', 'Quảng Ninh City', 'Quang Ninh City'],
   };
 
-  // Cache regex for each province
   const provinceRegex = Object.keys(provinceAliases).reduce((acc, province) => {
-    const aliases = provinceAliases[province]
-      .map(alias => alias.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')); // Escape special chars
+    const aliases = provinceAliases[province].map(alias => alias.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
     acc[province] = new RegExp(`\\b(${aliases.join('|')})\\b`, 'i');
     return acc;
   }, {});
 
+  // Add unique IDs and timestamps since API doesn't provide them
   useEffect(() => {
     const fetchNews = async () => {
-      setLoading(true);
       try {
-        // Mock API call
-        // const response = await axios.get(`${API_URL}/news`);
-        // const news_data = response.data; // Use real API data in production
-        // For now, we use mock data
-        let publishedNews = mockNews.filter(n => n.status === 'published');
-        console.log('Published news count:', publishedNews.length); // Debug
-        if (filterProvince) {
-          const regex = provinceRegex[filterProvince];
-          publishedNews = publishedNews.filter(n => 
-            regex.test(n.title) || regex.test(n.content)
-          );
-          console.log('Filtered news count:', publishedNews.length); // Debug
-        }
-        const start = (page - 1) * limit;
-        const end = start + limit;
-        const paginatedNews = publishedNews.slice(start, end);
-        setNews(paginatedNews);
-        setTotalPages(Math.max(1, Math.ceil(publishedNews.length / limit))); // Ensure at least 1 page
-        console.log('Paginated news:', paginatedNews, 'Total pages:', totalPages); // Debug
+        setLoading(true);
+        const response = await axios.get(`${API_URL}/news`);
+        // Enhance API response with necessary fields
+        const enhancedNews = response.data.map((item, index) => ({
+          ...item,
+        }));
+        setAllNews(enhancedNews);
+        setError(null);
       } catch (err) {
+        console.error('Error fetching news:', err);
         setError('Không thể tải tin tức. Vui lòng thử lại sau.');
-        console.error('Fetch error:', err); // Debug
       } finally {
         setLoading(false);
       }
     };
     fetchNews();
-  }, [page, filterProvince]);
+  }, []);
+
+  // Handle pagination and filtering
+  useEffect(() => {
+    if (allNews.length === 0) return;
+
+    let filteredNews = [...allNews];
+    if (filterProvince) {
+      const regex = provinceRegex[filterProvince];
+      filteredNews = allNews.filter(newsItem =>
+        regex.test(newsItem.title) || regex.test(newsItem.content)
+      );
+    }
+
+    const totalItems = filteredNews.length;
+    const totalPagesCount = Math.max(1, Math.ceil(totalItems / limit));
+    setTotalPages(totalPagesCount);
+
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+    setNews(filteredNews.slice(startIndex, endIndex));
+  }, [allNews, page, filterProvince]);
+
+  // Reset page when filter changes
+  useEffect(() => {
+    setPage(1);
+  }, [filterProvince]);
 
   const FeaturedNews = () => {
     if (!news[0]) return <div>Không có tin tức nổi bật.</div>;
@@ -75,23 +90,35 @@ function TinTuc() {
     return (
       <Link to={`/news/${news_id}`} className="tintuc-featured">
         <div className="tintuc-featured-image-wrapper">
-            <img src={thumbnail_url} alt={title} className="tintuc-featured-image" />
-            <div className="tintuc-featured-content">
-                <h2 className="tintuc-featured-title">{title}</h2>
-                <p className="tintuc-featured-summary">{truncate(content, 100)}</p>
-                <p className="tintuc-featured-date">{formatDate(created_at)}</p>
-            </div>
+          <img
+            src={thumbnail_url || '/placeholder-news.jpg'}
+            alt={title}
+            className="tintuc-featured-image"
+            onError={(e) => { e.target.src = '/placeholder-news.jpg'; }}
+          />
+          <div className="tintuc-featured-content">
+            <h2 className="tintuc-featured-title">{title}</h2>
+            <p className="tintuc-featured-summary">{truncate(content, 100)}</p>
+            <p className="tintuc-featured-date">{formatDate(created_at)}</p>
+          </div>
         </div>
       </Link>
     );
   };
 
   const NewsList = () => {
+    const newsToShow = news.length > 1 ? news.slice(1) : news;
+
     return (
       <div className="tintuc-news-list">
-        {news.slice(1).map(({ news_id, title, content, thumbnail_url, created_at }) => (
+        {newsToShow.map(({ news_id, title, content, thumbnail_url, created_at }) => (
           <Link to={`/news/${news_id}`} key={news_id} className="tintuc-news-card">
-            <img src={thumbnail_url} alt={title} className="tintuc-news-image" />
+            <img
+              src={thumbnail_url || '/placeholder-news.jpg'}
+              alt={title}
+              className="tintuc-news-image"
+              onError={(e) => { e.target.src = '/placeholder-news.jpg'; }}
+            />
             <div className="tintuc-news-content">
               <h3 className="tintuc-news-title">{title}</h3>
               <p className="tintuc-news-summary">{truncate(content, 50)}</p>
@@ -104,6 +131,8 @@ function TinTuc() {
   };
 
   const Pagination = () => {
+    if (totalPages <= 1) return null;
+
     const pageRange = 3;
     const start = Math.max(1, page - pageRange);
     const end = Math.min(totalPages, page + pageRange);
@@ -139,20 +168,28 @@ function TinTuc() {
   };
 
   const RandomNews = () => {
-    const publishedNews = mockNews.filter(n => n.status === 'published');
-    const random = publishedNews.sort(() => Math.random() - 0.5).slice(0, 3);
+    const [randomNews, setRandomNews] = useState([]);
+
+    useEffect(() => {
+      if (allNews.length === 0) return;
+      const shuffled = [...allNews].sort(() => Math.random() - 0.5).slice(0, 3);
+      setRandomNews(shuffled);
+    }, [allNews, refreshTrigger]);
+
+    if (randomNews.length === 0) return null;
+
     return (
       <div className="tintuc-random-news">
         <h3 className="tintuc-section-title">Tin tức ngẫu nhiên</h3>
         <ul className="tintuc-random-list">
-          {random.map(({ news_id, title, content }) => (
+          {randomNews.map(({ news_id, title, content }) => (
             <li key={news_id}>
               <Link to={`/news/${news_id}`} className="tintuc-random-item">
-              <div className='tintuc-random-item-tii'>{title}</div>
-                <br/>
-                {truncate(content, 10)}
+                <div className="tintuc-random-item-tii">{title}</div>
+                <br />
+                {truncate(content, 100)}
               </Link>
-              <hr/>
+              <hr />
             </li>
           ))}
         </ul>
@@ -161,8 +198,9 @@ function TinTuc() {
   };
 
   const MostViewedNews = () => {
-    const publishedNews = mockNews.filter(n => n.status === 'published');
-    const random = publishedNews.sort(() => Math.random() - 0.5).slice(0, 4);
+    if (allNews.length === 0) return null;
+    const random = [...allNews].sort(() => Math.random() - 0.5).slice(0, 4);
+
     return (
       <div className="tintuc-most-viewed-news">
         <h3 className="tintuc-section-title">Tin tức được xem nhiều nhất</h3>
@@ -170,11 +208,11 @@ function TinTuc() {
           {random.map(({ news_id, title, content }) => (
             <li key={news_id}>
               <Link to={`/news/${news_id}`} className="tintuc-most-viewed-item">
-                <div className='tintuc-random-item-tii'>{title}</div>
-                <br/>
-                {truncate(content, 10)}
+                <div className="tintuc-random-item-tii">{title}</div>
+                <br />
+                {truncate(content, 100)}
               </Link>
-              <hr/>
+              <hr />
             </li>
           ))}
         </ul>
@@ -183,23 +221,26 @@ function TinTuc() {
   };
 
   const RealEstateNews = () => {
-    const provinces = [
-      'Hà Nội', 'TP.HCM', 'Đà Nẵng', 'Hải Phòng', 'Cần Thơ',
-      'Bình Dương', 'Đồng Nai', 'Khánh Hòa', 'Nghệ An', 'Quảng Ninh'
-    ];
+    const provinces = Object.keys(provinceAliases);
+
     const realEstateNews = provinces
-      .map(p => mockNews.find(n => n.status === 'published' && n.province === p))
+      .map(province => {
+        const newsForProvince = allNews.find(newsItem => {
+          const regex = provinceRegex[province];
+          return regex.test(newsItem.title) || regex.test(newsItem.content);
+        });
+        return newsForProvince ? { ...newsForProvince, province } : null;
+      })
       .filter(item => item !== null);
+
+    if (realEstateNews.length === 0) return null;
 
     return (
       <div className="tintuc-realestate-news">
         <h3 className="tintuc-section-title">Tin thị trường 10 tỉnh</h3>
         <button
           className={`tintuc-filter-button ${filterProvince === null ? 'tintuc-active' : ''}`}
-          onClick={() => {
-            setFilterProvince(null);
-            setPage(1);
-          }}
+          onClick={() => setFilterProvince(null)}
         >
           Tất cả
         </button>
@@ -208,13 +249,10 @@ function TinTuc() {
             <li key={item.news_id}>
               <button
                 className={`tintuc-realestate-item ${filterProvince === item.province ? 'tintuc-active' : ''}`}
-                onClick={() => {
-                  setFilterProvince(item.province);
-                  setPage(1);
-                }}
+                onClick={() => setFilterProvince(item.province)}
               >
                 <img
-                  src={item.province_image || `https://picsum.photos/50/50?random=${item.news_id}`}
+                  src={`https://picsum.photos/50/50?random=${item.news_id}`}
                   alt={item.province}
                   className="tintuc-realestate-image"
                 />
@@ -232,7 +270,7 @@ function TinTuc() {
   const HotMarkets = () => {
     const landmarks = [
       { province: 'Hà Nội', image: 'https://picsum.photos/100/100?random=102', name: 'Hà Nội' },
-      { province: 'TP.HCM', image: 'https://picsum.photos/100/100?random=101', name: 'Tp. HCM' }
+      { province: 'TP.HCM', image: 'https://picsum.photos/100/100?random=101', name: 'Tp. HCM' },
     ];
 
     return (
@@ -243,10 +281,7 @@ function TinTuc() {
             <button
               key={province}
               className={`tintuc-hot-market-item ${filterProvince === province ? 'tintuc-active' : ''}`}
-              onClick={() => {
-                setFilterProvince(province);
-                setPage(1);
-              }}
+              onClick={() => setFilterProvince(province)}
             >
               <img src={image} alt={name} className="tintuc-hot-market-image" />
               <p>{name}</p>
@@ -257,15 +292,32 @@ function TinTuc() {
     );
   };
 
-  const truncate = (text, words) => {
-    const wordArray = text.split(' ');
-    return wordArray.length > words ? `${wordArray.slice(0, words).join(' ')}...` : text;
+  const truncate = (text, maxLength) => {
+    if (!text) return '';
+    return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
   };
 
-  const formatDate = (date) => {
-    const d = new Date(date);
-    return `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getFullYear()}`;
+  const formatDate = (dateString) => {
+    if (!dateString) return '';
+    return new Date(dateString).toLocaleDateString('vi-VN', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    });
   };
+
+  if (loading) {
+    return <div className="tintuc-loading">Đang tải tin tức...</div>;
+  }
+
+  if (error) {
+    return (
+      <div className="tintuc-error">
+        <p>{error}</p>
+        <button onClick={() => window.location.reload()}>Thử lại</button>
+      </div>
+    );
+  }
 
   return (
     <div className="tintuc-wrapper">
@@ -278,17 +330,9 @@ function TinTuc() {
         </div>
         <div className="tintuc-main-content">
           <div className="tintuc-main-news">
-            {loading ? (
-              <div className="tintuc-loading">Đang tải tin tức...</div>
-            ) : error ? (
-              <div className="tintuc-error">{error}</div>
-            ) : (
-              <>
-                <FeaturedNews />
-                <NewsList />
-                <Pagination />
-              </>
-            )}
+            <FeaturedNews />
+            <NewsList />
+            <Pagination />
           </div>
           <div className="tintuc-sidebar">
             <RandomNews />
