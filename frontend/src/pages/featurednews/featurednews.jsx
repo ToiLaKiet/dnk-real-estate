@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, use } from 'react';
 import '../../styles/featurednews.css';
-import { mockNews } from '../news/newsData.jsx';
 import { useNavigate } from 'react-router-dom';
-
+import axios from 'axios';
+import { API_URL } from '../../config';
 function FeaturedNews() {
   const [activeTab, setActiveTab] = useState('featured');
   const [articles, setArticles] = useState([]);
@@ -33,10 +33,9 @@ function FeaturedNews() {
       setLoading(true);
       try {
         // Simulating API call with mock data
-        // const response = await axios.get(`${API_URL}/news`);
+        const response = await axios.get(`${API_URL}/news`);
         // For demonstration, we use mockNews directly
-        let filteredArticles = mockNews
-          .filter(n => n.status === 'published')
+        let filteredArticles = response.data
           .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
         if (activeTab === 'hcm') {

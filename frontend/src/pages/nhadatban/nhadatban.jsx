@@ -436,7 +436,7 @@ const [dropdownOptions, setDropdownOptions] = useState({
                     {getCollageImages(post.images).map((img, index) => (
                       <img
                         key={index}
-                        src={img.url}
+                        src={img.image_url}
                         alt={post.title}
                         className={`collage-image collage-image-${index}`}
                         loading="lazy"

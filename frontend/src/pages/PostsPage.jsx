@@ -73,7 +73,6 @@ function PostPage() {
           const favoritePropertyIds = favorite.data.map(item => item.property_id);
           setIsFavorite(favoritePropertyIds.includes(foundPost.property_id));
         }
-        
                 
         setPost(foundPost);
 
@@ -149,7 +148,7 @@ function PostPage() {
 
   // Render media content
   const renderMedia = () => {
-    if (!post?.media || !Array.isArray(post.images) || post.media.images.length === 0) {
+    if (post.images.length === 0) {
       return (
         <div className={styles.noMedia}>
           Không có hình ảnh
@@ -158,7 +157,7 @@ function PostPage() {
     }
 
     const validImages = post.images.filter(img => img && img.image_url);
-    const videoCount = post.videos.videoUrl ? 1 : 0;
+    const videoCount = post.videos?.videoUrl ? 1 : 0;
 
     return (
       <div>
@@ -177,7 +176,7 @@ function PostPage() {
               />
             </div>
           ))}
-          {post.media.videoUrl && (
+          {post.videos?.videoUrl && (
             <div key="video" className={styles.mediaItem}>
               <video
                 src={post.videos.videoUrl}
