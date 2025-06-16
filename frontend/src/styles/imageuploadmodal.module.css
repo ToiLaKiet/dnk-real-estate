@@ -281,3 +281,80 @@
     opacity: 1;
   }
 }
+/* Avatar upload button styles */
+.avatarUploadButton {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 2px dashed #ccc;
+  background: #f9f9f9;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.avatarUploadButton:hover {
+  border-color: #007bff;
+  background: #f0f8ff;
+}
+
+.avatarContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.avatarImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.avatarOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 50%;
+}
+
+.avatarUploadButton:hover .avatarOverlay {
+  opacity: 1;
+}
+
+.avatarPlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.avatarPlusIcon {
+  font-size: 24px;
+  color: #666;
+}
+
+.avatarUploadButton:hover .avatarPlusIcon {
+  color: #007bff;
+}
+
+.avatarOverlay .avatarPlusIcon {
+  color: white;
+  font-size: 20px;
+}
