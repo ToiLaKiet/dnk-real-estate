@@ -5,12 +5,27 @@ import axios from 'axios';
 import styles from '../../styles/PropertyManagement.module.css';
 import { API_URL } from '../../config.js';
 
-
+function getPropertyTypeLabel(type) {
+  switch (type) {
+    case 'sell':
+      return 'Nhà đất bán';
+    case 'rent':
+      return 'Nhà đất cho thuê';
+    case 'project':
+      return 'Dự án';
+    default:
+      return 'Không xác định';
+  }
+}
 const PropertyCard = ({ property }) => {
   const navigate = useNavigate();
-  const formatPrice = (price) => {
-    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
+  const formatPrice = (price,type) => {
+    if (type === 'rent') {
+      return price + ' triệu VNĐ/tháng';
+    }
+    else return price + ' tỷ VNĐ'
   };
+
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -47,15 +62,15 @@ const PropertyCard = ({ property }) => {
   return (
     <div className={styles.pmPropertyCard}>
       <img
-        src={property.images[0]}
+        src={property.images?.[0]?.image_url}
         alt={property.title}
         className={styles.pmPropertyImage}
       />
       <div className={styles.pmPropertyContent}>
         <h3 className={styles.pmPropertyTitle}>{property.title}</h3>
-        <p className={styles.pmPropertyPrice}>{formatPrice(property.price)}</p>
+        <p className={styles.pmPropertyPrice}>{formatPrice(property.price,property.property_type)}</p>
         <p className={styles.pmPropertyAddress}>{property.address}</p>
-        <p className={styles.pmPropertyType}>{property.property_type}</p>
+        <p className={styles.price}>{getPropertyTypeLabel(property.property_type)}</p>
         <span
           className={styles.pmPropertyStatus}
           style={{ backgroundColor: getStatusColor(property.status) }}

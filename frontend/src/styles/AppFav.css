@@ -1,0 +1,286 @@
+.appfav-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: inherit;
+  width: 100%;
+  margin: 30px;
+  padding: 60px 20px 20px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  animation: slide-in 0.8s ease-out;
+  background: rgba(239, 212, 171, 0.80);
+}
+
+.appfav-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.appfav-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 15px;
+  background: #000000;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.appfav-subtitle {
+  font-size: 1.2rem;
+  color: #666;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.appfav-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  width: 100%;
+  max-width: 1400px; /* Adjust as needed */
+  margin: 0 auto 50px auto; /* Center horizontally and add bottom margin */
+}
+.appfav-card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  position: relative;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.appfav-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.appfav-card-image {
+  position: relative;
+  height: 220px;
+  overflow: hidden;
+}
+
+.appfav-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.appfav-card:hover .appfav-card-image img {
+  transform: scale(1.05);
+}
+
+.appfav-card-overlay {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+.appfav-card-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #990000, #cc0000);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 8px rgba(153, 0, 0, 0.3);
+}
+
+.appfav-badge-icon {
+  font-size: 0.8rem;
+  color: #ffeb3b;
+  animation: pulse 2s infinite;
+}
+
+.appfav-card-content {
+  padding: 25px;
+}
+
+.appfav-card-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.appfav-card-details {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.appfav-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.appfav-card-price {
+  font-weight: 700;
+  color: #990000;
+  font-size: 1.2rem;
+}
+
+.appfav-card-area {
+  font-weight: 600;
+  color: #555;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.appfav-card-address {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 15px;
+  font-size: 0.95rem;
+  
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 3rem;
+}
+
+.appfav-address-icon {
+  color: #555;
+  margin-top: 3px;
+}
+
+.appfav-trend {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #28a745;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.appfav-trend-icon {
+  font-size: 0.9rem;
+}
+
+.appfav-card-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #990000, #cc0000);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  box-shadow: 0 4px 12px rgba(153, 0, 0, 0.2);
+}
+
+.appfav-card-button:hover {
+  background: linear-gradient(135deg, #7a0000, #990000);
+  transform: translateX(5px);
+}
+
+.appfav-button-icon {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.3s ease;
+}
+
+.appfav-card-button:hover .appfav-button-icon {
+  transform: translateX(3px);
+}
+
+.appfav-property-type {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.appfav-type-icon {
+  font-size: 0.8rem;
+}
+
+.appfav-loading,
+.appfav-error,
+.appfav-no-data {
+  padding: 40px;
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+.appfav-loading,
+.appfav-no-data {
+  color: #666;
+}
+
+.appfav-error {
+  color: #cc0000;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.2); opacity: 0.7; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes slide-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .appfav-container {
+    padding: 40px 15px;
+    margin: 20px;
+  }
+
+  .appfav-title {
+    font-size: 2rem;
+  }
+
+  .appfav-subtitle {
+    font-size: 1rem;
+  }
+
+  .appfav-content {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .appfav-card-content {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .appfav-card-image {
+    height: 180px;
+  }
+}

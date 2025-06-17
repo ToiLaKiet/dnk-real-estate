@@ -1,0 +1,197 @@
+.property-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: inherit;
+    width: 100%;
+    margin: 30px;
+    padding: 60px 20px 20px;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    animation: slide-in 0.8s ease-out;
+    background:  #f1f1f1;
+  }
+  
+  .property-header {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+  
+  .property-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 15px;
+    background: #000000;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .property-subtitle {
+    font-size: 1.2rem;
+    color: #666;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+  
+  .property-content {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto 50px auto;
+  }
+  
+  .property-main-card {
+    flex:1;
+  }
+  
+  .property-side-cards {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  
+  .property-card {
+    background:#f1f1f1;;
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    position: relative;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+  }
+  
+  .property-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  }
+  
+  .property-main {
+    height: 100%;
+  }
+  
+  .property-card-image {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .property-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Đảm bảo ảnh lấp đầy và phóng to khi nhỏ hơn */
+    transition: transform 0.3s ease;
+  }
+  
+  .property-card:hover .property-card-image img {
+    transform: scale(1.05);
+  }
+  
+  .property-card-info {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+  }
+  
+  .property-card-title-overlay {
+    color: #f1f1f1;
+    font-size: 1.4rem;
+    font-weight: 600;
+    background: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    margin-bottom: 5px;
+  }
+  
+  .property-card-posts-overlay {
+    color: white;
+    font-size: 1rem;
+    font-weight: 500;
+    background: none;
+    padding: 6px 10px;
+    border-radius: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+  
+  .property-main .property-card-image {
+    height: 620px;
+  }
+  
+  .property-side-cards .property-card-image {
+    height: 300px;
+  }
+  
+  .property-loading,
+  .property-error,
+  .property-no-data {
+    padding: 40px;
+    text-align: center;
+    font-size: 1.2rem;
+  }
+  
+  .property-loading,
+  .property-no-data {
+    color: #666;
+  }
+  
+  .property-error {
+    color: #cc0000;
+  }
+  
+  @keyframes slide-in {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  @media (max-width: 768px) {
+    .property-container {
+      padding: 40px 15px;
+      margin: 20px;
+    }
+  
+    .property-title {
+      font-size: 2rem;
+    }
+  
+    .property-subtitle {
+      font-size: 1rem;
+    }
+  
+    .property-content {
+      flex-direction: column;
+      gap: 20px;
+    }
+  
+    .property-main-card,
+    .property-side-cards {
+      width: 100%;
+    }
+  
+    .property-main .property-card-image {
+      height: 250px;
+    }
+  
+    .property-side-cards .property-card-image {
+      height: 180px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .property-main .property-card-image {
+      height: 200px;
+    }
+  
+    .property-side-cards .property-card-image {
+      height: 150px;
+    }
+  }

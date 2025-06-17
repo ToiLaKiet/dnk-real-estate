@@ -24,7 +24,10 @@ import FavoritePosts from './pages/favorite/FavoritePage.jsx';
 import AdminDashboard from './pages/admindashboard/admindashboard.jsx';
 import NotFoundPage from './pages/error/404.jsx';
 import AppBa from './pages/featurednews/AppBa.jsx'; // Import AppBa component
-
+import AppFav from './pages/featurednews/AppFav.jsx';
+import NewsCreate from './components/ui/newscreate/newscreate.jsx';
+import AppFeaturedProp from './pages/featurednews/AppFeaturedProp.jsx';
+import PropertyByLocation from './pages/featurednews/PropertyByLocation.jsx'; // Import PropertyByLocation component
 function App() {
   const seUseCase = {
     all:1,
@@ -74,7 +77,11 @@ function App() {
               </div>
             </div>
             <div className='m-app-container'><FeaturedNews /> </div>
+            <AppFav />
+            <AppFeaturedProp />
+            <PropertyByLocation />
             <AppBa />
+
             <Footer />
           </div>
         }
@@ -94,6 +101,7 @@ function App() {
       <Route path="/favorite" element ={<FavoritePosts/>}/>
       <Route path="/admin" element ={<AdminDashboard/>}/>
       <Route path="*" element={<NotFoundPage />} /> {/* Trang 404 */}
+      <Route path="/news-create" element={<NewsCreate />} /> {/* Trang tạo bài viết mới */}
     </Routes>
     </AuthProvider>
   );

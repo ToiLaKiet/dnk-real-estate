@@ -161,7 +161,7 @@ const ReportDetailModal = ({ report, isOpen, onClose, onDeleteProperty }) => {
                   <h3>Bất động sản bị báo cáo</h3>
                   <div className={styles.rmPropertyCard}>
                     <img 
-                      src={reportedProperty.images?.[0] || '/placeholder-image.jpg'} 
+                      src={reportedProperty.images?.[0].image_url || '/placeholder-image.jpg'} 
                       alt={reportedProperty.title}
                       className={styles.rmPropertyImage}
                     />

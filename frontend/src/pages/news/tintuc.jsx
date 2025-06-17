@@ -251,11 +251,7 @@ function TinTuc() {
                 className={`tintuc-realestate-item ${filterProvince === item.province ? 'tintuc-active' : ''}`}
                 onClick={() => setFilterProvince(item.province)}
               >
-                <img
-                  src={`https://picsum.photos/50/50?random=${item.news_id}`}
-                  alt={item.province}
-                  className="tintuc-realestate-image"
-                />
+               
                 <div className="tintuc-realestate-content">
                   <p>{item.province}</p>
                 </div>
@@ -269,8 +265,8 @@ function TinTuc() {
 
   const HotMarkets = () => {
     const landmarks = [
-      { province: 'Hà Nội', image: 'https://picsum.photos/100/100?random=102', name: 'Hà Nội' },
-      { province: 'TP.HCM', image: 'https://picsum.photos/100/100?random=101', name: 'Tp. HCM' },
+      { province: 'Hà Nội', image: 'https://res.cloudinary.com/df8ry7bhf/image/upload/v1750168697/dia-diem-du-lich-o-ha-noi-1_ezf1pd.jpg', name: 'Hà Nội' },
+      { province: 'TP.HCM', image: 'https://res.cloudinary.com/df8ry7bhf/image/upload/v1750168701/tphcm-co-bao-nhieu-quan-huyen-va-thanh-pho_jqeycu.jpg', name: 'Tp. HCM' },
     ];
 
     return (

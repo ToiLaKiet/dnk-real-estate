@@ -130,7 +130,29 @@ function PostPage() {
       setShowLoginModal(true);
     }
   };
+  function getPropertyTypeLabel(type) {
+    switch (type) {
+      case 'sell':
+        return 'Bán';
+      case 'rent':
+        return 'Cho thuê';
+      case 'project':
+        return 'Dự án';
+      default:
+        return 'Không xác định';
+    }
+  }
 
+  function getStatusLabel(type) {
+    switch (type) {
+      case 'available':
+        return 'Có sẵn';
+      default:
+        return 'Không xác định';
+    }
+  }
+  
+  
   // Handle report post action
   const handleReport = () => {
     console.log('handleReport: user=', user, 'isLoading=', isLoading);
@@ -157,7 +179,7 @@ function PostPage() {
     }
 
     const validImages = post.images.filter(img => img && img.image_url);
-    const videoCount = post.videos?.videoUrl ? 1 : 0;
+    const videoCount = post.videos[0]?.video_url ? 1 : 0;
 
     return (
       <div>
@@ -176,15 +198,15 @@ function PostPage() {
               />
             </div>
           ))}
-          {post.videos?.videoUrl && (
+          {post.videos[0]?.video_url && (
             <div key="video" className={styles.mediaItem}>
               <video
-                src={post.videos.videoUrl}
+                src={post.videos[0]?.video_url}
                 controls
                 className={styles.mediaVideo}
                 title="Video bất động sản"
                 onError={(e) => {
-                  console.warn(`Không tải được video: ${post.media.videoUrl}`);
+                  console.warn(`Không tải được video: ${post.videos[0].videoUrl}`);
                 }}
               />
             </div>
@@ -200,7 +222,7 @@ function PostPage() {
 
   // Render location information
   const renderLocation = () => {
-    return post.address.displayAddress || 'Thông tin vị trí không khả dụng';
+    return post.address || 'Thông tin vị trí không khả dụng';
   };
 
   // Format price based on type
@@ -208,13 +230,10 @@ function PostPage() {
     if (!price || typeof price !== 'number' || price <= 0 || isNaN(price)) {
       return 'Liên hệ để biết giá';
     }
-    if (type === 'sell') {
-      if (price >= 1e9) {
-        return `${(price / 1e9).toFixed(1)} tỷ VND`;
-      }
-      return `${(price).toFixed(1)} triệu VND`;
+    if (type === 'sell' || type === 'project') {
+      return `${price.toLocaleString()} tỷ VND`;
     } else {
-      return `${(price / 1e6).toFixed(1)} triệu/tháng`;
+      return `${price.toLocaleString()} triệu VND/ tháng`;
     }
   };
 
@@ -263,7 +282,7 @@ function PostPage() {
                   <p className={styles.summary}>{renderLocation()}</p>
                   <div className={styles.priceArea}>
                     <p className={styles.price}>
-                      <strong>Giá:</strong> {formatPrice(post.price, post.type)}
+                      <strong>Giá:</strong> {formatPrice(post.price, post.property_type)}
                     </p>
                     <p className={styles.area}>
                       <strong>Diện tích:</strong> {post.area ? `${post.area} m²` : 'N/A'}
@@ -279,35 +298,35 @@ function PostPage() {
                   <div className={styles.featuresGrid}>
                     <div className={styles.featureItem}>
                       <FontAwesomeIcon icon={faHome} className={styles.icon} />
-                      <strong>Loại bất động sản:</strong> {post.property_type || 'N/A'}
+                      <strong>Loại bất động sản:</strong> {getPropertyTypeLabel(post.property_type) || 'N/A'}
                     </div>
                     <div className={styles.featureItem}>
                       <FontAwesomeIcon icon={faTag} className={styles.icon} />
-                      <strong>Trạng thái:</strong> {post.status || 'N/A'}
+                      <strong>Trạng thái:</strong> {getStatusLabel(post.status) || 'N/A'}
                     </div>
                     <div className={styles.featureItem}>
                       <FontAwesomeIcon icon={faFileContract} className={styles.icon} />
-                      <strong>Pháp lý:</strong> {post.features.legalDocuments || 'N/A'}
+                      <strong>Pháp lý:</strong> {post.features?.find(f => f.feature_name === 'legalDocuments')?.feature_value || 'N/A'}
                     </div>
                     <div className={styles.featureItem}>
                       <FontAwesomeIcon icon={faBed} className={styles.icon} />
-                      <strong>Phòng ngủ:</strong> {post.features.bedrooms || 'N/A'}
+                      <strong>Phòng ngủ:</strong> {post.features?.find(f => f.feature_name === 'bedrooms')?.feature_value || 'N/A'}
                     </div>
                     <div className={styles.featureItem}>
                       <FontAwesomeIcon icon={faBath} className={styles.icon} />
-                      <strong>Phòng tắm:</strong> {post.features.bathrooms || 'N/A'}
+                      <strong>Phòng tắm:</strong> {post.features?.find(f => f.feature_name === 'bathrooms')?.feature_value || 'N/A'}
                     </div>
                     <div className={styles.featureItem}>
                       <FontAwesomeIcon icon={faCouch} className={styles.icon} />
-                      <strong>Nội thất:</strong> {post.features.furniture || 'N/A'}
+                      <strong>Nội thất:</strong> {post.features?.find(f => f.feature_name === 'furniture')?.feature_value || 'N/A'}
                     </div>
                     <div className={styles.featureItem}>
                       <FontAwesomeIcon icon={faCompass} className={styles.icon} />
-                      <strong>Hướng nhà:</strong> {post.features.houseDirection || 'N/A'}
+                      <strong>Hướng nhà:</strong> {post.features?.find(f => f.feature_name === 'houseDirection')?.feature_value || 'N/A'}
                     </div>
                     <div className={styles.featureItem}>
                       <FontAwesomeIcon icon={faWind} className={styles.icon} />
-                      <strong>Hướng ban công:</strong> {post.features.balconyDirection || 'N/A'}
+                      <strong>Hướng ban công:</strong> {post.features?.find(f => f.feature_name === 'balconyDirection')?.feature_value || 'N/A'}
                     </div>
                   </div>
                 </div>

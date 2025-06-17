@@ -10,8 +10,11 @@ import { API_URL } from '../../config.js';
 
 const FavoriteCard = ({ post, index }) => {
   const navigate = useNavigate();
-  const formatPrice = (price) => {
-    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
+  const formatPrice = (price,type) => {
+    if (type === 'rent') {
+      return price + ' triệu VNĐ/tháng';
+    }
+    else return price + ' tỷ VNĐ'
   };
 
   const getStatusColor = (status) => {
@@ -32,7 +35,7 @@ const FavoriteCard = ({ post, index }) => {
     <div className={`${styles.fpFavoriteCard} ${styles.slideUp}`} style={{ transitionDelay: `${index * 0.1}s` }}>
       <div className={styles.fpFavoriteImageWrapper}>
         <img
-          src={post.images && post.images[0] ? post.images[0] : 'https://via.placeholder.com/300'}
+          src={post.images?.[0].image_url}
           alt={post.title}
           className={styles.fpFavoriteImage}
         />

@@ -114,7 +114,7 @@ function SearchEngine({ useCase }) {
     }
     const text = keyword.trim();
     const searchData = {
-      searchType: searchType === 'sell' ? 'nhadatban' : searchType === 'rent' ? 'nhadatchothue' : 'duan',
+      searchType: searchType,
       text,
       propertyType,
       price: `${priceRange[0]}-${priceRange[1]}`,

@@ -1,0 +1,332 @@
+.appfeatured-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: inherit;
+  width: 100%;
+  margin: 0;
+  padding: 30px; /* Ghi đè padding trước đó để đảm bảo không có padding */
+  font-family: 'Be Vietnam Pro', sans-serif;
+  animation: featured-slide-in 0.5s ease-out;
+  background: #f1f1f1;
+  box-sizing: border-box;
+}
+
+.appfeatured-header {
+  text-align: center;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.appfeatured-title {
+  font-size: clamp(1.8rem, 5vw, 2.2rem);
+  font-weight: 700;
+  color: #a16207;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.appfeatured-title-icon {
+  color: #eab308;
+  font-size: clamp(1.4rem, 4vw, 1.8rem);
+}
+
+.appfeatured-subtitle {
+  font-size: clamp(0.95rem, 3vw, 1.1rem);
+  color: #666;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.4;
+}
+
+.appfeatured-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  width: 100%;
+  padding: 20px;
+  margin-bottom: 40px;
+  position: relative;
+  justify-content: center;
+}
+
+.appfeatured-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  border: 1px solid #eaeaea;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Disable hover on touch devices */
+@media (hover: none) {
+  .appfeatured-card:hover {
+    transform: none;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  }
+  .appfeatured-card:hover .appfeatured-card-image img {
+    transform: none;
+  }
+  .appfeatured-card-button:hover {
+    background: #eab308;
+    transform: none;
+  }
+}
+
+.appfeatured-card-image {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+}
+
+.appfeatured-image-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.3));
+  z-index: 1;
+}
+
+.appfeatured-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: translate3d(0, 0, 0);
+  transition: transform 0.4s ease;
+}
+
+.appfeatured-card-overlay {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+}
+
+.appfeatured-card-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: #eab308;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.appfeatured-badge-icon {
+  font-size: 0.8rem;
+  color: white;
+}
+
+.appfeatured-card-content {
+  padding: 20px;
+}
+
+.appfeatured-card-title {
+  font-size: clamp(1.1rem, 3.5vw, 1.3rem);
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.appfeatured-card-details {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.appfeatured-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.appfeatured-detail-icon {
+  color: #eab308;
+}
+
+.appfeatured-card-price {
+  font-weight: 700;
+  color: #a16207;
+  font-size: clamp(1rem, 3vw, 1.2rem);
+}
+
+.appfeatured-card-area {
+  font-weight: 600;
+  color: #555;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.appfeatured-card-address {
+  color: #666;
+  line-height: 1.4;
+  margin-bottom: 12px;
+  font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 3rem;
+}
+
+.appfeatured-trend {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #eab308;
+  font-size: clamp(0.75rem, 2.5vw, 0.85rem);
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.appfeatured-trend-icon {
+  font-size: clamp(0.75rem, 2.5vw, 0.85rem);
+}
+
+.appfeatured-card-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #eab308;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  min-height: 44px; /* Accessibility for touch */
+}
+
+.appfeatured-button-icon {
+  font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+}
+
+.appfeatured-property-type {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 16px;
+  font-size: clamp(0.7rem, 2vw, 0.8rem);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  z-index: 2;
+}
+
+.appfeatured-type-icon {
+  font-size: clamp(0.7rem, 2vw, 0.8rem);
+}
+
+.appfeatured-loading,
+.appfeatured-error,
+.appfeatured-no-data {
+  padding: 30px;
+  text-align: center;
+  font-size: clamp(0.95rem, 3vw, 1.1rem);
+}
+
+.appfeatured-loading,
+.appfeatured-no-data {
+  color: #666;
+}
+
+.appfeatured-error {
+  color: #cc0000;
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .appfeatured-container,
+  .appfeatured-card,
+  .appfeatured-card-image img,
+  .appfeatured-card-button {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1024px) {
+  .appfeatured-content {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    padding: 15px;
+  }
+  .appfeatured-card-image {
+    height: 180px;
+  }
+}
+
+@media (max-width: 768px) {
+  .appfeatured-container {
+    padding: 20px 10px;
+    margin: 10px auto;
+  }
+  .appfeatured-content {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    padding: 10px;
+    gap: 15px;
+  }
+  .appfeatured-card-image {
+    height: 160px;
+  }
+  .appfeatured-card-content {
+    padding: 15px;
+  }
+  .appfeatured-card-details {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .appfeatured-container {
+    padding: 15px 5px;
+    margin: 5px auto;
+  }
+  .appfeatured-content {
+    grid-template-columns: 1fr;
+    padding: 5px;
+    gap: 10px;
+  }
+  .appfeatured-card-image {
+    height: 140px;
+  }
+  .appfeatured-card-content {
+    padding: 12px;
+  }
+  .appfeatured-card-title {
+    white-space: normal;
+    line-height: 1.3;
+  }
+}

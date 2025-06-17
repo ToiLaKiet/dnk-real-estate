@@ -31,11 +31,12 @@ const ImageUploadModal = () => {
 
   // Initialize images
   const [images, setImages] = useState(() => {
-    const stateImages = location?.state?.images;
+    const stateImages = location?.state?.formData?.media?.images;
+    console.log('State images:', location?.state);
     if (stateImages && Array.isArray(stateImages)) {
       return stateImages.map((img, index) => ({
         id: `existing-${index}`,
-        preview: img.image_url,
+        preview: img,
         isExisting: true,
       }));
     }
@@ -73,6 +74,7 @@ const ImageUploadModal = () => {
 
   // Authentication
   useEffect(() => {
+    console.log('Checking authentication status...',location);
     const user = localStorage.getItem('user');
     if (!user) {
       navigate('/*');

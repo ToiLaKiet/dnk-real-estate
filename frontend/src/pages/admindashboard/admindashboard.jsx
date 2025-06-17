@@ -15,23 +15,26 @@ import { API_URL } from '../../config.js';
 
 function AdminDashboard() {
   const [propertiesCount, setPropertiesCount] = useState(0);
+  const [userCount, setUserCount] = useState(0); // For future user count
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [chartsData, setChartsData] = useState(); // For future chart data
 
   useEffect(() => {
-    // const user = localStorage.getItem('user');
-    // if (!user || JSON.parse(user).role !== 'admin') {
-    //   window.location.href = '/*'; // Redirect if not admin
-    //   return;
-    // }
+    const user = localStorage.getItem('user');
+    if (!user || JSON.parse(user).role !== 'admin') {
+      window.location.href = '/*'; // Redirect if not admin
+      return;
+    }
     const fetchData = async () => {
       setLoading(true);
       try {
         const response = await axios.get(`${API_URL}/properties`);
         console.log('Properties response:', response);
         const properties = response.data;
+        const response_user = await axios.get(`${API_URL}/users/list`);
+        setUserCount(response_user.data.length); 
         setPropertiesCount(properties.length);
         //Get charts from backend
         const chartResponse = await axios.get(`${API_URL}/stats/chart`);
@@ -134,10 +137,10 @@ function AdminDashboard() {
                       ) : error ? (
                         <p className={styles.userdashboardError}>{error}</p>
                       ) : (
-                        <div>
+                        <div className={styles.statLabel}>
                           Tổng số người dùng 
                           <br></br>
-                          <div className={styles.adminstrongbox}><strong className={styles.big}>{propertiesCount}</strong></div>
+                          <div className={styles.adminstrongbox}><strong className={styles.big}>{userCount}</strong></div>
                         </div>
                       )}
                       

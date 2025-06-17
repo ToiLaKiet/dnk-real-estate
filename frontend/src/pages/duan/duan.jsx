@@ -200,14 +200,16 @@ const [dropdownOptions, setDropdownOptions] = useState({
     const fetchPosts = async () => {
       try {
         const response = await axios.get(`${API_URL}/properties`);
-        console.log('Posts fetched:', response.data);
-        setPosts(response.data);
+        const availablePosts = response.data.filter(post => post.status === 'available');
+        console.log('Available posts fetched:', availablePosts);
+        setPosts(availablePosts);
       } catch (error) {
         console.error('Error fetching posts:', error);
       }
     };
     fetchPosts();
   }, []);
+  
   // Xử lý filter và phân trang
   const { displayPosts, totalPages } = useMemo(() => {
     let filtered = posts.filter(post => post.property_type === 'project'); // doi thang nay thanh 'sell'
@@ -338,13 +340,13 @@ const [dropdownOptions, setDropdownOptions] = useState({
   };
 
   // Get collage images
-  const getCollageImages = (images) => {
+  const getGridImages = (images) => {
     if (!images || images.length === 0) {
       return [{ url: 'https://via.placeholder.com/600x400', isPlaceholder: true }];
     }
     const primary = images.find(img => img.is_primary);
     const others = images.filter(img => !img.is_primary);
-    const selected = primary ? [primary, ...others.slice(0, 4)] : images.slice(0, 5);
+    const selected = primary ? [primary, ...others.slice(0, 3)] : images.slice(0, 4);
     return selected;
   };
 
@@ -432,14 +434,14 @@ const [dropdownOptions, setDropdownOptions] = useState({
                 className="post-item"
                 onClick={() => handlePostClick(post.property_id)}
               >
-                <div className="post-media">
-                  <div className={`media-collage media-collage-${getCollageImages(post.images).length}`}>
-                    {getCollageImages(post.images).map((img, index) => (
+               <div className="post-media">
+                  <div className="media-grid">
+                    {getGridImages(post.images).map((img, index) => (
                       <img
                         key={index}
                         src={img.image_url}
                         alt={post.title}
-                        className={`collage-image collage-image-${index}`}
+                        className="grid-image"
                         loading="lazy"
                       />
                     ))}
@@ -449,7 +451,7 @@ const [dropdownOptions, setDropdownOptions] = useState({
                   <h3>{post.title}</h3>
                   <div className="post-details-row">
                     <div className="post-details">
-                      <span>Giá: {post.price} tỷ</span>
+                      <span>Giá: {(post.price).toLocaleString()} tỷ</span>
                       <span>Diện tích: {post.area}m²</span>
                     </div>
                     <div className="post-features">

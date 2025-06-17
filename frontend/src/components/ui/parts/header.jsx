@@ -9,7 +9,7 @@ import styles from '../../../styles/header.module.css';
 import PostCreate from '../postcreate/postcreate.jsx';
 import { AuthContext } from '../context/AuthContext.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart, faPlus, faBars } from '@fortawesome/free-solid-svg-icons';
+import { faHeart, faPlus, faBars, faNewspaper } from '@fortawesome/free-solid-svg-icons';
 
 function Header({ logoWidth = 180, logoHeight = 72 }) {
   const { isAuthenticated, user, logout } = useContext(AuthContext);
@@ -97,13 +97,23 @@ function Header({ logoWidth = 180, logoHeight = 72 }) {
             <Link to="/favorite" className={styles.favouriteIcon}>
               <FontAwesomeIcon icon={faHeart} />
             </Link>
-            <button
+            {user?.role === 'admin' && (
+              <button
+                  className={styles.postNewsButton}
+                  onClick={() => navigate('/news-create')}
+                >
+                  <FontAwesomeIcon icon={faNewspaper} className={styles.postNewsButtonIcon} />
+                  <span className={styles.postButtonText}>Đăng tin tức</span>
+                </button>
+            )}
+            {user?.role !=='buyer' && (<button
               className={styles.postButton}
               onClick={() => navigate('/post-create')}
             >
               <FontAwesomeIcon icon={faPlus} className={styles.postButtonIcon} />
               <span className={styles.postButtonText}>Đăng tin</span>
             </button>
+            )}
             <div className={styles.avatarContainer} ref={dropdownRef}>
               <img
                 src={user?.avatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'}

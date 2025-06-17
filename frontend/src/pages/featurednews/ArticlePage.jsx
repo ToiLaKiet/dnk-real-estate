@@ -77,8 +77,8 @@ function ArticlePage() {
             <img src={article.thumbnail_url} alt={article.title} className={styles.image} />
           </div>
         </Slider>
-        <div className={styles.content}>
-          <p>{article.content}</p>
+        <div className={styles.content} style={{ whiteSpace: 'pre-wrap' }}>
+          {article.content}
         </div>
       </main>
       <Footer />

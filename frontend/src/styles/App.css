@@ -15,16 +15,28 @@
   animation: slide-in 0.5s ease-in;
 }
 
-.m-app-container{
+/* Cập nhật .m-app-container */
+.m-app-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
   background: #F1F1F1;
-  min-height: 100vh;
-  padding-top:70px;
+  min-height: 70vh; /* Giữ min-height */
+  padding-top: 70px;
   height: auto;
+  /* Bỏ max-height: 300px để tránh giới hạn chiều cao */
+  margin: 0 auto; /* Căn giữa */
+  padding-bottom:70px;
   animation: slide-in 0.5s ease-in;
+  box-sizing: border-box;
+}
+
+.m-app-container > * {
+  height: 80%; /* Chiều cao 80% của parent */
+  padding: 0; /* Không có padding */
+  box-sizing: border-box;
+  min-height: 240px; /* Đảm bảo chiều cao tối thiểu hợp lý (80% của 300px) */
 }
 
 .modal-overlay-create{
@@ -254,6 +266,7 @@
   }
 }
 
+/* Cập nhật .appba-container */
 .appba-container {
   display: flex;
   flex-direction: column;
@@ -261,9 +274,18 @@
   max-width: inherit;
   width: 100%;
   margin: 30px;
-  padding: 60px 20px 20px;
+  padding: 0; /* Không có padding theo yêu cầu */
   font-family: 'Be Vietnam Pro', sans-serif;
   animation: slide-in 0.8s ease-out;
+  background: white;
+  min-height: 300px; /* Đảm bảo min-height tương tự */
+  box-sizing: border-box;
+}
+
+/* Nếu cần padding cho nội dung bên trong, áp dụng cho phần tử con cụ thể */
+.appba-content,
+.appfeatured-content {
+  padding: 20px; /* Giữ padding cho nội dung bên trong */
 }
 
 .appba-header {

@@ -4,13 +4,28 @@ import axios from 'axios';
 import styles from '../../styles/AdminPropertyManagement.module.css';
 import { API_URL } from '../../config.js';
 // Property Detail Modal Component
+function getPropertyTypeLabel(type) {
+  switch (type) {
+    case 'sell':
+      return 'Nhà đất bán';
+    case 'rent':
+      return 'Nhà đất cho thuê';
+    case 'project':
+      return 'Dự án';
+    default:
+      return 'Không xác định';
+  }
+}
 const PropertyDetailModal = ({ property, isOpen, onClose, onApprove, onReject }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   if (!isOpen || !property) return null;
 
-  const formatPrice = (price) => {
-    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
+  const formatPrice = (price,type) => {
+    if (type === 'rent') {
+      return price + ' triệu VNĐ/tháng';
+    }
+    else return price + ' tỷ VNĐ'
   };
 
   const getFeatureValue = (featureName) => {
@@ -39,7 +54,7 @@ const PropertyDetailModal = ({ property, isOpen, onClose, onApprove, onReject })
         
         <div className={styles.pmDetailHeader}>
           <h2 className={styles.pmDetailTitle}>{property.title}</h2>
-          <span className={styles.pmDetailPrice}>{formatPrice(property.price)}</span>
+          <span className={styles.pmDetailPrice}>{formatPrice(property.price,property.property_type)}</span>
         </div>
 
         <div className={styles.pmDetailBody}>
@@ -48,7 +63,7 @@ const PropertyDetailModal = ({ property, isOpen, onClose, onApprove, onReject })
             <div className={styles.pmImageGallery}>
               <div className={styles.pmImageContainer}>
                 <img 
-                  src={property.images[currentImageIndex]} 
+                  src={property.images[currentImageIndex].image_url} 
                   alt={`${property.title} - ${currentImageIndex + 1}`}
                   className={styles.pmDetailImage}
                 />
@@ -68,7 +83,7 @@ const PropertyDetailModal = ({ property, isOpen, onClose, onApprove, onReject })
                   {property.images.map((image, index) => (
                     <img
                       key={index}
-                      src={image}
+                      src={image.image_url}
                       alt={`Thumbnail ${index + 1}`}
                       className={`${styles.pmThumbnail} ${
                         index === currentImageIndex ? styles.pmThumbnailActive : ''
@@ -194,8 +209,11 @@ const PropertyDetailModal = ({ property, isOpen, onClose, onApprove, onReject })
 };
 
 const PropertyCard = ({ property, onApprove, onReject, onViewDetails }) => {
-  const formatPrice = (price) => {
-    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
+  const formatPrice = (price,type) => {
+    if (type === 'rent') {
+      return price + ' triệu VNĐ/tháng';
+    }
+    else return price + ' tỷ VNĐ'
   };
 
   const getStatusColor = (status) => {
@@ -234,15 +252,15 @@ const PropertyCard = ({ property, onApprove, onReject, onViewDetails }) => {
   return (
     <div className={styles.pmPropertyCard}>
       <img
-        src={property.images?.[0] || '/placeholder-image.jpg'}
+        src={property.images?.[0].image_url || '/placeholder-image.jpg'}
         alt={property.title}
         className={styles.pmPropertyImage}
       />
       <div className={styles.pmPropertyContent}>
         <h3 className={styles.pmPropertyTitle}>{property.title}</h3>
-        <p className={styles.pmPropertyPrice}>{formatPrice(property.price)}</p>
+        <p className={styles.pmPropertyPrice}>{formatPrice(property.price,property.property_type)}</p>
         <p className={styles.pmPropertyAddress}>{property.address}</p>
-        <p className={styles.pmPropertyType}>{property.property_type}</p>
+        <p className={styles.price}>{getPropertyTypeLabel(property.property_type)}</p>
         <span
           className={styles.pmPropertyStatus}
           style={{ backgroundColor: getStatusColor(property.status) }}
@@ -266,22 +284,6 @@ const PropertyCard = ({ property, onApprove, onReject, onViewDetails }) => {
                 onClick={() => onApprove(property.property_id)}
               >
                 Duyệt
-              </button>
-              <button
-                className={styles.pmRejectButton}
-                onClick={() => onReject(property.property_id)}
-              >
-                Từ chối
-              </button>
-            </>
-          )}
-          {property.status !== 'pending' && property.status !== 'available' && (
-            <>
-              <button
-                className={styles.pmApproveButton}
-                onClick={() => onApprove(property.property_id)}
-              >
-                Mở khoá tin đăng 
               </button>
               <button
                 className={styles.pmRejectButton}

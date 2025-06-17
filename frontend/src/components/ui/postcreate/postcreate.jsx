@@ -30,6 +30,7 @@ import {
   faBuilding
 } from '@fortawesome/free-solid-svg-icons';
 
+
 // Component chính để tạo bài đăng bất động sản
 const PostCreate = () => {
   const navigate = useNavigate();
@@ -70,6 +71,10 @@ const PostCreate = () => {
     if (!user) {
       // Nếu chưa đăng nhập, chuyển hướng về trang đăng nhập
       setIsModalOpen(true);
+    }
+    if(user.role ==='buyer'){
+      alert('Bạn không có quyền truy cập vào trang này. Vui lòng đăng nhập với tư cách người bán để tiếp tục.');
+      navigate('/home');
     }
     //to check whether there is any passed data from previous component
     if (locate.state!=null) {
@@ -138,8 +143,22 @@ const PostCreate = () => {
       }));
     } else {
       // Ép kiểu nếu là trường số
-      const parsedValue = type === 'number' ? parseInt(value, 10) || 0 : value;
-  
+      const parsedValue = type === 'number' ? parseInt(value.replace(/\s/g, ''), 10) || 0 : value;
+        // Nếu loại bài đăng là bán hoặc dự án, giá trị price sẽ là tỷ VND
+        // if (name === 'price') {
+        //   if(formData.type === 'sell' || formData.type === 'project'){
+        //     setFormData((prev) => ({
+        //       ...prev,
+        //       [name]: parsedValue * 1e9 // Chuyển đổi sang tỷ VND
+        //     }));
+        //   }
+        //   else{
+        //     setFormData((prev) => ({
+        //       ...prev,
+        //       [name]: parsedValue * 1e6 // Chuyển đổi sang triệu VNĐ
+        //     }));
+        //   }
+        // }
       setFormData((prev) => ({
         ...prev,
         [name]: parsedValue
@@ -330,24 +349,27 @@ const PostCreate = () => {
               <input
                 type="number"
                 name="area"
-                value={formData.area}
+                value={formData.area || null}
                 onChange={handleChange}
                 className={styles.formInput}
                 required
               />
             </label>
-            <label className={styles.formLabel}>
-              <FontAwesomeIcon icon={faMoneyBill} className={styles.formLabelIcon} />
-              Mức giá (VND)
-              <input
-                type="number"
-                name="price"
-                value={formData.price}
-                onChange={handleChange}
-                className={styles.formInput}
-                required
-              />
-            </label>
+          <label className={styles.formLabel}>
+            <FontAwesomeIcon icon={faMoneyBill} className={styles.formLabelIcon} />
+            {formData.type === 'sell' || formData.type === 'project' 
+              ? 'Mức giá (Đơn vị: tỷ VND). Ví dụ : 1 (tỷ VND)' 
+              : 'Mức giá (Đơn vị: triệu VNĐ/tháng). Ví dụ: 10 (triệu VNĐ/tháng)'}
+            <input
+              type="number"
+              name="price"
+              value={formData.price || null}
+              onChange={handleChange}
+              className={styles.formInput}
+              step="any"
+              required
+            />
+          </label>
           </div>
 
           {/* Box 4: Thông tin khác */}
@@ -381,8 +403,8 @@ const PostCreate = () => {
                 required
               >
                 <option value="">Chọn loại</option>
-                <option value="full">Đầy đủ</option>
-                <option value="none">Không</option>
+                <option value="Đầy đủ">Đầy đủ</option>
+                <option value="Không">Không</option>
               </select>
             </label>
             <label className={styles.formLabel}>
