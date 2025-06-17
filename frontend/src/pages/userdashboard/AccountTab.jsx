@@ -32,7 +32,7 @@ const AccountTab = () => {
   };
 
   // Handle Cloudinary upload
-  const handleCloudinaryUpload = useCallback((error, result) => {
+  const handleCloudinaryUpload = useCallback(async (error, result) => {
     setUploading(true);
     console.log('handleCloudinaryUpload:', { error, result });
     if (error) {
@@ -44,10 +44,33 @@ const AccountTab = () => {
     if (result) {
       // Trường hợp upload một ảnh (avatar)
       if (!Array.isArray(result) && result.secure_url) {
+        const newAvatarUrl = result.secure_url;
+        
+        // Cập nhật formData trước
         setFormData((prev) => ({
           ...prev,
-          avatar: result.secure_url,
+          avatar: newAvatarUrl,
         }));
+        
+        try {
+          // Gửi ngay gói tin cập nhật avatar
+          const token = localStorage.getItem('token');
+          const response = await axios.put(`${API_URL}/users/me`, {
+            avatar: newAvatarUrl
+          }, {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          
+          console.log('Avatar update response:', response.data);
+          alert('Cập nhật avatar thành công! Reload trang để thấy thay đổi.');
+        } catch (updateError) {
+          console.error('Error updating avatar:', updateError);
+          alert('Lỗi khi cập nhật avatar');
+        }
+        
         console.log('Cloudinary upload result (single):', result);
       }
       else {

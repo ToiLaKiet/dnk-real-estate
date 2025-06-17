@@ -5,6 +5,7 @@
     margin: 0 auto;
     padding: 40px 20px;
     font-family: 'Be Vietnam Pro', sans-serif;
+    justify-content: center;
     animation: newsCreatorSlideIn 0.5s ease-out;
   }
   

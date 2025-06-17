@@ -1,9 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useAuth } from '../components/ui/context/AuthContext.jsx';
 import { useParams } from 'react-router-dom';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 import Header from '../components/ui/parts/header.jsx';
 import Footer from '../components/ui/parts/footer.jsx';
 import GoogleMapComponent from '../components/ui/googlemap.jsx';
@@ -40,6 +37,7 @@ function PostPage() {
   const { user, isLoading } = useAuth();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [reportsPostsModal, setReportsPostsModal] = useState(false);
+  const [currentMediaIndex, setCurrentMediaIndex] = useState(0);
 
   useEffect(() => {
     const loadPost = async () => {
@@ -55,15 +53,14 @@ function PostPage() {
         const foundPost = res.data;
         console.log('Post data:', foundPost);
         
-        if(foundPost.status !== 'available') {
+        if (foundPost.status !== 'available') {
           throw new Error(`Tin đăng "${id}" đã không còn khả dụng`);
         }
         if (!foundPost) {
           throw new Error(`Không tìm thấy tin đăng với ID ${postId}`);
         }
         
-        // Assuming the response looks like: { data: [ { property_id: 1 }, { property_id: 2 }, ... ] }
-        if(user) {
+        if (user) {
           const favorite = await axios.get(`${API_URL}/favorites/`, {
             headers: {
               'Content-Type': 'application/json',
@@ -85,44 +82,48 @@ function PostPage() {
     };
 
     loadPost();
-  }, [id]);
+  }, [id, user]);
 
-  const sliderSettings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    arrows: true,
-    autoplay: true,
+  // Define mediaItems using useMemo to avoid recalculating unnecessarily
+  const mediaItems = useMemo(() => {
+    const validImages = post?.images?.filter(img => img && img.image_url) || [];
+    const validVideos = post?.videos?.[0]?.video_url ? [post.videos[0]] : [];
+    return [...validImages, ...validVideos];
+  }, [post]);
+
+  const prevMedia = () => {
+    setCurrentMediaIndex((prev) => (prev === 0 ? mediaItems.length - 1 : prev - 1));
   };
 
-  // Handle favorite and report actions
+  const nextMedia = () => {
+    setCurrentMediaIndex((prev) => (prev === mediaItems.length - 1 ? 0 : prev + 1));
+  };
+
   const handleFavorite = async () => {
     if (user) {
-      try{
-        if(!isFavorite){
-        await axios.post(`${API_URL}/favorites`,{
-          property_id:id
-        },{
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${localStorage.getItem('token')}`, // Assuming user has a token
-          },
-        });
-      } else {
-        await axios.delete(`${API_URL}/favorites/${id}`, {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${localStorage.getItem('token')}`, // Assuming user has a token
-          },
-        });
-      }
+      try {
+        if (!isFavorite) {
+          await axios.post(
+            `${API_URL}/favorites`,
+            { property_id: id },
+            {
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+              },
+            }
+          );
+        } else {
+          await axios.delete(`${API_URL}/favorites/${id}`, {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+          });
+        }
         console.log(`User ${user.user_id} ${isFavorite ? 'removed' : 'added'} post ${post.property_id} to favorites`);
-        // Here you would typically make an API call to update the favorite status
         setIsFavorite(!isFavorite);
-      }
-      catch(err){
+      } catch (err) {
         console.error('Error updating favorite status:', err);
       }
     } else {
@@ -130,30 +131,7 @@ function PostPage() {
       setShowLoginModal(true);
     }
   };
-  function getPropertyTypeLabel(type) {
-    switch (type) {
-      case 'sell':
-        return 'Bán';
-      case 'rent':
-        return 'Cho thuê';
-      case 'project':
-        return 'Dự án';
-      default:
-        return 'Không xác định';
-    }
-  }
 
-  function getStatusLabel(type) {
-    switch (type) {
-      case 'available':
-        return 'Có sẵn';
-      default:
-        return 'Không xác định';
-    }
-  }
-  
-  
-  // Handle report post action
   const handleReport = () => {
     console.log('handleReport: user=', user, 'isLoading=', isLoading);
     if (isLoading) {
@@ -168,64 +146,93 @@ function PostPage() {
     setReportsPostsModal(true);
   };
 
-  // Render media content
   const renderMedia = () => {
-    if (post.images.length === 0) {
+    if (!mediaItems.length) {
       return (
         <div className={styles.noMedia}>
-          Không có hình ảnh
+          Không có hình ảnh hoặc video
         </div>
       );
     }
 
-    const validImages = post.images.filter(img => img && img.image_url);
-    const videoCount = post.videos[0]?.video_url ? 1 : 0;
+    const currentMedia = mediaItems[currentMediaIndex];
 
     return (
-      <div>
-        <Slider {...sliderSettings}>
-          {validImages.map((img, index) => (
-            <div key={img.image_url || `image-${index}`} className={styles.mediaItem}>
-              <img
-                src={img.image_url || img.url }
-                alt={img.caption || `Hình ảnh ${index + 1}`}
-                className={styles.mediaImage}
-                onError={(e) => {
-                  console.warn(`Không tải được hình ảnh: ${img.url}`);
-                  e.target.src = 'https://i.pravatar.cc/150?u=1';
-                  e.target.alt = 'Hình ảnh không khả dụng';
-                }}
-              />
-            </div>
-          ))}
-          {post.videos[0]?.video_url && (
-            <div key="video" className={styles.mediaItem}>
-              <video
-                src={post.videos[0]?.video_url}
-                controls
-                className={styles.mediaVideo}
-                title="Video bất động sản"
-                onError={(e) => {
-                  console.warn(`Không tải được video: ${post.videos[0].videoUrl}`);
-                }}
-              />
-            </div>
+      <div className={styles.mediaGallery}>
+        <div className={styles.mediaContainer}>
+          {currentMedia.image_url ? (
+            <img
+              src={currentMedia.image_url}
+              alt={currentMedia.caption || `Hình ảnh ${currentMediaIndex + 1}`}
+              className={styles.detailImage}
+              loading="lazy"
+              onError={(e) => {
+                console.warn(`Không tải được hình ảnh: ${currentMedia.image_url}`);
+                e.target.src = 'https://i.pravatar.cc/150?u=1';
+                e.target.alt = 'Hình ảnh không khả dụng';
+              }}
+            />
+          ) : (
+            <video
+              src={currentMedia.video_url}
+              controls
+              className={styles.detailVideo}
+              title="Video bất động sản"
+              onError={(e) => {
+                console.warn(`Không tải được video: ${currentMedia.video_url}`);
+              }}
+            />
           )}
-        </Slider>
-        <br />
+          {mediaItems.length > 1 && (
+            <>
+              <button
+                className={styles.mediaNavPrev}
+                onClick={prevMedia}
+                aria-label="Ảnh hoặc video trước đó"
+              >
+                ‹
+              </button>
+              <button
+                className={styles.mediaNavNext}
+                onClick={nextMedia}
+                aria-label="Ảnh hoặc video tiếp theo"
+              >
+                ›
+              </button>
+            </>
+          )}
+        </div>
+        {mediaItems.length > 1 && (
+          <div className={styles.mediaThumbnails}>
+            {mediaItems.map((media, index) => (
+              <img
+                key={media.image_url || media.video_url || `media-${index}`}
+                src={media.image_url || media.video_url}
+                alt={`Thumbnail ${index + 1}`}
+                className={`${styles.thumbnail} ${index === currentMediaIndex ? styles.thumbnailActive : ''}`}
+                onClick={() => setCurrentMediaIndex(index)}
+                onKeyDown={(e) => e.key === 'Enter' && setCurrentMediaIndex(index)}
+                tabIndex={0}
+                loading="lazy"
+                onError={(e) => {
+                  e.target.src = 'https://i.pravatar.cc/150?u=1';
+                }}
+              />
+            ))}
+          </div>
+        )}
         <p className={styles.mediaCount}>
-          {validImages.length} hình ảnh, {videoCount} video
+          {post?.images?.filter(img => img && img.image_url)?.length || 0} hình ảnh,{' '}
+          {post?.videos?.[0]?.video_url ? 1 : 0} video
         </p>
       </div>
     );
   };
 
-  // Render location information
   const renderLocation = () => {
-    return post.address || 'Thông tin vị trí không khả dụng';
+    return post?.address || 'Thông tin vị trí không khả dụng';
   };
 
-  // Format price based on type
   const formatPrice = (price, type) => {
     if (!price || typeof price !== 'number' || price <= 0 || isNaN(price)) {
       return 'Liên hệ để biết giá';
@@ -234,6 +241,28 @@ function PostPage() {
       return `${price.toLocaleString()} tỷ VND`;
     } else {
       return `${price.toLocaleString()} triệu VND/ tháng`;
+    }
+  };
+
+  const getPropertyTypeLabel = (type) => {
+    switch (type) {
+      case 'sell':
+        return 'Bán';
+      case 'rent':
+        return 'Cho thuê';
+      case 'project':
+        return 'Dự án';
+      default:
+        return 'Không xác định';
+    }
+  };
+
+  const getStatusLabel = (type) => {
+    switch (type) {
+      case 'available':
+        return 'Có sẵn';
+      default:
+        return 'Không xác định';
     }
   };
 
@@ -360,22 +389,28 @@ function PostPage() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Liên hệ qua Zalo
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Icon_of_Zalo.svg/2048px-Icon_of_Zalo.svg.png"
+                  alt="Zalo Logo"
+                  style={{ width: '30px', height: '30px' }}
+                />
+                {'   '}
+                <div style={{ marginLeft: '10px' }}>Liên hệ qua Zalo</div>
               </a>
             </div>
           </aside>
         )}
       </div>
       <Modal isOpen={reportsPostsModal} onClose={() => setReportsPostsModal(false)}>
-      <div style={{ padding: '30px' }}> {/* Wrapper với padding */}
-        <ReportPosts 
-          propertyId={id} 
-          user_id={user?.user_id} 
-          isOpen={reportsPostsModal} 
-          onClose={() => setReportsPostsModal(false)} 
-        />
-      </div>
-    </Modal>
+        <div style={{ padding: '30px' }}>
+          <ReportPosts
+            propertyId={id}
+            user_id={user?.user_id}
+            isOpen={reportsPostsModal}
+            onClose={() => setReportsPostsModal(false)}
+          />
+        </div>
+      </Modal>
       <Modal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)}>
         <Login />
       </Modal>

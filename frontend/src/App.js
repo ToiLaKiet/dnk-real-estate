@@ -78,8 +78,8 @@ function App() {
             </div>
             <div className='m-app-container'><FeaturedNews /> </div>
             <AppFav />
-            <AppFeaturedProp />
             <PropertyByLocation />
+            <AppFeaturedProp />
             <AppBa />
 
             <Footer />

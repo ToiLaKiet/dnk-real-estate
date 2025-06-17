@@ -29,7 +29,7 @@ import {
   faPencil,
   faBuilding
 } from '@fortawesome/free-solid-svg-icons';
-
+import Logo from '../../logo.js';
 
 // Component chính để tạo bài đăng bất động sản
 const PostCreate = () => {
@@ -246,6 +246,8 @@ const PostCreate = () => {
   return (
     <div className ='flex-box'>
       <div className={styles.postCreate}>
+        <Logo/>
+        <hr/>
         {postEdit ? (<h2> Chỉnh sửa tin đăng bất động sản - Bước 1</h2>) :(
           <h2> Đăng tin bất động sản - Bước 1</h2>
         )
@@ -353,6 +355,7 @@ const PostCreate = () => {
                 value={formData.area || null}
                 onChange={handleChange}
                 className={styles.formInput}
+                placeholder="Nhập diện tích (m²)"
                 required
               />
             </label>
@@ -368,6 +371,7 @@ const PostCreate = () => {
               onChange={handleChange}
               className={styles.formInput}
               step="any"
+              placeholder={formData.type === 'sell' || formData.type === 'project' ? "Nhập giá bán (tỷ VND)" : "Nhập giá thuê (triệu VNĐ/tháng)"}
               required
             />
           </label>
@@ -417,6 +421,7 @@ const PostCreate = () => {
                 value={formData.bedrooms}
                 onChange={handleChange}
                 className={styles.formInput}
+                placeholder="Nhập số phòng ngủ..."
                 required
               />
             </label>
@@ -429,6 +434,7 @@ const PostCreate = () => {
                 value={formData.bathrooms}
                 onChange={handleChange}
                 className={styles.formInput}
+                placeholder="Nhập số phòng tắm vệ sinh..."
                 required
               />
             </label>
@@ -485,6 +491,7 @@ const PostCreate = () => {
                 type="text"
                 name="contact.name"
                 value={formData.contact.name}
+                placeholder="Nhập tên liên hệ..."
                 onChange={handleChange}
                 className={styles.formInput}
                 required
@@ -496,6 +503,7 @@ const PostCreate = () => {
               <input
                 type="email"
                 name="contact.email"
+                placeholder="Nhập email liên hệ..."
                 value={formData.contact.email}
                 onChange={handleChange}
                 className={styles.formInput}
@@ -511,6 +519,7 @@ const PostCreate = () => {
                 value={formData.contact.phone}
                 onChange={handleChange}
                 className={styles.formInput}
+                placeholder="Nhập số điện thoại liên hệ..."
                 required
               />
             </label>
@@ -528,6 +537,7 @@ const PostCreate = () => {
                 value={formData.title}
                 onChange={handleChange}
                 className={styles.formInput}
+                placeholder="Nhập tiêu đề bài đăng..."
                 required
               />
             </label>
@@ -539,6 +549,7 @@ const PostCreate = () => {
                 value={formData.description}
                 onChange={handleChange}
                 className={styles.formTextarea}
+                placeholder="Mô tả chi tiết về bất động sản..."
                 required
               />
             </label>

@@ -5,7 +5,7 @@
   max-width: inherit;
   width: 100%;
   margin: 0;
-  padding: 30px; /* Ghi đè padding trước đó để đảm bảo không có padding */
+  padding: 60px; /* Ghi đè padding trước đó để đảm bảo không có padding */
   font-family: 'Be Vietnam Pro', sans-serif;
   animation: featured-slide-in 0.5s ease-out;
   background: #f1f1f1;

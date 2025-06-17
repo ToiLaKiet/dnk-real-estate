@@ -10,7 +10,7 @@ import { API_URL } from '../../../config';
 import { cloudName, uploadPreset } from '../../../config';
 import { Cloudinary } from '@cloudinary/url-gen';
 import CloudinaryUploadWidget from '../../UploadWidget';
-
+import Logo from '../../logo';
 const ImageUploadModal = () => {
   const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
@@ -317,6 +317,8 @@ const ImageUploadModal = () => {
 
   return (
     <div className={styles.imageUploadModal}>
+      <Logo />
+      <hr/>
       <h2>Đăng tin bất động sản - Bước 2</h2>
       <div className={styles.hrContainer}>
         <hr className={styles.hrOrange} />

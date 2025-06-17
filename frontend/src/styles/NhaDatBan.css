@@ -350,6 +350,7 @@
 }
 .user-info {
   color: #666;
+  font-weight: bold;
   font-size: 0.9rem;
 }
 .phone-button {

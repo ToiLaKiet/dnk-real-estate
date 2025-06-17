@@ -262,6 +262,8 @@ const AddressModal = ({ isOpen, onClose, onSubmit }) => {
               value={tempAddress.street}
               onChange={handleChange}
               disabled={!tempAddress.ward}
+              placeholder='Nhập tên đường/phố'
+              required
             />
             {errors.street && <span className={styles.amError}>{errors.street}</span>}
           </label>
@@ -273,6 +275,8 @@ const AddressModal = ({ isOpen, onClose, onSubmit }) => {
               value={tempAddress.houseNumber}
               onChange={handleChange}
               disabled={!tempAddress.ward}
+              placeholder='Nhập số nhà'
+              required
             />
             {errors.houseNumber && <span className={styles.amError}>{errors.houseNumber}</span>}
           </label>

@@ -143,10 +143,14 @@ const NewsCreate = () => {
 
   return (
     <div className={styles.newsCreatorContainer}>
+
       <div className={styles.newsCreatorHeader}>
+      <Logo />
         <h1 className={styles.newsCreatorTitle}>
+
           <FontAwesomeIcon icon={faNewspaper} className={styles.newsCreatorHeaderIcon} />
           Tạo Bài Viết Mới
+
         </h1>
         <p className={styles.newsCreatorSubtitle}>
           Điền thông tin bên dưới để xuất bản một bài viết mới
