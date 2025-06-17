@@ -12,6 +12,7 @@ class UserBase(BaseModel):
     tax_number: Optional[str] = None
     company_name: Optional[str] = None
     address: Optional[str] = None
+    avatar: Optional[str] = None
     role: Optional[UserRoleEnum] = UserRoleEnum.buyer
 
 # -------------------------------
