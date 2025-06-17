@@ -72,7 +72,8 @@ const PostCreate = () => {
       // Nếu chưa đăng nhập, chuyển hướng về trang đăng nhập
       setIsModalOpen(true);
     }
-    if(user.role ==='buyer'){
+     
+    if(JSON.parse(user).role==="buyer"){
       alert('Bạn không có quyền truy cập vào trang này. Vui lòng đăng nhập với tư cách người bán để tiếp tục.');
       navigate('/home');
     }

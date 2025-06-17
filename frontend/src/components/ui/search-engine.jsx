@@ -3,15 +3,37 @@ import { useNavigate } from 'react-router-dom';
 import { FaSearch, FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import '../../styles/searchengine.css';
 import DualRangeSlider from './DualRangeSlider.jsx';
+import axios from 'axios';
+import { API_URL } from '../../config.js';
 
 function SearchEngine({ useCase }) {
   const [searchType, setSearchType] = useState(null);
   const [keyword, setKeyword] = useState('');
   const [propertyType, setPropertyType] = useState([]);
   const [priceRange, setPriceRange] = useState([0, 10000000000]);
+  const [provinces, setProvinces] = useState([]);
+  const [selectedProvince, setSelectedProvince] = useState(null);
   const [areaRange, setAreaRange] = useState([0, 500]);
-  const [isOpen, setIsOpen] = useState({ property: false, price: false, area: false });
+  const [isOpen, setIsOpen] = useState({ province: false, property: false, price: false, area: false });
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setIsLoading(true);
+    const fetchProvinces = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/locations/?type=province`);
+        const provinces = response.data;
+        setProvinces(provinces);
+        console.log('Provinces data:', provinces);
+      } catch (error) {
+        console.error('Error fetching provinces:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchProvinces();
+  },[]);
 
   // Property type options
   const propertyOptions = [
@@ -63,10 +85,17 @@ function SearchEngine({ useCase }) {
   const toggleDropdown = (type) => {
     if (!searchType) return; // Prevent opening if no searchType
     setIsOpen((prev) => ({
+      province: type === 'province' ? !prev.province : false,
       property: type === 'property' ? !prev.property : false,
       price: type === 'price' ? !prev.price : false,
       area: type === 'area' ? !prev.area : false,
     }));
+  };
+
+  // Handle province selection
+  const handleProvinceChange = (province) => {
+    setSelectedProvince(province);
+    toggleDropdown('province');
   };
 
   // Handle property type selection
@@ -77,6 +106,11 @@ function SearchEngine({ useCase }) {
   };
 
   // Reset filters
+  const resetProvinceFilter = () => {
+    setSelectedProvince(null);
+    toggleDropdown('province');
+  };
+
   const resetPropertyFilter = () => {
     setPropertyType([]);
   };
@@ -119,6 +153,7 @@ function SearchEngine({ useCase }) {
       propertyType,
       price: `${priceRange[0]}-${priceRange[1]}`,
       area: `${areaRange[0]}-${areaRange[1]}`,
+      province: selectedProvince ? selectedProvince.location_id : null,
     };
 
     console.log('Thông tin tìm kiếm:', searchData);
@@ -198,6 +233,40 @@ function SearchEngine({ useCase }) {
 
         {!useCase.all || searchType ? (
           <div className="filter-bar">
+            <div className="filter-item">
+              <button
+                className="filter-button"
+                onClick={() => toggleDropdown('province')}
+                disabled={!searchType}
+              >
+                {selectedProvince ? selectedProvince.name : 'Tỉnh thành'}
+                {isOpen.province ? <FaChevronUp className="filter-arrow" /> : <FaChevronDown className="filter-arrow" />}
+              </button>
+              {isOpen.province && (
+                <div className="filter-dropdown">
+                  {provinces.map((province) => (
+                    <label key={province.location_id} className="filter-checkbox">
+                      <input
+                        type="radio"
+                        name="province"
+                        checked={selectedProvince && selectedProvince.location_id === province.location_id}
+                        onChange={() => handleProvinceChange(province)}
+                      />
+                      {province.name}
+                    </label>
+                  ))}
+                  <div className="filter-actions">
+                    <button className="reset-button" onClick={resetProvinceFilter}>
+                      Đặt lại
+                    </button>
+                    <button className="apply-button" onClick={() => toggleDropdown('province')}>
+                      Áp dụng
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
             <div className="filter-item">
               <button
                 className="filter-button"
