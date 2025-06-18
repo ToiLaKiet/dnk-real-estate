@@ -1,0 +1,60 @@
+{
+    "title": "Căn hộ 2 phòng ngủ Quận 1",
+    "description": "Căn hộ hiện đại tại trung tâm Sài Gòn, gần chợ Bến Thành.",
+    "price": 3500000000,
+    "area": 75,
+    "address": "12 Nguyễn Văn Trỗi, Quận 1, TP.HCM",
+    "category": "shophouse",
+    "lat": 10.7769,
+    "lng": 106.7009,
+    "property_type": "sell",
+    "expire_at": "2025-07-01T10:00:00.000Z",
+    "location_id": "01201",
+    "features": [
+        {
+            "feature_name": "bedrooms",
+            "feature_value": "2"
+        }
+        ,
+        {
+            "feature_name": "bathrooms",
+            "feature_value": "2"
+        }
+        ,
+        {
+            "feature_name": "houseDirection",
+            "feature_value": "Đông Nam"
+        }
+        ,
+        {
+            "feature_name": "balconyDirection",
+            "feature_value": "Tây Bắc"
+        }
+        ,
+        {
+            "feature_name": "legalDocuments",
+            "feature_value": "Sổ hồng riêng, pháp lý đầy đủ"
+        }
+    ],
+    "images": [
+        {
+            "image_url": "https://example.com/images/img1.jpg",
+            "caption": "Mặt tiền căn hộ cao cấp",
+            "is_primary": true
+        }
+        ,
+        {
+            "image_url": "https://example.com/images/img2.jpg",
+            "caption": "Phòng khách rộng rãi với nội thất hiện đại",
+            "is_primary": false
+        }
+    ],
+    "videos": [
+        {
+            "video_url": "https://example.com/images/video1.mp4"
+        }
+    ],
+    "contact_name": "Nguyễn Văn A",
+    "contact_phone": "0901234567",
+    "contact_email": "nguyenvana@example.com"
+}

@@ -373,14 +373,12 @@ const AdminPropertyManagement = () => {
   const fetchProperties = async () => {
     try {
       setLoading(true);
-      console.log('loading...');
       const response = await axios.get(API_URL + '/properties', {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`, // Add auth token if needed
         }}
       );
-      console.log('Fetched properties:', response.data);
       setProperties(response.data);
       setError('');
       setLoading(false);

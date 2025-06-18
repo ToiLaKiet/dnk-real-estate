@@ -140,7 +140,6 @@ const AdminPropertyList = () => {
       setProperties(response.data);
       setError('');
     } catch (error) {
-      console.error('Error fetching properties:', error);
       setError('Không thể tải danh sách bất động sản');
     } finally {
       setLoading(false);
@@ -164,7 +163,6 @@ const AdminPropertyList = () => {
           },
         }
       );
-      console.log('Approve response:', response.data);
       setProperties((prev) =>
         prev.map((property) =>
           property.property_id === propertyId ? { ...property, status: 'available' } : property
@@ -172,7 +170,6 @@ const AdminPropertyList = () => {
       );
       alert('Mở khóa bất động sản thành công!');
     } catch (error) {
-      console.error('Error approving property:', error);
       setError('Không thể duyệt bất động sản');
       alert('Có lỗi xảy ra khi mở khóa bất động sản!');
     }
@@ -191,7 +188,6 @@ const AdminPropertyList = () => {
           },
         }
       );
-      console.log('Hide response:', response.data);
       setProperties((prev) =>
         prev.map((property) =>
           property.property_id === propertyId ? { ...property, status: 'inactive' } : property
@@ -199,7 +195,6 @@ const AdminPropertyList = () => {
       );
       alert('Ẩn bất động sản thành công!');
     } catch (error) {
-      console.error('Error hiding property:', error);
       setError('Không thể ẩn bất động sản');
       alert('Có lỗi xảy ra khi ẩn bất động sản!');
     }

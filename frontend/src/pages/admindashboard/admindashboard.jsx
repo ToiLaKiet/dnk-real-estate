@@ -31,17 +31,14 @@ function AdminDashboard() {
       setLoading(true);
       try {
         const response = await axios.get(`${API_URL}/properties`);
-        console.log('Properties response:', response);
         const properties = response.data;
         const response_user = await axios.get(`${API_URL}/users/list`);
         setUserCount(response_user.data.length); 
         setPropertiesCount(properties.length);
         //Get charts from backend
         const chartResponse = await axios.get(`${API_URL}/stats/chart`);
-        console.log('Charts response:', chartResponse);
         setChartsData(chartResponse.data.chart);
       } catch (err) {
-        console.error('Lỗi khi tải dữ liệu:', err);
         setError('Không thể tải dữ liệu. Vui lòng thử lại.');
       } finally {
         setLoading(false);

@@ -4,10 +4,12 @@ from datetime import datetime
 
 class PropertyVideoBase(BaseModel):
     video_url: str
-    caption: Optional[str] = None
 
 class PropertyVideoCreate(PropertyVideoBase):
     property_id:  Optional[int] = None
+
+class PropertyVideoUpdate(BaseModel):
+    video_url: Optional[str] = None
 
 class PropertyVideoRead(PropertyVideoBase):
     video_id: int

@@ -78,14 +78,12 @@ const AdminAccountTab = () => {
   // Handle OTP verification
   const handleOtpVerify = async (otpCode) => {
     try {
-      console.log('Verifying OTP for email:', formData.email);
       const response = await axios.post(API_URL+'/otp/verify', {
         target_type: 'email',
         target: formData.email,
         otp_code: otpCode,
       });
       if(response.data){
-        console.log('OTP verification successful:', response.data);
         setFormData((prev) => ({ ...prev, is_email_verified: true, email: formData.email }));
         setErrors({});
         setEmailAnnouncement('Email verified successfully.');
@@ -108,9 +106,7 @@ const AdminAccountTab = () => {
       return;
     }
     try {
-      console.log(formData);
       const token = localStorage.getItem('token'); // or however you store the token
-      console.log('token',token);
       const cpayload = {
         full_name: formData.full_name,
         email: formData.email,
@@ -118,14 +114,12 @@ const AdminAccountTab = () => {
         company_name: formData.company_name,
         address: formData.address,
       }
-      console.log('Update payload:', cpayload);
       const response = await axios.put(API_URL+'/users/me', cpayload, {
         headers: {
           "Content-Type": 'application/json',
           Authorization: `Bearer ${token}`
         }
         });
-      console.log('Update response:', response.data);
       if (response.data) {
         setFormData((prev) => ({
           ...prev,
@@ -139,7 +133,6 @@ const AdminAccountTab = () => {
         setEmailAnnouncement('');
       }
     } catch (error) {
-      console.error('Update error:', error.response?.data || error.message);
     }
   };
 

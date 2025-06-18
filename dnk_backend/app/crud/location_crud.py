@@ -59,3 +59,16 @@ def get_locations_by_type(db: Session, type: LocationTypeEnum,
     if parent_id is not None:
         query = query.filter(Location.parent_id == parent_id)
     return query.all()
+
+def get_wards_by_province(db: Session, province_id: str) -> List[str]:
+    districts = db.query(Location).filter(Location.parent_id == province_id, Location.type == LocationTypeEnum.district).all()
+    
+    if not districts:
+        return []  
+    
+    ward_ids = []
+    for district in districts:
+        wards = db.query(Location).filter(Location.parent_id == district.location_id, Location.type == LocationTypeEnum.ward).all()
+        ward_ids.extend([ward.location_id for ward in wards])  # Thêm ward_id vào danh sách
+    
+    return ward_ids

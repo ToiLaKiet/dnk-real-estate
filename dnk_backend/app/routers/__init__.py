@@ -4,4 +4,10 @@ from . import location_router
 from . import property_feature_router
 from . import property_image_router
 from . import property_video_router
-from . import category_router
+from . import otp_router
+from . import contact_router
+from . import favorite_router
+from . import report_router
+from . import news_router
+from . import stats_router
+from . import recommend_router

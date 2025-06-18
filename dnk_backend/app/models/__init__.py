@@ -1,5 +1,4 @@
 from .user_model import User
-from .category_model import Category
 from .location_model import Location
 from .property_model import Property
 from .property_feature_model import PropertyFeature
@@ -7,3 +6,7 @@ from .property_image_model import PropertyImage
 from .property_video_model import PropertyVideo
 from .favorite_model import Favorite
 from .news_model import News
+from .contact_model import Contact
+from .report_model import Report
+from .stats_model import WebsiteStats
+from .search_history_model import SearchHistory
