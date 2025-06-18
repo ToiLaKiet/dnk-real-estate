@@ -5,6 +5,11 @@ import Header from '../../components/ui/parts/header.jsx';
 import Footer from '../../components/ui/parts/footer.jsx';
 import '../../styles/TinTuc.css';
 import { API_URL } from '../../config.js';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faNewspaper,
+  faShuffle
+} from '@fortawesome/free-solid-svg-icons';
 
 function TinTuc() {
   const [allNews, setAllNews] = useState([]);
@@ -180,7 +185,7 @@ function TinTuc() {
 
     return (
       <div className="tintuc-random-news">
-        <h3 className="tintuc-section-title">Tin tức ngẫu nhiên</h3>
+        <h3 className="tintuc-section-title">Tin tức ngẫu nhiên <FontAwesomeIcon icon={faShuffle}/></h3>
         <ul className="tintuc-random-list">
           {randomNews.map(({ news_id, title, content }) => (
             <li key={news_id}>
@@ -208,6 +213,7 @@ function TinTuc() {
           {random.map(({ news_id, title, content }) => (
             <li key={news_id}>
               <Link to={`/news/${news_id}`} className="tintuc-most-viewed-item">
+              <FontAwesomeIcon icon={faNewspaper} className="tintuc-icon" />
                 <div className="tintuc-random-item-tii">{title}</div>
                 <br />
                 {truncate(content, 100)}

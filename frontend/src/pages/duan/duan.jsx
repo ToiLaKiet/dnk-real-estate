@@ -221,7 +221,7 @@ const [dropdownOptions, setDropdownOptions] = useState({
     }
 
     if (searchFilters.propertyType) {
-      filtered = filtered.filter(post => post.property_type === searchFilters.propertyType); // đổi property_type thành 
+      filtered = filtered.filter(post => post.category === searchFilters.propertyType); // đổi property_type thành 
     }
 
     if (searchFilters.province && searchFilters.ward.length > 0) {

@@ -128,10 +128,48 @@ const PostCreate = () => {
   // Bước hiện tại trong quá trình tạo bài đăng
   const [currentStep, setCurrentStep] = useState(1);
 
-  // Xử lý thay đổi dữ liệu từ các input
+  // // Xử lý thay đổi dữ liệu từ các input
+  // const handleChange = (e) => {
+  //   const { name, value, type } = e.target;
+  
+  //   // Kiểm tra nếu là trường trong contact
+  //   if (name.includes('contact.')) {
+  //     const field = name.split('.')[1];
+  //     setFormData((prev) => ({
+  //       ...prev,
+  //       contact: {
+  //         ...prev.contact,
+  //         [field]: value
+  //       }
+  //     }));
+  //   } else {
+  //     // Ép kiểu nếu là trường số
+  //     const parsedValue = type === 'number' ? parseInt(value.replace(/\s/g, ''), 10) || 0 : value;
+  //       // Nếu loại bài đăng là bán hoặc dự án, giá trị price sẽ là tỷ VND
+  //       // if (name === 'price') {
+  //       //   if(formData.type === 'sell' || formData.type === 'project'){
+  //       //     setFormData((prev) => ({
+  //       //       ...prev,
+  //       //       [name]: parsedValue * 1e9 // Chuyển đổi sang tỷ VND
+  //       //     }));
+  //       //   }
+  //       //   else{
+  //       //     setFormData((prev) => ({
+  //       //       ...prev,
+  //       //       [name]: parsedValue * 1e6 // Chuyển đổi sang triệu VNĐ
+  //       //     }));
+  //       //   }
+  //       // }
+  //     setFormData((prev) => ({
+  //       ...prev,
+  //       [name]: parsedValue
+  //     }));
+  //   }
+  // };
+    // Xử lý thay đổi dữ liệu từ các input
   const handleChange = (e) => {
     const { name, value, type } = e.target;
-  
+
     // Kiểm tra nếu là trường trong contact
     if (name.includes('contact.')) {
       const field = name.split('.')[1];
@@ -143,30 +181,19 @@ const PostCreate = () => {
         }
       }));
     } else {
-      // Ép kiểu nếu là trường số
-      const parsedValue = type === 'number' ? parseInt(value.replace(/\s/g, ''), 10) || 0 : value;
-        // Nếu loại bài đăng là bán hoặc dự án, giá trị price sẽ là tỷ VND
-        // if (name === 'price') {
-        //   if(formData.type === 'sell' || formData.type === 'project'){
-        //     setFormData((prev) => ({
-        //       ...prev,
-        //       [name]: parsedValue * 1e9 // Chuyển đổi sang tỷ VND
-        //     }));
-        //   }
-        //   else{
-        //     setFormData((prev) => ({
-        //       ...prev,
-        //       [name]: parsedValue * 1e6 // Chuyển đổi sang triệu VNĐ
-        //     }));
-        //   }
-        // }
+      // Parse as float for price and area, ensuring non-negative values
+      const parsedValue = type === 'number' && (name === 'price' || name === 'area')
+        ? Math.max(0, parseFloat(value.replace(/\s/g, ''))) || 0 // Ensure non-negative float
+        : type === 'number'
+        ? parseInt(value.replace(/\s/g, ''), 10) || 0 // Use parseInt for other number fields
+        : value;
+
       setFormData((prev) => ({
         ...prev,
         [name]: parsedValue
       }));
     }
   };
-  
 
   // Xử lý thay đổi loại bài đăng (bán/cho thuê)
   const handleTypeChange = (type) => {
@@ -352,9 +379,11 @@ const PostCreate = () => {
               <input
                 type="number"
                 name="area"
+                min="0"
                 value={formData.area || null}
                 onChange={handleChange}
                 className={styles.formInput}
+                step="any"
                 placeholder="Nhập diện tích (m²)"
                 required
               />
@@ -367,6 +396,7 @@ const PostCreate = () => {
             <input
               type="number"
               name="price"
+              min="0"
               value={formData.price || null}
               onChange={handleChange}
               className={styles.formInput}
