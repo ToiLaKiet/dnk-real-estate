@@ -94,13 +94,15 @@ def delete_user_by_admin(identifier: str, db: Session = Depends(get_db), admin_u
 @router.get("/list", response_model=List[UserRead], summary="Lấy danh sách tất cả người dùng")
 def list_users(db: Session = Depends(get_db)):
     users = user_crud.get_all_users(db)
+    for i, u in enumerate(users):
+        print(f"{i=}, {u.user_id=}, {u.is_phone_number_verified=}, {u.is_email_verified=}")
     return users
 
 @router.get("/{user_id}", response_model=UserRead, summary="Tìm người dùng theo user_id")
 def read_user(user_id: int, db: Session = Depends(get_db)):
     user = user_crud.get_user_by_id(db, user_id)
-    
     if not user:  # Nếu không tìm thấy user, trả về lỗi
         raise HTTPException(status_code=404, detail="Không tìm thấy người dùng")
+    
     
     return user
