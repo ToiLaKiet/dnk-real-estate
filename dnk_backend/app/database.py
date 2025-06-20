@@ -2,9 +2,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
-
-DATABASE_URL = 'postgresql://postgres:password2025@localhost:5432/dnk_real_estate'
-
 if not DATABASE_URL:
     raise ValueError("DATABASE_URL is not set in .env file")
 
