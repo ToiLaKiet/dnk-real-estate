@@ -11,7 +11,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],           
+    allow_origins=["https://dnk-real-estate.vercel.app"],           
     allow_credentials=True,
     allow_methods=["*"],             # Cho phép tất cả method, gồm OPTIONS
     allow_headers=["*"],             # Cho phép tất cả headers (như Content-Type, Authorization,...)
