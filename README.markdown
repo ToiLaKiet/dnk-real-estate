@@ -1,19 +1,19 @@
 ![Logo](https://github.com/ToiLaKiet/dnk-real-estate/blob/main/frontend/public/logo192.png)
 
-## 📖 Giới thiệu
+## Giới thiệu
 DNK Real Estate là một nền tảng web hiện đại hỗ trợ tìm kiếm, mua bán, và cho thuê bất động sản tại Việt Nam. Với giao diện thân thiện, dự án giúp người dùng dễ dàng tương tác, từ tìm kiếm nhà đất đến quản lý bài đăng.  
 
 **Trạng thái dự án**: 🛠 Đang phát triển (phiên bản beta).  
 **Mục tiêu**: 🌟 Đơn giản hóa giao dịch bất động sản, tăng tính minh bạch và trải nghiệm người dùng.
 
-## 📑 Mục lục
+## Mục lục
 - [Giới thiệu](#giới-thiệu)
 - [Tính năng](#tính-năng)
 - [Công nghệ sử dụng](#Công-nghệ-sử-dụng)
 - [Liên hệ](#liên-hệ)
 - [Giấy phép](#giấy-phép)
 
-## ✨ Tính năng
+## Tính năng
 - 🔍 **Tìm kiếm bất động sản**: Lọc theo danh mục (nhà đất bán, nhà đất cho thuê, dự án), vị trí, giá, diện tích.
 - 📝 **Quản lý bài đăng**: Chủ nhà dễ dàng tạo, chỉnh sửa, xóa bài đăng.
 - 🎨 **Giao diện trực quan**: Nút tìm kiếm highlight khi chọn, thiết kế responsive.
@@ -28,7 +28,7 @@ DNK Real Estate là một nền tảng web hiện đại hỗ trợ tìm kiếm,
 | **Cơ sở dữ liệu**| postGreSQL                                |
 | **Công cụ**      | Git, Webpack, ESLint                  |
 
-## 📚 Sử dụng
+## Sử dụng
 1. **🔎 Tìm kiếm bất động sản**:
    - Chọn danh mục (Nhà đất bán, Nhà đất cho thuê, Dự án).
    - Nhập bộ lọc (vị trí, giá, diện tích) và nhấn "Tìm kiếm".
@@ -42,9 +42,9 @@ DNK Real Estate là một nền tảng web hiện đại hỗ trợ tìm kiếm,
    - Đăng nhập tài khoản admin để kiểm duyệt bài đăng hoặc quản lý người dùng.
    - Tổng hợp tin tức về thị trường
 
-## 📬 Liên hệ
+## Liên hệ
 - **Email**: ✉️ toilakiet.dev@gmail.com
 
-## 📜 Giấy phép
+## Giấy phép
 Dự án được cấp phép theo [MIT License](LICENSE).  
 © 2025 DNK Real Estate. All rights reserved.
