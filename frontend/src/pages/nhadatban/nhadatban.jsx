@@ -144,6 +144,7 @@ const [dropdownOptions, setDropdownOptions] = useState({
       try {
         console.log('Fetching provinces...');
         const response = await axios.get(`${API_URL}/locations/?type=province`);
+        console.log(`Provinces fetched:`, API_URL);
          // Update the provinces in dropdownOptions
         console.log('Provinces fetched:', response);
         setDropdownOptions(prev => ({
