@@ -9,7 +9,7 @@ DNK Real Estate là một nền tảng web hiện đại hỗ trợ tìm kiếm,
 ## 📑 Mục lục
 - [Giới thiệu](#giới-thiệu)
 - [Tính năng](#tính-năng)
-- [Công nghệ sử dụng](#công-nghệ-sử-dụng)
+- [Công nghệ sử dụng](#Công-nghệ-sử-dụng)
 - [Liên hệ](#liên-hệ)
 - [Giấy phép](#giấy-phép)
 
@@ -20,7 +20,7 @@ DNK Real Estate là một nền tảng web hiện đại hỗ trợ tìm kiếm,
 - 🛡️ **Quản trị viên**: Kiểm duyệt bài đăng và quản lý người dùng.
 - ⚙️ **Tích hợp API**: Xử lý tìm kiếm và lưu trữ dữ liệu hiệu quả.
 
-## 🛠 Công nghệ sử dụng
+## Công nghệ sử dụng
 | **Loại**         | **Công nghệ**                          |
 |-------------------|----------------------------------------|
 | **Frontend**     | HTML, CSS, JavaScript, React.js, Tailwind CSS |
