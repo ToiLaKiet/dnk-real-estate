@@ -66,7 +66,6 @@ const [dropdownOptions, setDropdownOptions] = useState({
   // Fetch initial favorites
   useEffect(() => {
     const token = localStorage.getItem('token');
-    console.log('AA',API_URL);
     if (user?.user_id) {
       axios.get(API_URL+`/favorites`,{
         headers:{
@@ -142,11 +141,7 @@ const [dropdownOptions, setDropdownOptions] = useState({
     const fetchProvinces = async () => {
       setIsLoadingProvinces(true);
       try {
-        console.log('Fetching provinces...');
         const response = await axios.get(`${API_URL}/locations/?type=province`);
-        console.log(`Provinces fetched:`, API_URL);
-         // Update the provinces in dropdownOptions
-        console.log('Provinces fetched:', response);
         setDropdownOptions(prev => ({
           ...prev,
           provinces: [
@@ -159,7 +154,7 @@ const [dropdownOptions, setDropdownOptions] = useState({
         }));
 
       } catch (error) {
-        console.error('Error fetching provinces:', error);
+
       } finally {
         setIsLoadingProvinces(false);
       }
@@ -181,13 +176,12 @@ const [dropdownOptions, setDropdownOptions] = useState({
       try {
         // Then get all wards in those districts
         const wardPromises = await axios.get(`${API_URL}/locations/wards-by-province/${searchFilters.province}`);
-        console.log(`Fetching wards for province:${searchFilters.province}`, wardPromises);
+
         // const wardsResponses = await Promise.all(wardPromises.data); //Promise is an array of promises which is an array of wards
         // const allWards = wardsResponses.flatMap(response => response.data);
         setWardIds(wardPromises.data);
         setSearchFilters(prev => ({ ...prev, ward: wardPromises.data }));
       } catch (error) {
-        console.error('Error fetching wards:', error);
         setWardIds([]);
         setSearchFilters(prev => ({ ...prev, ward: [] }));
       } finally {
@@ -203,10 +197,8 @@ const [dropdownOptions, setDropdownOptions] = useState({
       try {
         const response = await axios.get(`${API_URL}/properties`);
         const availablePosts = response.data.filter(post => post.status === 'available');
-        console.log('Available posts fetched:', availablePosts);
         setPosts(availablePosts);
       } catch (error) {
-        console.error('Error fetching posts:', error);
       }
     };
     fetchPosts();
@@ -314,7 +306,6 @@ const [dropdownOptions, setDropdownOptions] = useState({
             Authorization: `Bearer ${localStorage.getItem('token')}`,
             'Content-Type': 'application/json'
         }});
-        console.log(`Removed property ${propertyId} from favorites`);
       } else {
         await axios.post(API_URL+'/favorites', {
           property_id: propertyId,
@@ -323,10 +314,8 @@ const [dropdownOptions, setDropdownOptions] = useState({
             Authorization: `Bearer ${localStorage.getItem('token')}`,
             'Content-Type': 'application/json'
         }});
-        console.log(`Added property ${propertyId} to favorites`);
       }
     } catch (error) {
-      console.error('Error updating favorite:', error);
       setFavorites((prev) => ({
         ...prev,
         [propertyId]: isCurrentlyFavorited
