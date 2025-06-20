@@ -66,6 +66,7 @@ const [dropdownOptions, setDropdownOptions] = useState({
   // Fetch initial favorites
   useEffect(() => {
     const token = localStorage.getItem('token');
+    console.log('AA',API_URL);
     if (user?.user_id) {
       axios.get(API_URL+`/favorites`,{
         headers:{
