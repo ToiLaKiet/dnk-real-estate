@@ -1,6 +1,4 @@
-# 🏡 DNK Real Estate
-
-[![Build Status](https://img.shields.io/badge/build-done-brightgreen)](https://github.com/ToiLaKiet/dnk-real-estate)
+![Logo](https://github.com/ToiLaKiet/dnk-real-estate/blob/main/frontend/public/logo192.png)
 
 ## 📖 Giới thiệu
 DNK Real Estate là một nền tảng web hiện đại hỗ trợ tìm kiếm, mua bán, và cho thuê bất động sản tại Việt Nam. Với giao diện thân thiện, dự án giúp người dùng dễ dàng tương tác, từ tìm kiếm nhà đất đến quản lý bài đăng.  
