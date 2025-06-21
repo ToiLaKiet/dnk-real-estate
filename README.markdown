@@ -26,7 +26,8 @@ DNK Real Estate là một nền tảng web hiện đại hỗ trợ tìm kiếm,
 | **Frontend**     | HTML, CSS, JavaScript, React.js, Tailwind CSS |
 | **Backend**      | Flask, FastAPI                    |
 | **Cơ sở dữ liệu**| postGreSQL                                |
-| **Công cụ**      | Git, Webpack, ESLint                  |
+| **Công cụ**      | Git, Vercel, Render                  |
+
 
 ## Sử dụng
 1. **🔎 Tìm kiếm bất động sản**:
